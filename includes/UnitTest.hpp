@@ -26,8 +26,8 @@ class UnitTest
 		std::string	stdout_restore();
 		
 		
-		template < typename T >
-		bool		assertEqual(T a, T b)
+		template < typename T, typename U >
+		bool		assertEqual(T a, U b)
 		{
 			if (a != b)
 				throw std::runtime_error("Error: arguments are not equal");

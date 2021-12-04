@@ -17,7 +17,7 @@ void	example2(UnitTest *self)
 	output = self->stdout_restore();
 
 	// std::cout << "Output was: " << output;
-	self->assertEqual(output, std::string("Running\n"));
+	self->assertEqual(output, "Running\n");
 }
 
 void	example3(UnitTest *self)
@@ -29,7 +29,7 @@ void	example3(UnitTest *self)
 	output = self->stdout_restore();
 
 	// std::cout << "Output was: " << output;
-	self->assertEqual(output, std::string("Running\n"));
+	self->assertEqual(output, "Running\n");
 }
 
 int	main()
