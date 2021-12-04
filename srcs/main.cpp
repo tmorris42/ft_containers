@@ -1,41 +1,41 @@
 #include "main.hpp"
 
-void	example(UnitTest *self)
+void	example(UnitTest *test)
 {
 	int x = 1;
 
-	self->assertEqual(x, 1);
-	self->assertEqual(x, 2);
+	test->assertEqual(x, 1);
+	test->assertEqual(x, 2);
 }
 
-void	example2(UnitTest *self)
+void	example2(UnitTest *test)
 {
 	std::string	output;
 
-	self->stdout_redirect();
+	test->stdout_redirect();
 	std::cout << "Runni5ng" << std::endl;
-	output = self->stdout_restore();
+	output = test->stdout_restore();
 
 	// std::cout << "Output was: " << output;
-	self->assertEqual(output, "Running\n");
+	test->assertEqual(output, "Running\n");
 }
 
-void	example3(UnitTest *self)
+void	example3(UnitTest *test)
 {
 	std::string	output;
 
-	self->stdout_redirect();
+	test->stdout_redirect();
 	std::cout << "Running" << std::endl;
-	output = self->stdout_restore();
+	output = test->stdout_restore();
 
 	// std::cout << "Output was: " << output;
-	self->assertEqual(output, "Running\n");
+	test->assertEqual(output, "Running\n");
 }
 
 int	main()
 {
 	// std::string	output;
-	UnitTest	test;
+	UnitTest	test(false);
 	double		score;
 
 	// test.stdout_redirect();
@@ -47,6 +47,7 @@ int	main()
 	// if (output.compare("Running\n") == 0)
 	// 	std::cout << "as expected!" << std::endl;
 
+	// test.verbose = true;
 
 	test.run(example);
 	test.run(example2);
