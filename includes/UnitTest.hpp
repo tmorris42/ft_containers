@@ -29,6 +29,8 @@ class UnitTest
 		template < typename T, typename U >
 		bool		assertEqual(T a, U b)
 		{
+			if (this->verbose)
+				std::cout << "checking: " << a << " = " << b << std::endl;
 			if (a != b)
 				throw std::runtime_error("Error: arguments are not equal");
 			else
