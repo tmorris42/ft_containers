@@ -21,6 +21,7 @@ class UnitTest
 		virtual ~UnitTest();
 		UnitTest const &	operator=(UnitTest const & rhs);
 		void		run(void (*f)(UnitTest *self));
+		void		run(void (*f)(UnitTest *self), std::string const & title);
 		double		report();
 		void		stdout_redirect();
 		std::string	stdout_restore();
