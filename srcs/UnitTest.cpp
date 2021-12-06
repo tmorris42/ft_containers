@@ -88,7 +88,7 @@ void	UnitTest::run(void (*test_case)(UnitTest *self), std::string const & title)
 
 double	UnitTest::report()
 {
-	unsigned int	score;
+	double	score;
 
 	std::cout << std::endl << "Ran " << this->testsRun << " test";
 	if (this->testsRun == 0 || this->testsRun > 1)
@@ -97,6 +97,6 @@ double	UnitTest::report()
 	std::cout << "Passed: \x1B[32m" << this->testsPassed << "\x1B[m" << std::endl;
 	std::cout << "Failed: \x1B[31m" << this->testsFailed << "\x1B[m" << std::endl;
 	score = static_cast<double>(this->testsPassed) / static_cast<double>(this->testsRun);
-	std::cout << "Score: " << score * 100 << "%" << std::endl;
+	std::cout << "Score: " << score * 100.0 << "%" << std::endl;
 	return (score);
 }
