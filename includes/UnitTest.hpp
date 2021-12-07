@@ -25,13 +25,14 @@ class UnitTest
 		double		report();
 		void		stdout_redirect();
 		std::string	stdout_restore();
+		void		set_verbosity(bool verbosity);
 		
 		
 		template < typename T, typename U >
 		bool		assertEqual(T a, U b)
 		{
 			if (this->verbose)
-				std::cout << "checking: " << a << " = " << b << std::endl;
+				std::cout << "checking: " << a << " == " << b << std::endl;
 			if (a != b)
 				throw std::runtime_error("Error: arguments are not equal");
 			else
