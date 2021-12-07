@@ -59,7 +59,7 @@ namespace ft
 			const_reference	back() const {
 				return (*(this->__start + this->__size - 1));
 			};
-			
+
 			void	data();
 			
 			// Iterators
@@ -84,18 +84,21 @@ namespace ft
 			void	push_back(T element) {
 				if (this->__capacity - this->__size < 1)
 				{
-					pointer new_space = this->get_allocator().allocate((this->__capacity + 1)); //Allocate new space
+					size_type	new_capacity = 1;
+					if (this->__capacity > 0)
+						new_capacity = 2 * this->__capacity;
+					pointer new_space = this->get_allocator().allocate(new_capacity);
 					this->__copy_space(new_space, this->__start, this->__size);
 					this->__destroy_space(this->__start, this->__size);
 					this->__start = new_space;
 					this->get_allocator().construct(this->__start + this->__size, element);
 					++this->__size;
-					++this->__capacity;
+					this->__capacity = new_capacity;
 				}
 				else
 				{
-					// just add it
-					std::cout << "looks like we have space" << std::endl;
+					this->get_allocator().construct(this->__start + this->__size, element);
+					++this->__size;
 				}
 			};
 			void	pop_back();
@@ -103,9 +106,9 @@ namespace ft
 			void	swap();
 
 		private:
-			pointer			__start;	//pointer to start	
-			size_type		__capacity;		// allocated size
-			unsigned int	__size;		// number of elements
+			pointer		__start;	//pointer to start	
+			size_type	__capacity;		// allocated size
+			size_type	__size;		// number of elements
 
 			void	__copy_space(pointer	dest, pointer	src, size_type N) {
 				while (N > 0)
