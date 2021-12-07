@@ -74,7 +74,13 @@ namespace ft
 			iterator	begin() {
 				return (this->__start);
 			}
+			const_iterator	begin() const {
+				return (this->__start);
+			}
 			iterator	end() {
+				return (this->__start + this->__size);
+			}
+			const_iterator	end() const {
 				return (this->__start + this->__size);
 			}
 

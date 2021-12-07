@@ -88,7 +88,6 @@ void	test_vector_push_back_x4(UnitTest *test)
 	test->assertEqual(Vec.back(), 8);
 }
 
-
 void	test_vector_push_back_x5(UnitTest *test)
 {
 	ft::vector<int> Vec;
@@ -130,6 +129,24 @@ void	test_vector_empty(UnitTest *test)
 	ft::vector<int> Vec;
 	test->assertEqual(Vec.empty(), true);
 	Vec.push_back(1);
+	test->assertEqual(Vec.empty(), false);
+}
+
+void	test_vector_iterator_forward(UnitTest *test)
+{
+	ft::vector<int> Vec;
+	Vec.push_back(0);
+	Vec.push_back(1);
+	Vec.push_back(2);
+	Vec.push_back(3);
+	Vec.push_back(4);
+	ft::vector<int>::iterator it = Vec.begin();
+	ft::vector<int>::iterator ite = Vec.end();
+	while (it != ite)
+	{
+		test->assertEqual((*it), it - Vec.begin());
+		++it;
+	}
 	test->assertEqual(Vec.empty(), false);
 }
 
@@ -177,6 +194,7 @@ int	main(int argc, char **argv)
 	test.run(test_vector_push_back_x5, "test_vector_push_back_x5");
 	test.run(test_vector_push_back_x15, "test_vector_push_back_x15");
 	test.run(test_vector_empty, "test_vector_empty");
+	test.run(test_vector_iterator_forward, "test_vector_iterator_forward");
 	
 	// test.run(example2);
 	// test.run(example3);
