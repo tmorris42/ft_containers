@@ -60,7 +60,13 @@ namespace ft
 				return (*(this->__start + this->__size - 1));
 			};
 
-			void	data();
+			pointer	data() {
+				return (this->__start);
+			}
+
+			const_pointer	data() const {
+				return (this->__start);
+			}
 			
 			// Iterators
 			void	begin();
