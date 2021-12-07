@@ -2,6 +2,7 @@
 # define VECTOR_HPP
 
 # include <memory>
+# include <iostream>
 
 namespace ft
 {
@@ -17,8 +18,8 @@ namespace ft
 
 			typedef typename allocator_type::pointer		pointer;
 			typedef typename allocator_type::const_pointer	const_pointer;
-			// value_type							&reference;
-			// value_type const					&const_reference;
+			typedef	value_type							& reference;
+			typedef value_type const					& const_reference;
 
 			// LegacyRandomAccessIterator<T>			iterator;
 			// LegacyRandomAccessIterator<T> const		const_iterator;
@@ -26,19 +27,39 @@ namespace ft
 			// std::reverse_iterator<const_iterator>	const_reverse_iterator;
 			
 			//Member functions
-			vector() {};
-			~vector() {};
+			vector() : __start(), __capacity(0), __size(0) {
+				// __start = get_allocator().allocate(1);
+			};
+			~vector() {
+				// std::cout << "Deleting vector" << std::endl;
+				// get_allocator().deallocate(__start, 1);
+				for (; this->__size > 0; --this->__size)
+				{
+					this->get_allocator().destroy(this->__start + this->__size);
+				}
+				this->get_allocator().deallocate(this->__start, this->__size);
+			};
 			vector const &	operator=(vector const & rhs);
 			
 			void	assign();
-			Allocator	get_allocator();
+			allocator_type	get_allocator() {return (allocator_type());};
 
 			// Element access
 			void	at();
 			void	operator[](unsigned int index);
-			T &		front() { return (*(new T()));};
-			T const &		front() const { };
-			void	back();
+			reference		front() {
+				return (*__start);
+			};
+			const_reference		front() const {
+				return (*__start);
+			};
+			reference	back() {
+				return (*(this->__start + this->__size - 1));
+			};
+			const_reference	back() const {
+				return (*(this->__start + this->__size - 1));
+			};
+			
 			void	data();
 			
 			// Iterators
@@ -49,7 +70,9 @@ namespace ft
 
 			// Capacity
 			void	empty();
-			size_type	size() { return (-99);};
+			size_type	size() {
+				return (this->__size);
+			};
 			void	max_size();
 			void	reserve();
 			void	capacity();
@@ -58,12 +81,48 @@ namespace ft
 			void	clear();
 			void	insert();
 			void	erase();
-			void	push_back(T element) {T temp; temp = element; if (temp == element) return;};
+			void	push_back(T element) {
+				if (this->__capacity - this->__size < 1)
+				{
+					pointer new_space = this->get_allocator().allocate((this->__capacity + 1)); //Allocate new space
+					this->__copy_space(new_space, this->__start, this->__size);
+					this->__destroy_space(this->__start, this->__size);
+					this->__start = new_space;
+					this->get_allocator().construct(this->__start + this->__size, element);
+					++this->__size;
+					++this->__capacity;
+				}
+				else
+				{
+					// just add it
+					std::cout << "looks like we have space" << std::endl;
+				}
+			};
 			void	pop_back();
 			void	resize();
 			void	swap();
 
+		private:
+			pointer			__start;	//pointer to start	
+			size_type		__capacity;		// allocated size
+			unsigned int	__size;		// number of elements
 
+			void	__copy_space(pointer	dest, pointer	src, size_type N) {
+				while (N > 0)
+				{
+					*dest = *src;
+					++dest;
+					++src;
+					--N;
+				}
+			}
+			void	__destroy_space(pointer	start, size_type N) {
+				for (; N > 0; --N)
+				{
+					this->get_allocator().destroy(start + N);
+				}
+				this->get_allocator().deallocate(start, N);
+			}
 	};
 
 

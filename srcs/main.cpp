@@ -50,14 +50,26 @@ void	test_vector_push_back(UnitTest *test)
 	test->assertEqual(Vec.front(), 5);
 }
 
-int	main()
+void	test_vector_push_back_twice(UnitTest *test)
+{
+	// test->assertEqual()
+	ft::vector<int> Vec;
+	Vec.push_back(5);
+	test->assertEqual(Vec.size(), static_cast<unsigned int>(1));
+	Vec.push_back(6);
+	test->assertEqual(Vec.size(), static_cast<unsigned int>(2));
+	test->assertEqual(Vec.front(), 5);
+	test->assertEqual(Vec.back(), 6);
+}
+
+int	main(int argc, char **argv)
 {
 	#ifndef FT_REAL_VERSION//CREATE A REAL STL EXAMPLE
 		// #include "map.hpp"
 		// #include "stack.hpp"
-		std::cout << "Mine" << std::endl;
+		// std::cout << "Mine" << std::endl;
 	#else
-		std::cout << "Real" << std::endl;
+		// std::cout << "Real" << std::endl;
 		#include <map>
 		#include <stack>
 		#include <vector>
@@ -65,7 +77,15 @@ int	main()
 	#endif
 
 	// std::string	output;
+	if (!argc || !argv)
+		return (0);
+
 	UnitTest	test(false);
+	if (argc > 1)
+	{
+		std::cout << "VERBOSE MODE" << std::endl;
+		test.set_verbosity(true);
+	}
 
 	// test.stdout_redirect();
 	// std::cout << "Runni5ng" << std::endl;
@@ -80,6 +100,7 @@ int	main()
 
 	test.run(test_vector_void_constructor, "Test vector<int>()");
 	test.run(test_vector_push_back, "Test vector<int>.push_back()");
+	test.run(test_vector_push_back_twice, "test_vector_push_back_twice");
 	
 	// test.run(example2);
 	// test.run(example3);
