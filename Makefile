@@ -15,8 +15,8 @@ CC	:= $(CC_OVERRIDE)
 FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
 
 DEBUG_FLAGS ?= -g3
-ifdef $(DEBUG_OVERRIDE)
-FLAGS = $(FLAGS) $(DEBUG_FLAGS)
+ifdef DEBUG_OVERRIDE
+FLAGS := $(FLAGS) $(DEBUG_FLAGS)
 endif
 
 all: $(NAME)
