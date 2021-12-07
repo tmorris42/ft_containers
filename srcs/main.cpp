@@ -147,7 +147,6 @@ void	test_vector_iterator_forward(UnitTest *test)
 		test->assertEqual((*it), it - Vec.begin());
 		++it;
 	}
-	test->assertEqual(Vec.empty(), false);
 }
 
 int	main(int argc, char **argv)
