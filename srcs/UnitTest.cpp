@@ -100,3 +100,8 @@ double	UnitTest::report()
 	std::cout << "Score: " << score * 100.0 << "%" << std::endl;
 	return (score);
 }
+
+void		UnitTest::set_verbosity(bool verbosity)
+{
+	this->verbose = verbosity;
+}
