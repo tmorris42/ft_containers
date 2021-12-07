@@ -23,6 +23,8 @@ namespace ft
 
 			// LegacyRandomAccessIterator<T>			iterator;
 			// LegacyRandomAccessIterator<T> const		const_iterator;
+			typedef pointer								iterator;		// should be custom LRAI
+			typedef const_pointer						const_iterator;
 			// std::reverse_iterator<iterator>			reverse_iterator;
 			// std::reverse_iterator<const_iterator>	const_reverse_iterator;
 			
@@ -69,13 +71,20 @@ namespace ft
 			}
 			
 			// Iterators
-			void	begin();
-			void	end();
+			iterator	begin() {
+				return (this->__start);
+			}
+			iterator	end() {
+				return (this->__start + this->__size);
+			}
+
 			void	rbegin();
 			void	rend();
 
 			// Capacity
-			void	empty();
+			bool	empty() {
+				return (this->begin() == this->end());
+			}
 			size_type	size() {
 				return (this->__size);
 			};

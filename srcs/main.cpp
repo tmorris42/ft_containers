@@ -125,6 +125,14 @@ void	test_vector_push_back_x15(UnitTest *test)
 	test->assertEqual(Vec.back(), 42);
 }
 
+void	test_vector_empty(UnitTest *test)
+{
+	ft::vector<int> Vec;
+	test->assertEqual(Vec.empty(), true);
+	Vec.push_back(1);
+	test->assertEqual(Vec.empty(), false);
+}
+
 int	main(int argc, char **argv)
 {
 	#ifndef FT_REAL_VERSION//CREATE A REAL STL EXAMPLE
@@ -168,6 +176,7 @@ int	main(int argc, char **argv)
 	test.run(test_vector_push_back_x4, "test_vector_push_back_x4");
 	test.run(test_vector_push_back_x5, "test_vector_push_back_x5");
 	test.run(test_vector_push_back_x15, "test_vector_push_back_x15");
+	test.run(test_vector_empty, "test_vector_empty");
 	
 	// test.run(example2);
 	// test.run(example3);
