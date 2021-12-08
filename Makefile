@@ -44,9 +44,9 @@ re: fclean all
 
 test: $(NAME) real
 	@echo "Generating user logs"
-	@./$(NAME) > mine.log 2>mine.err.log
+	@./$(NAME) -v > mine.log 2>mine.err.log
 	@echo "Generating real logs"
-	@./$(REAL) > real.log 2>real.err.log
+	@./$(REAL) -v > real.log 2>real.err.log
 	@echo "Comparing output"
 	@echo "-----------------"
 	@diff -s mine.log real.log
