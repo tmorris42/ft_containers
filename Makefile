@@ -42,13 +42,14 @@ fclean: clean
 
 re: fclean all
 
-test: $(NAME) $(REAL)
-	@echo "Generating user log"
-	@./$(NAME) > mine.log
-	@echo "Generating real log"
-	@./$(REAL) > real.log
+test: $(NAME) real
+	@echo "Generating user logs"
+	@./$(NAME) > mine.log 2>mine.err.log
+	@echo "Generating real logs"
+	@./$(REAL) > real.log 2>real.err.log
 	@echo "Comparing output"
 	@echo "-----------------"
 	@diff -s mine.log real.log
+	@diff -s mine.err.log real.err.log
 
 .PHONY: all clean fclean re real test
