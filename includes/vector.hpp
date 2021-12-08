@@ -126,7 +126,9 @@ namespace ft
 			};
 			void	max_size();
 			void	reserve();
-			void	capacity();
+			size_type	capacity() const {
+				return (this->__capacity);
+			}
 
 			// Modifiers
 			void	clear();

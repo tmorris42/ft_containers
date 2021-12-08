@@ -130,6 +130,8 @@ void	test_vector_empty(UnitTest *test)
 	test->assertEqual(Vec.empty(), true);
 	Vec.push_back(1);
 	test->assertEqual(Vec.empty(), false);
+	// Vec.pop_back()
+	// test->assertEqual(Vec.empty(), true);
 }
 
 void	test_vector_iterator_forward(UnitTest *test)
@@ -213,6 +215,42 @@ void	test_vector_operater_bracket(UnitTest *test)
 	}	
 }
 
+void	test_vector_capacity(UnitTest *test)
+{
+	ft::vector<int> Vec;
+	test->assertEqual(Vec.capacity(), (unsigned long)(0));
+	Vec.push_back(5);
+	test->assertEqual(Vec.capacity(), (unsigned long)1);
+	Vec.push_back(6);
+	test->assertEqual(Vec.capacity(), (unsigned long)2);
+	Vec.push_back(7);
+	test->assertEqual(Vec.capacity(), (unsigned long)4);
+	Vec.push_back(8);
+	test->assertEqual(Vec.capacity(), (unsigned long)4);
+	Vec.push_back(9);
+	test->assertEqual(Vec.capacity(), (unsigned long)8);
+	Vec.push_back(5);
+	test->assertEqual(Vec.capacity(), (unsigned long)8);
+	Vec.push_back(6);
+	test->assertEqual(Vec.capacity(), (unsigned long)8);
+	Vec.push_back(7);
+	test->assertEqual(Vec.capacity(), (unsigned long)8);
+	Vec.push_back(8);
+	test->assertEqual(Vec.capacity(), (unsigned long)16);
+	Vec.push_back(9);
+	test->assertEqual(Vec.capacity(), (unsigned long)16);
+	Vec.push_back(5);
+	test->assertEqual(Vec.capacity(), (unsigned long)16);
+	Vec.push_back(6);
+	test->assertEqual(Vec.capacity(), (unsigned long)16);
+	Vec.push_back(7);
+	test->assertEqual(Vec.capacity(), (unsigned long)16);
+	Vec.push_back(8);
+	test->assertEqual(Vec.capacity(), (unsigned long)16);
+	Vec.push_back(42);
+	test->assertEqual(Vec.capacity(), (unsigned long)16);
+}
+
 int	main(int argc, char **argv)
 {
 	#ifndef FT_REAL_VERSION//CREATE A REAL STL EXAMPLE
@@ -260,6 +298,7 @@ int	main(int argc, char **argv)
 		test_vector_iterator_forward,
 		test_vector_at,
 		test_vector_operater_bracket,
+		test_vector_capacity,
 		NULL
 		};
 
@@ -275,6 +314,7 @@ int	main(int argc, char **argv)
 		"test_vector_iterator_forward",
 		"test_vector_at",
 		"test_vector_operater_bracket",
+		"test_vector_capacity",
 	};
 
 	for (int i = 0; tests[i]; ++i)
