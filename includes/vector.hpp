@@ -1,10 +1,11 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-# include <memory>
-# include <iostream>
-# include <stdexcept>
-# include <sstream>
+# include <memory> // for std::allocator
+//# include <iostream> // For input output
+# include <stdexcept> // For standard exceptions
+# include <sstream> // For exception what() string generation
+# include <limits> // For numeric_limits in max_size()
 
 namespace ft
 {
@@ -16,7 +17,7 @@ namespace ft
 			typedef T			value_type;
 			typedef Allocator	allocator_type;
 			typedef std::size_t			size_type;
-			std::ptrdiff_t		difference_type;
+			typedef std::ptrdiff_t		difference_type;
 
 			typedef typename allocator_type::pointer		pointer;
 			typedef typename allocator_type::const_pointer	const_pointer;
@@ -31,19 +32,17 @@ namespace ft
 			// std::reverse_iterator<const_iterator>	const_reverse_iterator;
 			
 			//Member functions
-			vector() : __start(), __capacity(0), __size(0) {
-				// __start = get_allocator().allocate(1);
+			vector() : __start(0), __capacity(0), __size(0) {
 			};
 			~vector() {
 				// std::cout << "Deleting vector" << std::endl;
 				// get_allocator().deallocate(__start, 1);
-				for (; this->__size > 0; --this->__size)
-				{
-					this->get_allocator().destroy(this->__start + this->__size);
-				}
-				this->get_allocator().deallocate(this->__start, this->__size);
+				__destroy_space(this->__start, this->__size);
 			};
-			vector const &	operator=(vector const & rhs);
+			vector &	operator=(vector const & other) {
+				this->reserve(other->size());
+				__copy_space(this->__start, other->begin());
+			}
 			
 			void	assign();
 			allocator_type	get_allocator() {return (allocator_type());};
@@ -124,8 +123,21 @@ namespace ft
 			size_type	size() {
 				return (this->__size);
 			};
-			void	max_size();
-			void	reserve();
+			size_type	max_size() const {
+				return (std::numeric_limits<difference_type>::max());
+			}
+			void	reserve( size_type new_cap ) {
+				if (new_cap > this->max_size())
+					throw std::length_error("Error, too new capcity is greater than max_size()");
+				if (this->capacity() < new_cap)
+				{
+					pointer new_space = this->get_allocator().allocate(new_cap);
+					this->__copy_space(new_space, this->__start, this->__size);
+					this->__destroy_space(this->__start, this->__size);
+					this->__start = new_space;
+					this->__capacity = new_cap;
+				}
+			}
 			size_type	capacity() const {
 				return (this->__capacity);
 			}
@@ -140,13 +152,9 @@ namespace ft
 					size_type	new_capacity = 1;
 					if (this->__capacity > 0)
 						new_capacity = 2 * this->__capacity;
-					pointer new_space = this->get_allocator().allocate(new_capacity);
-					this->__copy_space(new_space, this->__start, this->__size);
-					this->__destroy_space(this->__start, this->__size);
-					this->__start = new_space;
+					this->reserve(new_capacity);
 					this->get_allocator().construct(this->__start + this->__size, element);
 					++this->__size;
-					this->__capacity = new_capacity;
 				}
 				else
 				{

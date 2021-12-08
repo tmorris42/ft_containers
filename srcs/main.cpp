@@ -1,25 +1,5 @@
 #include "main.hpp"
 
-void	example(UnitTest *test)
-{
-	int x = 1;
-
-	test->assertEqual(x, 1);
-	test->assertEqual(x, 2);
-}
-
-void	example2(UnitTest *test)
-{
-	std::string	output;
-
-	test->stdout_redirect();
-	std::cout << "Runni5ng" << std::endl;
-	output = test->stdout_restore();
-
-	// std::cout << "Output was: " << output;
-	test->assertEqual(output, "Running\n");
-}
-
 void	example3(UnitTest *test)
 {
 	std::string	output;
@@ -27,18 +7,16 @@ void	example3(UnitTest *test)
 	test->stdout_redirect();
 	std::cout << "Running" << std::endl;
 	output = test->stdout_restore();
-
-	// std::cout << "Output was: " << output;
 	test->assertEqual(output, "Running\n");
 }
 
 void	test_vector_void_constructor(UnitTest *test)
 {
-	// test->assertEqual()
 	ft::vector<int> Vec;
 
-	// test->assertEqual(Vec.size(), static_cast<unsigned int>(0));
-	test->assertEqual(0, 0);
+	test->assertEqual(Vec.size(), (unsigned long)0);
+	test->assertEqual(Vec.empty(), true);
+	test->assertEqual(Vec.capacity(), (unsigned long)0);
 }
 
 void	test_vector_push_back(UnitTest *test)
@@ -251,6 +229,53 @@ void	test_vector_capacity(UnitTest *test)
 	test->assertEqual(Vec.capacity(), (unsigned long)16);
 }
 
+void	test_vector_capacity_cppref(UnitTest *test)
+{
+	int sz = 200;
+    ft::vector<int> v1;
+ 
+ 	test->stdout_redirect();
+
+    unsigned long cap = v1.capacity();
+    std::cout << "initial capacity=" << cap << '\n';
+ 
+    for (int n = 0; n < sz; ++n) {
+        v1.push_back(n);
+        if (cap != v1.capacity()) {
+            cap = v1.capacity();
+            std::cout << "new capacity=" << cap << '\n';
+        }
+    }
+ 
+    std::cout << "final size=" << v1.size() << '\n';
+    std::cout << "final capacity=" << v1.capacity() << '\n';
+
+	std::string output = test->stdout_restore();
+	test->assertEqual(output, "initial capacity=0\nnew capacity=1\nnew capacity=2\nnew capacity=4\nnew capacity=8\nnew capacity=16\nnew capacity=32\nnew capacity=64\nnew capacity=128\nnew capacity=256\nfinal size=200\nfinal capacity=256\n");
+}
+
+void	test_vector_max_size(UnitTest *test)
+{
+	ft::vector<int> Vec;
+	
+	// test->assertEqual(Vec.max_size(), (unsigned long)2305843009213693951);
+	test->assertEqual(Vec.max_size(), (unsigned long)9223372036854775807);
+}
+
+void	test_vector_reserve(UnitTest *test)
+{
+	ft::vector<int> Vec;
+	
+	// test->assertEqual(Vec.max_size(), (unsigned long)2305843009213693951);
+	test->assertEqual(Vec.capacity(), (unsigned long)0);
+	Vec.reserve(200);
+	test->assertEqual(Vec.capacity(), (unsigned long)200);
+	Vec.reserve(100);
+	test->assertEqual(Vec.capacity(), (unsigned long)200);
+	Vec.reserve(2220);
+	test->assertEqual(Vec.capacity(), (unsigned long)2220);
+}
+
 int	main(int argc, char **argv)
 {
 	#ifndef FT_REAL_VERSION//CREATE A REAL STL EXAMPLE
@@ -265,7 +290,6 @@ int	main(int argc, char **argv)
 		namespace ft = std;
 	#endif
 
-	// std::string	output;
 	if (!argc || !argv)
 		return (0);
 
@@ -276,16 +300,6 @@ int	main(int argc, char **argv)
 		test.set_verbosity(true);
 	}
 
-	// test.stdout_redirect();
-	// std::cout << "Runni5ng" << std::endl;
-	// output = test.stdout_restore();
-
-	// std::cout << "Output was: " << output;
-	// test.assertEqual(output, std::string("Running\n"));
-	// if (output.compare("Running\n") == 0)
-	// 	std::cout << "as expected!" << std::endl;
-
-	// test.verbose = true;
 	void (*tests[])(UnitTest*) = {
 		test_vector_void_constructor,
 		test_vector_push_back,
@@ -299,6 +313,9 @@ int	main(int argc, char **argv)
 		test_vector_at,
 		test_vector_operater_bracket,
 		test_vector_capacity,
+		test_vector_capacity_cppref,
+		// test_vector_max_size,
+		test_vector_reserve,
 		NULL
 		};
 
@@ -315,6 +332,9 @@ int	main(int argc, char **argv)
 		"test_vector_at",
 		"test_vector_operater_bracket",
 		"test_vector_capacity",
+		"test_vector_capacity_cppref",
+		// "test_vector_max_size",
+		"test_vector_reserve",
 	};
 
 	for (int i = 0; tests[i]; ++i)
