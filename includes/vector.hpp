@@ -3,6 +3,8 @@
 
 # include <memory>
 # include <iostream>
+# include <stdexcept>
+# include <sstream>
 
 namespace ft
 {
@@ -47,8 +49,36 @@ namespace ft
 			allocator_type	get_allocator() {return (allocator_type());};
 
 			// Element access
-			void	at();
-			void	operator[](unsigned int index);
+			reference	at(size_type pos) {
+				if (!(pos < this->size()))
+				{
+					std::string err;// = "vector::_M_range_check: __n (which is "pos) >= this->size() (which is this->size())";
+					std::stringstream ss;
+					ss << "vector::_M_range_check: __n (which is " << pos << ") >= this->size() (which is " << this->size() << ")";
+					err = ss.str();
+					throw std::out_of_range(err);
+				}
+				return (*(this->__start + pos));
+			}
+			const_reference	at(size_type pos) const {
+				if (!(pos < this->size()))
+				{
+					std::string err;// = "vector::_M_range_check: __n (which is "pos) >= this->size() (which is this->size())";
+					std::stringstream ss;
+					ss << "vector::_M_range_check: __n (which is " << pos << ") >= this->size() (which is " << this->size() << ")";
+					err = ss.str();
+					throw std::out_of_range(err);
+				}
+				return (*(this->__start + pos));
+			}
+
+			reference		operator[](size_type pos) {
+				return (*(this->__start + pos));
+			}
+			const_reference	operator[](size_type pos) const {
+				return (*(this->__start + pos));
+			}
+
 			reference		front() {
 				return (*__start);
 			};

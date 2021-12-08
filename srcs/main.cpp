@@ -149,6 +149,70 @@ void	test_vector_iterator_forward(UnitTest *test)
 	}
 }
 
+void	test_vector_at(UnitTest *test)
+{
+	ft::vector<int> Vec;
+	Vec.push_back(0);
+	Vec.push_back(1);
+	Vec.push_back(2);
+	Vec.push_back(3);
+	Vec.push_back(4);
+	ft::vector<int>::reference ref = Vec.at(2);
+	ft::vector<int>::const_reference cref = Vec.at(4);
+	test->assertEqual(ref, 2);
+	test->assertEqual(cref, 4);
+	try
+	{
+		Vec.at(9);
+		throw std::runtime_error("Expected Exception not thrown");
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
+	try
+	{
+		Vec.at(-1);
+		throw std::runtime_error("Expected Exception not thrown");
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}	
+}
+
+void	test_vector_operater_bracket(UnitTest *test)
+{
+	ft::vector<int> Vec;
+	Vec.push_back(0);
+	Vec.push_back(1);
+	Vec.push_back(2);
+	Vec.push_back(3);
+	Vec.push_back(4);
+	ft::vector<int>::reference ref = Vec[2];
+	ft::vector<int>::const_reference cref = Vec[4];
+	test->assertEqual(ref, 2);
+	test->assertEqual(cref, 4);
+	try
+	{
+		Vec[9];
+		throw std::runtime_error("No exception thrown");
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
+	try
+	{
+		Vec[-1];
+		throw std::runtime_error("No exception thrown");
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}	
+}
+
 int	main(int argc, char **argv)
 {
 	#ifndef FT_REAL_VERSION//CREATE A REAL STL EXAMPLE
@@ -184,20 +248,40 @@ int	main(int argc, char **argv)
 	// 	std::cout << "as expected!" << std::endl;
 
 	// test.verbose = true;
+	void (*tests[])(UnitTest*) = {
+		test_vector_void_constructor,
+		test_vector_push_back,
+		test_vector_push_back_twice,
+		test_vector_push_back_thrice,
+		test_vector_push_back_x4,
+		test_vector_push_back_x5,
+		test_vector_push_back_x15,
+		test_vector_empty,
+		test_vector_iterator_forward,
+		test_vector_at,
+		test_vector_operater_bracket,
+		NULL
+		};
 
-	test.run(test_vector_void_constructor, "Test vector<int>()");
-	test.run(test_vector_push_back, "Test vector<int>.push_back()");
-	test.run(test_vector_push_back_twice, "test_vector_push_back_twice");
-	test.run(test_vector_push_back_thrice, "test_vector_push_back_thrice");
-	test.run(test_vector_push_back_x4, "test_vector_push_back_x4");
-	test.run(test_vector_push_back_x5, "test_vector_push_back_x5");
-	test.run(test_vector_push_back_x15, "test_vector_push_back_x15");
-	test.run(test_vector_empty, "test_vector_empty");
-	test.run(test_vector_iterator_forward, "test_vector_iterator_forward");
-	
-	// test.run(example2);
-	// test.run(example3);
+	std::string	desc[] = {
+		"Test vector<int>()",
+		"Test vector<int>.push_back()",
+		"test_vector_push_back_twice",
+		"test_vector_push_back_thrice",
+		"test_vector_push_back_x4",
+		"test_vector_push_back_x5",
+		"test_vector_push_back_x15",
+		"test_vector_empty",
+		"test_vector_iterator_forward",
+		"test_vector_at",
+		"test_vector_operater_bracket",
+	};
+
+	for (int i = 0; tests[i]; ++i)
+	{
+		test.run(tests[i], desc[i]);
+	}
+
 	test.report();
-	// example(&test);
 	return (0);
 }
