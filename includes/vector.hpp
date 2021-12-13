@@ -193,27 +193,45 @@ namespace ft
 				return (this->__start + diff);
 			}
 
-			void insert( iterator pos, size_type count, const T& value );
+			void insert( iterator pos, size_type count, const T& value )
+			{
+				difference_type		diff = pos - this->begin();
+				if (this->__capacity - this->__size < count)
+				{
+					size_type	new_capacity = this->__capacity;
+					if (this->__capacity == 0)
+						new_capacity = 1;
+					while (new_capacity - this->__size < count)
+						new_capacity *= 2;
+					this->reserve(new_capacity);
+					this->__copy_space(this->__start + diff + count, this->__start + diff, this->__size - diff);
+					while (count > 0)
+					{
+						this->get_allocator().construct(this->__start + diff, value);
+						++diff;
+						--count;
+						++this->__size;
+					}
+				}
+				else
+				{
+					this->__copy_space(this->__start + diff + count, this->__start + diff, this->__size - diff);
+					while (count > 0)
+					{
+						this->get_allocator().construct(this->__start + diff, value);
+						++diff;
+						--count;
+						++this->__size;
+					}
+				}
+			}
 			
 			template< class InputIt >
 			void insert( iterator pos, InputIt first, InputIt last );
 
 			void	erase();
 			void	push_back(T element) {
-				if (this->__capacity - this->__size < 1)
-				{
-					size_type	new_capacity = 1;
-					if (this->__capacity > 0)
-						new_capacity = 2 * this->__capacity;
-					this->reserve(new_capacity);
-					this->get_allocator().construct(this->__start + this->__size, element);
-					++this->__size;
-				}
-				else
-				{
-					this->get_allocator().construct(this->__start + this->__size, element);
-					++this->__size;
-				}
+				this->insert(this->end(), element);
 			};
 			void	pop_back();
 			void	resize();
