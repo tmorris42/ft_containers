@@ -33,6 +33,21 @@ void	test_vector_count_value_constructor(UnitTest *test)
 	test->assertEqual(Vec[4], 42);
 }
 
+void	test_vector_copy_constructor(UnitTest *test)
+{
+	ft::vector<int> original(5, 42);
+	ft::vector<int> Vec(original);
+
+	test->assertEqual(Vec.size(), (unsigned long)5);
+	test->assertEqual(Vec.empty(), false);
+	test->assertEqual(Vec.capacity(), (unsigned long)5);
+	test->assertEqual(Vec[0], 42);
+	test->assertEqual(Vec[1], 42);
+	test->assertEqual(Vec[2], 42);
+	test->assertEqual(Vec[3], 42);
+	test->assertEqual(Vec[4], 42);
+}
+
 void	test_vector_push_back(UnitTest *test)
 {
 	// test->assertEqual()
@@ -290,6 +305,44 @@ void	test_vector_reserve(UnitTest *test)
 	test->assertEqual(Vec.capacity(), (unsigned long)2220);
 }
 
+void	test_vector_insert(UnitTest *test)
+{
+	ft::vector<int> Vec;
+	Vec.push_back(5);
+	Vec.push_back(6);
+	Vec.push_back(7);
+	Vec.push_back(8);
+	Vec.push_back(9);
+	ft::vector<int>::iterator it = Vec.insert(Vec.begin() + 2, 42);
+	test->assertEqual(*it, 42);
+	test->assertEqual(Vec.size(), static_cast<unsigned int>(6));
+	test->assertEqual(Vec.front(), 5);
+	test->assertEqual(Vec.back(), 9);
+	test->assertEqual(Vec[0], 5);
+	test->assertEqual(Vec[1], 6);
+	test->assertEqual(Vec[2], 42);
+	test->assertEqual(Vec[3], 7);
+	test->assertEqual(Vec[4], 8);
+	test->assertEqual(Vec[5], 9);
+	it = Vec.insert(Vec.end(), 21);
+	test->assertEqual(*it, 21);
+	test->assertEqual(Vec.size(), static_cast<unsigned int>(7));
+	test->assertEqual(Vec[6], 21);
+	test->assertEqual(Vec.capacity(), static_cast<unsigned int>(8));
+	it = Vec.insert(Vec.end(), 21);
+	it = Vec.insert(Vec.end(), 21);
+	test->assertEqual(Vec.capacity(), static_cast<unsigned int>(16));
+	test->assertEqual(Vec[0], 5);
+	test->assertEqual(Vec[1], 6);
+	test->assertEqual(Vec[2], 42);
+	test->assertEqual(Vec[3], 7);
+	test->assertEqual(Vec[4], 8);
+	test->assertEqual(Vec[5], 9);
+	test->assertEqual(Vec[6], 21);
+	test->assertEqual(Vec[7], 21);
+	test->assertEqual(Vec[8], 21);
+}
+
 int	main(int argc, char **argv)
 {
 	#ifndef FT_REAL_VERSION//CREATE A REAL STL EXAMPLE
@@ -330,7 +383,9 @@ int	main(int argc, char **argv)
 		test_vector_capacity_cppref,
 		// test_vector_max_size,
 		test_vector_reserve,
-		test_vector_count_value_constructor,		
+		test_vector_count_value_constructor,	
+		// test_vector_copy_constructor,	
+		test_vector_insert,
 		NULL
 		};
 
@@ -351,6 +406,8 @@ int	main(int argc, char **argv)
 		// "test_vector_max_size",
 		"test_vector_reserve",
 		"test_vector_count_value_constructor",
+		// "test_vector_copy_constructor",
+		"test_vector_insert",
 	};
 
 	for (int i = 0; tests[i]; ++i)

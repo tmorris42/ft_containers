@@ -33,17 +33,35 @@ namespace ft
 			
 			// Member functions
 			// Constructors
-			vector() : __start(0), __capacity(0), __size(0), __alloc(Allocator()) {
+			vector() : __start(0), __capacity(0), __size(0), __alloc(Allocator())
+			{
 			}
-			explicit vector(const Allocator & alloc) : __start(0), __capacity(0), __size(0),  __alloc(alloc) {
+
+			explicit vector(const Allocator & alloc) : __start(0), __capacity(0), __size(0),  __alloc(alloc)
+			{
 			}
-			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())  : __start(0), __capacity(0), __size(0), __alloc(alloc) {
+
+			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())  : __start(0), __capacity(0), __size(0), __alloc(alloc)
+			{
 				this->reserve(count);
 				for (size_type i = 0; i < count; ++i)
 				{
 					this->push_back(value);
 				}
 			}
+
+			// template< class InputIt >
+			// vector( InputIt first, InputIt last, const Allocator& alloc = Allocator() )  : __start(0), __capacity(0), __size(0), __alloc(alloc)
+			// {
+			// 	// use insert
+			// }
+
+			vector( const vector& other ) : __start(0), __capacity(other.capacity()), __size(0),  __alloc(other.get_allocator())
+			{
+				this->reserve(other.capacity());
+				this->__copy_space(this->__start, other.begin(), (other.size())); //use insert instead?
+			}
+
 			~vector() {
 				// std::cout << "Deleting vector" << std::endl;
 				// get_allocator().deallocate(__start, 1);
@@ -128,7 +146,7 @@ namespace ft
 			bool	empty() {
 				return (this->begin() == this->end());
 			}
-			size_type	size() {
+			size_type	size() const {
 				return (this->__size);
 			};
 			size_type	max_size() const {
@@ -152,7 +170,34 @@ namespace ft
 
 			// Modifiers
 			void	clear();
-			void	insert();
+			
+			iterator insert( iterator pos, const T& value )
+			{
+				difference_type		diff = pos - this->begin();
+				if (this->__capacity - this->__size < 1)
+				{
+					size_type	new_capacity = 2 * this->__capacity;
+					if (this->__capacity == 0)
+						new_capacity = 1;
+					this->reserve(new_capacity);
+					this->__copy_space(this->__start + diff + 1, this->__start + diff, this->__size - diff);
+					this->get_allocator().construct(this->__start + diff, value);
+					++this->__size;
+				}
+				else
+				{
+					this->__copy_space(this->__start + diff + 1, this->__start + diff, this->__size - diff);
+					this->get_allocator().construct(this->__start + diff, value);
+					++this->__size;
+				}
+				return (this->__start + diff);
+			}
+
+			void insert( iterator pos, size_type count, const T& value );
+			
+			template< class InputIt >
+			void insert( iterator pos, InputIt first, InputIt last );
+
 			void	erase();
 			void	push_back(T element) {
 				if (this->__capacity - this->__size < 1)
@@ -180,13 +225,26 @@ namespace ft
 			size_type		__size;		// number of elements
 			allocator_type	__alloc; // Allocator
 
-			void	__copy_space(pointer	dest, pointer	src, size_type N) {
-				while (N > 0)
+			void	__copy_space(pointer	dest, const_iterator	src, difference_type const N) {
+				difference_type	i;
+
+				if (dest > src)
 				{
-					*dest = *src;
-					++dest;
-					++src;
-					--N;
+					i = N - 1;
+					while (i >= 0)
+					{
+						*(dest + i) = *(src + i);
+						--i;
+					}
+				}
+				else
+				{
+					i = 0;
+					while (i < N)
+					{
+						*(dest + i) = *(src + i);
+						++i;
+					}
 				}
 			}
 			void	__destroy_space(pointer	start, size_type N) {
