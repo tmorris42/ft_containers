@@ -14,15 +14,15 @@ namespace ft
 	{
 		public:
 			// Member types
-			typedef T			value_type;
-			typedef Allocator	allocator_type;
-			typedef std::size_t			size_type;
-			typedef std::ptrdiff_t		difference_type;
+			typedef T					value_type;
+			typedef Allocator			allocator_type;
+			typedef std::ptrdiff_t		difference_type;	// should be iterator_trais<iterator>::difference_type (usually equiv. ptrdiff_t)
+			typedef std::size_t			size_type;			// An unsigned integral type that can represent any non-negative value of difference_type (Usually size_t)
 
-			typedef typename allocator_type::pointer		pointer;
-			typedef typename allocator_type::const_pointer	const_pointer;
-			typedef	value_type							& reference;
-			typedef value_type const					& const_reference;
+			typedef typename allocator_type::pointer			pointer;
+			typedef typename allocator_type::const_pointer		const_pointer;
+			typedef	typename allocator_type::reference			& reference;
+			typedef typename allocator_type::const_reference	& const_reference;
 
 			// LegacyRandomAccessIterator<T>			iterator;
 			// LegacyRandomAccessIterator<T> const		const_iterator;
@@ -31,9 +31,19 @@ namespace ft
 			// std::reverse_iterator<iterator>			reverse_iterator;
 			// std::reverse_iterator<const_iterator>	const_reverse_iterator;
 			
-			//Member functions
-			vector() : __start(0), __capacity(0), __size(0) {
-			};
+			// Member functions
+			// Constructors
+			vector() : __start(0), __capacity(0), __size(0), __alloc(Allocator()) {
+			}
+			explicit vector(const Allocator & alloc) : __start(0), __capacity(0), __size(0),  __alloc(alloc) {
+			}
+			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())  : __start(0), __capacity(0), __size(0), __alloc(alloc) {
+				this->reserve(count);
+				for (size_type i = 0; i < count; ++i)
+				{
+					this->push_back(value);
+				}
+			}
 			~vector() {
 				// std::cout << "Deleting vector" << std::endl;
 				// get_allocator().deallocate(__start, 1);
@@ -45,28 +55,26 @@ namespace ft
 			}
 			
 			void	assign();
-			allocator_type	get_allocator() {return (allocator_type());};
+			allocator_type	get_allocator() const {
+				return (this->__alloc);
+			};
 
 			// Element access
 			reference	at(size_type pos) {
 				if (!(pos < this->size()))
 				{
-					std::string err;// = "vector::_M_range_check: __n (which is "pos) >= this->size() (which is this->size())";
 					std::stringstream ss;
 					ss << "vector::_M_range_check: __n (which is " << pos << ") >= this->size() (which is " << this->size() << ")";
-					err = ss.str();
-					throw std::out_of_range(err);
+					throw std::out_of_range(ss.str());
 				}
 				return (*(this->__start + pos));
 			}
 			const_reference	at(size_type pos) const {
 				if (!(pos < this->size()))
 				{
-					std::string err;// = "vector::_M_range_check: __n (which is "pos) >= this->size() (which is this->size())";
 					std::stringstream ss;
 					ss << "vector::_M_range_check: __n (which is " << pos << ") >= this->size() (which is " << this->size() << ")";
-					err = ss.str();
-					throw std::out_of_range(err);
+					throw std::out_of_range(ss.str());
 				}
 				return (*(this->__start + pos));
 			}
@@ -128,7 +136,7 @@ namespace ft
 			}
 			void	reserve( size_type new_cap ) {
 				if (new_cap > this->max_size())
-					throw std::length_error("Error, too new capcity is greater than max_size()");
+					throw std::length_error("Error, new capcity is greater than max_size()"); // Check this exception message against real
 				if (this->capacity() < new_cap)
 				{
 					pointer new_space = this->get_allocator().allocate(new_cap);
@@ -167,9 +175,10 @@ namespace ft
 			void	swap();
 
 		private:
-			pointer		__start;	//pointer to start	
-			size_type	__capacity;		// allocated size
-			size_type	__size;		// number of elements
+			pointer			__start;	//pointer to start	
+			size_type		__capacity;		// allocated size
+			size_type		__size;		// number of elements
+			allocator_type	__alloc; // Allocator
 
 			void	__copy_space(pointer	dest, pointer	src, size_type N) {
 				while (N > 0)
