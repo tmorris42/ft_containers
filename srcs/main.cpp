@@ -351,7 +351,6 @@ void	test_vector_insert_count(UnitTest *test)
 	Vec.push_back(7);
 	Vec.push_back(8);
 	Vec.push_back(9);
-	// Vec.insert(Vec.begin() + 2, 10, 42);
 	Vec.insert(Vec.begin() + 2, (std::size_t)10, 42);
 	test->assertEqual(Vec.size(), static_cast<unsigned int>(15));
 	test->assertEqual(Vec.front(), 5);
@@ -371,7 +370,6 @@ void	test_vector_insert_count(UnitTest *test)
 	test->assertEqual(Vec[12], 7);
 	test->assertEqual(Vec[13], 8);
 	test->assertEqual(Vec[14], 9);
-	// Vec.insert(Vec.begin(), 10, 500);
 	Vec.insert(Vec.begin(), (std::size_t)10, 500);
 	test->assertEqual(Vec.size(), static_cast<unsigned int>(25));
 	test->assertEqual(Vec[0], 500);
@@ -399,7 +397,6 @@ void	test_vector_insert_count(UnitTest *test)
 	test->assertEqual(Vec[22], 7);
 	test->assertEqual(Vec[23], 8);
 	test->assertEqual(Vec[24], 9);
-	// Vec.insert(Vec.end(), 10, 1000);
 	Vec.insert(Vec.end(), (std::size_t)10, 1000);
 	test->assertEqual(Vec.size(), static_cast<unsigned int>(35));
 	test->assertEqual(Vec[0], 500);
@@ -437,6 +434,108 @@ void	test_vector_insert_count(UnitTest *test)
 	test->assertEqual(Vec[32], 1000);
 	test->assertEqual(Vec[33], 1000);
 	test->assertEqual(Vec[34], 1000);
+}
+
+void	test_vector_insert_iter(UnitTest *test)
+{
+	ft::vector<int> Vec;
+	ft::vector<int> vec2;
+
+	Vec.push_back(5);
+	Vec.push_back(6);
+	Vec.push_back(7);
+	Vec.push_back(8);
+	Vec.push_back(9);
+	Vec.insert(Vec.begin() + 2, (std::size_t)10, 42);
+	test->assertEqual(Vec.size(), static_cast<unsigned int>(15));
+	test->assertEqual(Vec.front(), 5);
+	test->assertEqual(Vec.back(), 9);
+	test->assertEqual(Vec[0], 5);
+	test->assertEqual(Vec[1], 6);
+	test->assertEqual(Vec[2], 42);
+	test->assertEqual(Vec[3], 42);
+	test->assertEqual(Vec[4], 42);
+	test->assertEqual(Vec[5], 42);
+	test->assertEqual(Vec[6], 42);
+	test->assertEqual(Vec[7], 42);
+	test->assertEqual(Vec[8], 42);
+	test->assertEqual(Vec[9], 42);
+	test->assertEqual(Vec[10], 42);
+	test->assertEqual(Vec[11], 42);
+	test->assertEqual(Vec[12], 7);
+	test->assertEqual(Vec[13], 8);
+	test->assertEqual(Vec[14], 9);
+	Vec.insert(Vec.begin(), (std::size_t)10, 500);
+	test->assertEqual(Vec.size(), static_cast<unsigned int>(25));
+	test->assertEqual(Vec[0], 500);
+	test->assertEqual(Vec[1], 500);
+	test->assertEqual(Vec[2], 500);
+	test->assertEqual(Vec[3], 500);
+	test->assertEqual(Vec[4], 500);
+	test->assertEqual(Vec[5], 500);
+	test->assertEqual(Vec[6], 500);
+	test->assertEqual(Vec[7], 500);
+	test->assertEqual(Vec[8], 500);
+	test->assertEqual(Vec[9], 500);
+	test->assertEqual(Vec[10], 5);
+	test->assertEqual(Vec[11], 6);
+	test->assertEqual(Vec[12], 42);
+	test->assertEqual(Vec[13], 42);
+	test->assertEqual(Vec[14], 42);
+	test->assertEqual(Vec[15], 42);
+	test->assertEqual(Vec[16], 42);
+	test->assertEqual(Vec[17], 42);
+	test->assertEqual(Vec[18], 42);
+	test->assertEqual(Vec[19], 42);
+	test->assertEqual(Vec[20], 42);
+	test->assertEqual(Vec[21], 42);
+	test->assertEqual(Vec[22], 7);
+	test->assertEqual(Vec[23], 8);
+	test->assertEqual(Vec[24], 9);
+	Vec.insert(Vec.end(), (std::size_t)10, 1000);
+	test->assertEqual(Vec.size(), static_cast<unsigned int>(35));
+	test->assertEqual(Vec[0], 500);
+	test->assertEqual(Vec[1], 500);
+	test->assertEqual(Vec[2], 500);
+	test->assertEqual(Vec[3], 500);
+	test->assertEqual(Vec[4], 500);
+	test->assertEqual(Vec[5], 500);
+	test->assertEqual(Vec[6], 500);
+	test->assertEqual(Vec[7], 500);
+	test->assertEqual(Vec[8], 500);
+	test->assertEqual(Vec[9], 500);
+	test->assertEqual(Vec[10], 5);
+	test->assertEqual(Vec[11], 6);
+	test->assertEqual(Vec[12], 42);
+	test->assertEqual(Vec[13], 42);
+	test->assertEqual(Vec[14], 42);
+	test->assertEqual(Vec[15], 42);
+	test->assertEqual(Vec[16], 42);
+	test->assertEqual(Vec[17], 42);
+	test->assertEqual(Vec[18], 42);
+	test->assertEqual(Vec[19], 42);
+	test->assertEqual(Vec[20], 42);
+	test->assertEqual(Vec[21], 42);
+	test->assertEqual(Vec[22], 7);
+	test->assertEqual(Vec[23], 8);
+	test->assertEqual(Vec[24], 9);
+	test->assertEqual(Vec[25], 1000);
+	test->assertEqual(Vec[26], 1000);
+	test->assertEqual(Vec[27], 1000);
+	test->assertEqual(Vec[28], 1000);
+	test->assertEqual(Vec[29], 1000);
+	test->assertEqual(Vec[30], 1000);
+	test->assertEqual(Vec[31], 1000);
+	test->assertEqual(Vec[32], 1000);
+	test->assertEqual(Vec[33], 1000);
+	test->assertEqual(Vec[34], 1000);
+
+	// vec2.push_back(-1);
+	vec2.insert(vec2.begin(), Vec.begin(), Vec.end());
+	// test->assertEqual(vec2, Vec); // == not implemented yet
+	test->assertEqual(vec2.size(), Vec.size());
+	test->assertEqual(*(vec2.begin()), *(Vec.begin()));
+	test->assertEqual(*(vec2.end() - 1), *(Vec.end() - 1));
 }
 
 int	main(int argc, char **argv)
@@ -483,6 +582,7 @@ int	main(int argc, char **argv)
 		// test_vector_copy_constructor,	
 		test_vector_insert,
 		test_vector_insert_count,
+		test_vector_insert_iter,
 		NULL
 		};
 
@@ -506,6 +606,7 @@ int	main(int argc, char **argv)
 		// "test_vector_copy_constructor",
 		"test_vector_insert",
 		"test_vector_insert_count",
+		"test_vector_insert_iter",
 	};
 
 	for (int i = 0; tests[i]; ++i)
