@@ -169,7 +169,13 @@ namespace ft
 			}
 
 			// Modifiers
-			void	clear();
+			void	clear()
+			{
+				for (; this->__size > 0; --this->__size)
+				{
+					this->get_allocator().destroy(this->__start + this->__size);
+				}
+			}
 			
 			iterator insert( iterator pos, const T& value )
 			{
@@ -237,7 +243,33 @@ namespace ft
 				}
 			}
 
-			void	erase();
+			iterator	erase(iterator pos)
+			{
+				//check if pos is past end?
+				iterator ret = pos;
+				while (pos + 1 != this->end())
+				{
+					*pos = *(pos + 1);
+					++pos;
+				}
+				this->__size -= 1;
+				return (ret);
+			}
+
+			iterator	erase(iterator first, iterator last)
+			{
+				//check if first and last are in range, or not?
+				size_type N = last - first;
+				while (first + N != this->end())
+				{
+					(*first) = (*first + N);
+					++first;
+				}
+				this->__size -= N;
+				return (last);
+			}
+
+
 			void	push_back(T element) {
 				this->insert(this->end(), element);
 			};

@@ -538,6 +538,55 @@ void	test_vector_insert_iter(UnitTest *test)
 	test->assertEqual(*(vec2.end() - 1), *(Vec.end() - 1));
 }
 
+void	test_vector_clear(UnitTest *test)
+{
+	ft::vector<int> vec(5, 42);
+
+	test->assertEqual(vec.size(), static_cast<unsigned int>(5));
+	unsigned long original_cap = vec.capacity();
+	vec.clear();
+	test->assertEqual(vec.capacity(), original_cap);
+	test->assertEqual(vec.size(), static_cast<unsigned int>(0));
+}
+
+void	test_vector_erase_one(UnitTest *test)
+{
+	ft::vector<int> vec(5, 42);
+
+	test->assertEqual(vec.size(), static_cast<unsigned int>(5));
+	unsigned long original_cap = vec.capacity();
+	vec.erase(vec.begin()+2);
+	test->assertEqual(vec.capacity(), original_cap);
+	test->assertEqual(vec.size(), static_cast<unsigned int>(4));
+}
+
+void	test_vector_erase_range(UnitTest *test)
+{
+	ft::vector<int> vec;
+
+	vec.push_back(1);
+	vec.push_back(2);
+	vec.push_back(3);
+	vec.push_back(4);
+	vec.push_back(5);
+	vec.push_back(6);
+	vec.push_back(7);
+	vec.push_back(8);
+	vec.push_back(9);
+	vec.push_back(10);
+
+	test->assertEqual(vec.size(), static_cast<unsigned int>(10));
+	unsigned long original_cap = vec.capacity();
+	vec.erase(vec.begin()+2, vec.begin()+6);
+	test->assertEqual(vec.capacity(), original_cap);
+	test->assertEqual(vec.size(), static_cast<unsigned int>(6));
+	test->assertEqual(vec.at(1), 2);
+	test->assertEqual(vec.at(2), 7);
+	test->assertEqual(vec.at(3), 8);
+	test->assertEqual(vec.at(4), 9);
+	test->assertEqual(vec.at(5), 10);
+}
+
 int	main(int argc, char **argv)
 {
 	#ifndef FT_REAL_VERSION//CREATE A REAL STL EXAMPLE
@@ -580,9 +629,12 @@ int	main(int argc, char **argv)
 		test_vector_reserve,
 		test_vector_count_value_constructor,	
 		// test_vector_copy_constructor,	
-		test_vector_insert,
-		test_vector_insert_count,
-		test_vector_insert_iter,
+		// test_vector_insert,
+		// test_vector_insert_count,
+		// test_vector_insert_iter,
+		test_vector_clear,
+		test_vector_erase_one,
+		test_vector_erase_range,
 		NULL
 		};
 
@@ -604,9 +656,12 @@ int	main(int argc, char **argv)
 		"test_vector_reserve",
 		"test_vector_count_value_constructor",
 		// "test_vector_copy_constructor",
-		"test_vector_insert",
-		"test_vector_insert_count",
-		"test_vector_insert_iter",
+		// "test_vector_insert",
+		// "test_vector_insert_count",
+		// "test_vector_insert_iter",
+		"test_vector_clear",
+		"test_vector_erase_one",
+		"test_vector_erase_range",
 	};
 
 	for (int i = 0; tests[i]; ++i)
