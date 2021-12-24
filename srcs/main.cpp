@@ -626,21 +626,62 @@ void	test_vector_pop_back(UnitTest *test)
 	test->assertEqual(vec.size(), static_cast<unsigned int>(8));
 }
 
+void	test_vector_resize(UnitTest *test)
+{
+	ft::vector<int> vec;
+
+	vec.push_back(0);
+	vec.push_back(1);
+	vec.push_back(2);
+	vec.push_back(3);
+	vec.push_back(4);
+	vec.push_back(5);
+	vec.push_back(6);
+	vec.push_back(7);
+	vec.push_back(8);
+	vec.push_back(9);
+
+	test->assertEqual(vec.size(), static_cast<unsigned int>(10));
+	unsigned long original_cap = vec.capacity();
+	ft::vector<int>::iterator end = vec.end();
+	int count = 0;
+	for (ft::vector<int>::iterator it = vec.begin(); it != end; ++it)
+	{
+		test->assertEqual(*it, count);
+		++count;
+	}
+	test->assertEqual(count, 10);
+	vec.resize(8);
+	end = vec.end();
+	count = 0;
+	for (ft::vector<int>::iterator it = vec.begin(); it != end; ++it)
+	{
+		test->assertEqual(*it, count);
+		++count;
+	}
+	test->assertEqual(count, 8);
+	test->assertEqual(vec.capacity(), original_cap);
+	test->assertEqual(vec.size(), static_cast<unsigned int>(8));
+	vec.resize(15, 42);
+	end = vec.end();
+	count = 0;
+	for (ft::vector<int>::iterator it = vec.begin(); it != end; ++it)
+	{
+		if (count < 8)
+			test->assertEqual(*it, count);
+		else
+			test->assertEqual(*it, 42);
+		++count;
+	}
+	test->assertEqual(count, 15);
+	test->assertEqual(vec.capacity(), original_cap);
+	test->assertEqual(vec.size(), static_cast<unsigned int>(15));
+	
+}
+
 
 int	main(int argc, char **argv)
 {
-	#ifndef FT_REAL_VERSION//CREATE A REAL STL EXAMPLE
-		// #include "map.hpp"
-		// #include "stack.hpp"
-		// std::cout << "Mine" << std::endl;
-	#else
-		// std::cout << "Real" << std::endl;
-		#include <map>
-		#include <stack>
-		#include <vector>
-		namespace ft = std;
-	#endif
-
 	if (!argc || !argv)
 		return (0);
 
@@ -676,6 +717,7 @@ int	main(int argc, char **argv)
 		test_vector_erase_one,
 		test_vector_erase_range,
 		test_vector_pop_back,
+		test_vector_resize,
 		NULL
 		};
 
@@ -704,6 +746,7 @@ int	main(int argc, char **argv)
 		"test_vector_erase_one",
 		"test_vector_erase_range",
 		"test_vector_pop_back",
+		"test_vector_resize",
 	};
 
 	for (int i = 0; tests[i]; ++i)

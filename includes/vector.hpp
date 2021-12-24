@@ -279,7 +279,14 @@ namespace ft
 				this->erase(this->end() - 1);
 			}
 
-			void	resize();
+			void resize( size_type count, T value = T() )
+			{
+				while (count < this->size())
+					this->pop_back();
+				while (count > this->size())
+					this->push_back(value);
+			}
+
 			void	swap();
 
 		private:
