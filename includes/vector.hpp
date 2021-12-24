@@ -273,7 +273,12 @@ namespace ft
 			void	push_back(T element) {
 				this->insert(this->end(), element);
 			};
-			void	pop_back();
+			
+			void	pop_back()
+			{
+				this->erase(this->end() - 1);
+			}
+
 			void	resize();
 			void	swap();
 
