@@ -56,10 +56,11 @@ namespace ft
 			// 	// use insert
 			// }
 
-			vector( const vector& other ) : __start(0), __capacity(other.capacity()), __size(0),  __alloc(other.get_allocator())
+			vector( const vector& other ) : __start(0), __capacity(0), __size(0),  __alloc(other.get_allocator())
 			{
 				this->reserve(other.capacity());
 				this->__copy_space(this->__start, other.begin(), (other.size())); //use insert instead?
+				this->__size = other.size();
 			}
 
 			~vector() {
