@@ -688,64 +688,37 @@ int	main(int argc, char **argv)
 	if (!argc || !argv)
 		return (0);
 
-	void (*tests[])(UnitTest*) = {
-		test_vector_void_constructor,
-		test_vector_push_back,
-		test_vector_push_back_twice,
-		test_vector_push_back_thrice,
-		test_vector_push_back_x4,
-		test_vector_push_back_x5,
-		test_vector_push_back_x15,
-		test_vector_empty,
-		test_vector_iterator_forward,
-		// test_vector_at,	// Causes differences in allocations due to stringstream use in vector::at()
-		test_vector_operater_bracket,
-		test_vector_capacity,
-		test_vector_capacity_cppref,
-		test_vector_max_size,
-		test_vector_reserve,
-		test_vector_count_value_constructor,	
-		test_vector_copy_constructor,
-		test_vector_insert,
-		// test_vector_insert_count, // Can't figure out the right amount of memory to allocate for different situations
-		// test_vector_insert_iter,
-		test_vector_clear,
-		test_vector_erase_one,
-		test_vector_erase_range,
-		test_vector_pop_back,
-		test_vector_resize,
-		NULL
-		};
-
-	std::string	desc[] = {
-		"Test vector<int>()",
-		"Test vector<int>.push_back()",
-		"test_vector_push_back_twice",
-		"test_vector_push_back_thrice",
-		"test_vector_push_back_x4",
-		"test_vector_push_back_x5",
-		"test_vector_push_back_x15",
-		"test_vector_empty",
-		"test_vector_iterator_forward",
-		// "test_vector_at",
-		"test_vector_operater_bracket",
-		"test_vector_capacity",
-		"test_vector_capacity_cppref",
-		"test_vector_max_size",
-		"test_vector_reserve",
-		"test_vector_count_value_constructor",
-		"test_vector_copy_constructor",
-		"test_vector_insert",
-		// "test_vector_insert_count",
-		// "test_vector_insert_iter",
-		"test_vector_clear",
-		"test_vector_erase_one",
-		"test_vector_erase_range",
-		"test_vector_pop_back",
-		"test_vector_resize",
-	};
-
 	UnitTest	test(false);
+	test.ADD_TEST(test_vector_empty);
+	test.ADD_TEST(test_vector_void_constructor);
+	test.ADD_TEST(test_vector_push_back);
+	test.ADD_TEST(test_vector_push_back_twice);
+	test.ADD_TEST(test_vector_push_back_thrice);
+	test.ADD_TEST(test_vector_push_back_x4);
+	test.ADD_TEST(test_vector_push_back_x5);
+	test.ADD_TEST(test_vector_push_back_x15);
+
+	test.ADD_TEST(test_vector_iterator_forward);
+	// test.ADD_TEST(test_vector_at); // Causes differences in allocations due to stringstream use in vector::at()
+	test.ADD_TEST(test_vector_operater_bracket);
+	test.ADD_TEST(test_vector_capacity);
+	test.ADD_TEST(test_vector_capacity_cppref);
+
+	test.ADD_TEST(test_vector_max_size);
+	test.ADD_TEST(test_vector_reserve);
+	test.ADD_TEST(test_vector_count_value_constructor);
+	test.ADD_TEST(test_vector_copy_constructor);
+	test.ADD_TEST(test_vector_insert);
+
+	// test.ADD_TEST(test_vector_insert_count);
+	// test.ADD_TEST(test_vector_insert_iter);
+
+	test.ADD_TEST(test_vector_clear);
+	test.ADD_TEST(test_vector_erase_one);
+	test.ADD_TEST(test_vector_erase_range);
+	test.ADD_TEST(test_vector_pop_back);
+	test.ADD_TEST(test_vector_resize);
+
 	bool		runAll(true);
 
 	if (argc > 1)
@@ -758,7 +731,7 @@ int	main(int argc, char **argv)
 			intValue >> i;
 			if (i > 0)
 			{
-				test.run(tests[i - 1], desc[i - 1]);
+				test.run(i - 1);
 				runAll = false;
 			}
 			else
@@ -772,13 +745,7 @@ int	main(int argc, char **argv)
 	if (!runAll)
 		return(0);
 
-	
-
-	for (int i = 0; tests[i]; ++i)
-	{
-		test.run(tests[i], desc[i]);
-	}
-
+	test.run_all_tests();
 	test.report();
 	return (0);
 }

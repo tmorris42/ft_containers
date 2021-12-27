@@ -86,6 +86,38 @@ void	UnitTest::run(void (*test_case)(UnitTest *self), std::string const & title)
 	std::cout << std::endl;
 }
 
+void	UnitTest::run(Test test)
+{
+	++testsRun;
+	std::cout << "Test #" << test.id << "(" << this->testsRun << "/\?\?) - " << test.desc << " : ";
+	try
+	{
+		test.func(this);
+		std::cout << "\x1B[32mPASS\x1B[m";
+		++testsPassed;
+	}
+	catch(const std::exception& e)
+	{
+		std::cout << "\x1B[31mFAIL\x1B[m";
+		if (this->verbose)
+			std::cout << " -- " << e.what();
+		++testsFailed;
+	}	
+	std::cout << std::endl;
+}
+
+void	UnitTest::run(unsigned int id)
+{
+	if (id < this->tests.size())
+	{
+		this->run(this->tests[id]);
+	}
+	else
+	{
+		std::cout << "No test with id == " << id + 1 << std::endl;
+	}
+}
+
 double	UnitTest::report()
 {
 	double	score;
@@ -104,4 +136,27 @@ double	UnitTest::report()
 void		UnitTest::set_verbosity(bool verbosity)
 {
 	this->verbose = verbosity;
+}
+
+bool		UnitTest::get_verbosity()
+{
+	return (this->verbose);
+}
+
+bool		UnitTest::add_test(TestFunction function, std::string description)
+{
+	Test newTest;
+	newTest.desc = description;
+	newTest.func = function;
+	newTest.id = this->tests.size() + 1;
+	this->tests.push_back(newTest);
+	return (true);
+}
+
+void		UnitTest::run_all_tests()
+{
+	for (ft::vector<Test>::iterator it = this->tests.begin(); it != this->tests.end(); ++it)
+	{
+		this->run(*it);
+	}
 }
