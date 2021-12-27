@@ -702,7 +702,7 @@ int	main(int argc, char **argv)
 		// test_vector_max_size,	// Difference in allocations and max_size
 		test_vector_reserve,
 		test_vector_count_value_constructor,	
-		test_vector_copy_constructor,	// Segfault
+		test_vector_copy_constructor,
 		// test_vector_insert,
 		// test_vector_insert_count,
 		// test_vector_insert_iter,
