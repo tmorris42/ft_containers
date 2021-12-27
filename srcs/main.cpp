@@ -685,13 +685,6 @@ int	main(int argc, char **argv)
 	if (!argc || !argv)
 		return (0);
 
-	UnitTest	test(false);
-	if (argc > 1)
-	{
-		std::cout << "VERBOSE MODE" << std::endl;
-		test.set_verbosity(true);
-	}
-
 	void (*tests[])(UnitTest*) = {
 		test_vector_void_constructor,
 		test_vector_push_back,
@@ -706,10 +699,10 @@ int	main(int argc, char **argv)
 		test_vector_operater_bracket,
 		test_vector_capacity,
 		test_vector_capacity_cppref,
-		// test_vector_max_size,
+		// test_vector_max_size,	// Difference in allocations and max_size
 		test_vector_reserve,
 		test_vector_count_value_constructor,	
-		// test_vector_copy_constructor,	
+		test_vector_copy_constructor,	// Segfault
 		// test_vector_insert,
 		// test_vector_insert_count,
 		// test_vector_insert_iter,
@@ -738,7 +731,7 @@ int	main(int argc, char **argv)
 		// "test_vector_max_size",
 		"test_vector_reserve",
 		"test_vector_count_value_constructor",
-		// "test_vector_copy_constructor",
+		"test_vector_copy_constructor",
 		// "test_vector_insert",
 		// "test_vector_insert_count",
 		// "test_vector_insert_iter",
@@ -748,6 +741,35 @@ int	main(int argc, char **argv)
 		"test_vector_pop_back",
 		"test_vector_resize",
 	};
+
+	UnitTest	test(false);
+	bool		runAll(true);
+
+	if (argc > 1)
+	{
+		int argNumber = 1;
+		while (argNumber < argc)
+		{
+			std::stringstream intValue(argv[argNumber]);
+			int i;
+			intValue >> i;
+			if (i > 0)
+			{
+				test.run(tests[i - 1], desc[i - 1]);
+				runAll = false;
+			}
+			else
+			{
+				std::cout << "VERBOSE MODE" << std::endl;
+				test.set_verbosity(true);
+			}
+			++argNumber;
+		}
+	}
+	if (!runAll)
+		return(0);
+
+	
 
 	for (int i = 0; tests[i]; ++i)
 	{
