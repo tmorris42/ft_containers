@@ -200,36 +200,27 @@ namespace ft
 				return (this->__start + diff);
 			}
 
-			void insert( iterator pos, size_type count, const T& value )
+			void insert( iterator pos, size_type count, const value_type& value )
 			{
 				difference_type		diff = pos - this->begin();
 				if (this->__capacity - this->__size < count)
 				{
 					size_type	new_capacity = this->__capacity;
-					if (this->__capacity == 0)
-						new_capacity = 1;
-					while (new_capacity - this->__size < count)
+					if (count > this->__capacity)
+						new_capacity += count - (this->__capacity - this->__size);
+					else if ((this->__capacity * 2) - this->__size < count)
+						new_capacity += count - (this->__capacity - this->__size);
+					else
 						new_capacity *= 2;
 					this->reserve(new_capacity);
-					this->__copy_space(this->__start + diff + count, this->__start + diff, this->__size - diff);
-					while (count > 0)
-					{
-						this->get_allocator().construct(this->__start + diff, value);
-						++diff;
-						--count;
-						++this->__size;
-					}
 				}
-				else
+				this->__copy_space(this->__start + diff + count, this->__start + diff, this->__size - diff);
+				while (count > 0)
 				{
-					this->__copy_space(this->__start + diff + count, this->__start + diff, this->__size - diff);
-					while (count > 0)
-					{
-						this->get_allocator().construct(this->__start + diff, value);
-						++diff;
-						--count;
-						++this->__size;
-					}
+					this->get_allocator().construct(this->__start + diff, value);
+					++diff;
+					--count;
+					++this->__size;
 				}
 			}
 			

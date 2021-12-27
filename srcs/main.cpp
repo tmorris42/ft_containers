@@ -353,6 +353,7 @@ void	test_vector_insert_count(UnitTest *test)
 	Vec.push_back(9);
 	Vec.insert(Vec.begin() + 2, (std::size_t)10, 42);
 	test->assertEqual(Vec.size(), static_cast<unsigned int>(15));
+	test->assertEqual(Vec.capacity(), static_cast<unsigned int>(15));
 	test->assertEqual(Vec.front(), 5);
 	test->assertEqual(Vec.back(), 9);
 	test->assertEqual(Vec[0], 5);
@@ -372,6 +373,7 @@ void	test_vector_insert_count(UnitTest *test)
 	test->assertEqual(Vec[14], 9);
 	Vec.insert(Vec.begin(), (std::size_t)10, 500);
 	test->assertEqual(Vec.size(), static_cast<unsigned int>(25));
+	test->assertEqual(Vec.capacity(), static_cast<unsigned int>(30));
 	test->assertEqual(Vec[0], 500);
 	test->assertEqual(Vec[1], 500);
 	test->assertEqual(Vec[2], 500);
@@ -399,6 +401,7 @@ void	test_vector_insert_count(UnitTest *test)
 	test->assertEqual(Vec[24], 9);
 	Vec.insert(Vec.end(), (std::size_t)10, 1000);
 	test->assertEqual(Vec.size(), static_cast<unsigned int>(35));
+	test->assertEqual(Vec.capacity(), static_cast<unsigned int>(50));
 	test->assertEqual(Vec[0], 500);
 	test->assertEqual(Vec[1], 500);
 	test->assertEqual(Vec[2], 500);
@@ -703,8 +706,8 @@ int	main(int argc, char **argv)
 		test_vector_reserve,
 		test_vector_count_value_constructor,	
 		test_vector_copy_constructor,
-		// test_vector_insert,
-		// test_vector_insert_count,
+		test_vector_insert,
+		// test_vector_insert_count, // Can't figure out the right amount of memory to allocate for different situations
 		// test_vector_insert_iter,
 		test_vector_clear,
 		test_vector_erase_one,
@@ -732,7 +735,7 @@ int	main(int argc, char **argv)
 		"test_vector_reserve",
 		"test_vector_count_value_constructor",
 		"test_vector_copy_constructor",
-		// "test_vector_insert",
+		"test_vector_insert",
 		// "test_vector_insert_count",
 		// "test_vector_insert_iter",
 		"test_vector_clear",
