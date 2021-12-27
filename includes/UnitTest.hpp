@@ -14,7 +14,8 @@
 #  include "vector.hpp"
 # endif
 
-# define ADD_TEST(func) add_test(func, #func);
+# define ADD_TEST(func) add_test(func, #func)
+# define ASSERT_EQUAL(a, b) assertEqual(a, b, #a, #b)
 
 class UnitTest;
 typedef void (*TestFunction)(UnitTest*);
@@ -61,6 +62,17 @@ class UnitTest
 		{
 			if (this->verbose)
 				std::cout << "checking: " << a << " == " << b << std::endl;
+			if (a != b)
+				throw std::runtime_error("Error: arguments are not equal");
+			else
+				return true;
+		}
+
+		template < typename T, typename U >
+		bool		assertEqual(T a, U b, std::string aName, std::string bName)
+		{
+			if (this->verbose)
+				std::cout << std::endl << "checking: " << aName << "[ " << a << " ] == " << bName << "[ " << b << " ]";
 			if (a != b)
 				throw std::runtime_error("Error: arguments are not equal");
 			else

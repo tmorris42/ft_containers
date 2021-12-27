@@ -93,11 +93,15 @@ void	UnitTest::run(Test test)
 	try
 	{
 		test.func(this);
+		if (this->verbose)
+			std::cout << std::endl;
 		std::cout << "\x1B[32mPASS\x1B[m";
 		++testsPassed;
 	}
 	catch(const std::exception& e)
 	{
+		if (this->verbose)
+			std::cout << std::endl;
 		std::cout << "\x1B[31mFAIL\x1B[m";
 		if (this->verbose)
 			std::cout << " -- " << e.what();
