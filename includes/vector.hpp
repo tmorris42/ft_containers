@@ -298,7 +298,7 @@ namespace ft
 					i = N - 1;
 					while (i >= 0)
 					{
-						*(dest + i) = *(src + i);
+						this->get_allocator().construct(dest + i, *(src + i));
 						--i;
 					}
 				}

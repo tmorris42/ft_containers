@@ -1,16 +1,16 @@
 #include "UnitTest.hpp"
 
-UnitTest::UnitTest() : stdout_buffer(NULL), buffer(), verbose(false), testsRun(), testsFailed(), testsPassed()
+UnitTest::UnitTest() : stdout_buffer(NULL), buffer(), verbose(false), testsRun(), testsFailed(), testsPassed(), tests()
 {
 	return ;
 }
 
-UnitTest::UnitTest(bool verbosity) : stdout_buffer(NULL), buffer(), verbose(verbosity), testsRun(), testsFailed(), testsPassed()
+UnitTest::UnitTest(bool verbosity) : stdout_buffer(NULL), buffer(), verbose(verbosity), testsRun(), testsFailed(), testsPassed(), tests()
 {
 	return ;
 }
 
-UnitTest::UnitTest(UnitTest const & src) : stdout_buffer(NULL), buffer(NULL), verbose(src.verbose), testsRun(), testsFailed(), testsPassed()
+UnitTest::UnitTest(UnitTest const & src) : stdout_buffer(NULL), buffer(NULL), verbose(src.verbose), testsRun(), testsFailed(), testsPassed(), tests()
 {
 	*this = src;
 	return ;
@@ -18,6 +18,7 @@ UnitTest::UnitTest(UnitTest const & src) : stdout_buffer(NULL), buffer(NULL), ve
 
 UnitTest::~UnitTest()
 {
+	// this->tests.resize(0);
 	return ;
 }
 
