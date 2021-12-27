@@ -287,8 +287,8 @@ void	test_vector_max_size(UnitTest *test)
 {
 	ft::vector<int> Vec;
 	
-	// test->assertEqual(Vec.max_size(), (unsigned long)2305843009213693951);
-	test->assertEqual(Vec.max_size(), (unsigned long)9223372036854775807);
+	test->assertEqual(Vec.max_size(), (unsigned long)2305843009213693951);
+	// test->assertEqual(Vec.max_size(), (unsigned long)9223372036854775807);
 }
 
 void	test_vector_reserve(UnitTest *test)
@@ -702,7 +702,7 @@ int	main(int argc, char **argv)
 		test_vector_operater_bracket,
 		test_vector_capacity,
 		test_vector_capacity_cppref,
-		// test_vector_max_size,	// Difference in allocations and max_size
+		test_vector_max_size,
 		test_vector_reserve,
 		test_vector_count_value_constructor,	
 		test_vector_copy_constructor,
@@ -731,7 +731,7 @@ int	main(int argc, char **argv)
 		"test_vector_operater_bracket",
 		"test_vector_capacity",
 		"test_vector_capacity_cppref",
-		// "test_vector_max_size",
+		"test_vector_max_size",
 		"test_vector_reserve",
 		"test_vector_count_value_constructor",
 		"test_vector_copy_constructor",

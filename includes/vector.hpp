@@ -147,12 +147,15 @@ namespace ft
 			bool	empty() {
 				return (this->begin() == this->end());
 			}
+			
 			size_type	size() const {
 				return (this->__size);
 			};
+
 			size_type	max_size() const {
-				return (std::numeric_limits<difference_type>::max());
+				return (this->get_allocator().max_size());
 			}
+
 			void	reserve( size_type new_cap ) {
 				if (new_cap > this->max_size())
 					throw std::length_error("Error, new capcity is greater than max_size()"); // Check this exception message against real
