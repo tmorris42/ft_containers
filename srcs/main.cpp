@@ -38,9 +38,9 @@ void	test_vector_copy_constructor(UnitTest *test)
 	ft::vector<int> original(5, 42);
 	ft::vector<int> Vec(original);
 
-	test->assertEqual(Vec.size(), (unsigned long)5);
+	test->assertEqual(Vec.size(), original.size());
 	test->assertEqual(Vec.empty(), false);
-	test->assertEqual(Vec.capacity(), (unsigned long)5);
+	test->assertEqual(Vec.capacity(), original.capacity());
 	test->assertEqual(Vec[0], 42);
 	test->assertEqual(Vec[1], 42);
 	test->assertEqual(Vec[2], 42);
