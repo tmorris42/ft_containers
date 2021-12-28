@@ -170,24 +170,8 @@ void	test_vector_at(UnitTest *test)
 	ft::vector<int>::const_reference cref = Vec.at(4);
 	test->ASSERT_EQUAL(ref, 2);
 	test->ASSERT_EQUAL(cref, 4);
-	try
-	{
-		Vec.at(9);
-		throw std::runtime_error("Expected Exception not thrown");
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
-	try
-	{
-		Vec.at(-1);
-		throw std::runtime_error("Expected Exception not thrown");
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}	
+	ASSERT_ERROR(Vec.at(9))
+	ASSERT_ERROR(Vec.at(-1))
 }
 
 void	test_vector_operater_bracket(UnitTest *test)
@@ -202,24 +186,8 @@ void	test_vector_operater_bracket(UnitTest *test)
 	ft::vector<int>::const_reference cref = Vec[4];
 	test->ASSERT_EQUAL(ref, 2);
 	test->ASSERT_EQUAL(cref, 4);
-	try
-	{
-		Vec[9];
-		throw std::runtime_error("No exception thrown");
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
-	try
-	{
-		Vec[-1];
-		throw std::runtime_error("No exception thrown");
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}	
+	ASSERT_NO_ERROR(Vec[9])
+	ASSERT_NO_ERROR(Vec[-1])
 }
 
 void	test_vector_capacity(UnitTest *test)
@@ -303,6 +271,16 @@ void	test_vector_reserve(UnitTest *test)
 	test->ASSERT_EQUAL(Vec.capacity(), (unsigned long)200);
 	Vec.reserve(2220);
 	test->ASSERT_EQUAL(Vec.capacity(), (unsigned long)2220);
+}
+
+void	test_vector_reserve_overmax(UnitTest *test)
+{
+	ft::vector<int> Vec;
+	
+	// test->ASSERT_EQUAL(Vec.max_size(), (unsigned long)2305843009213693951);
+	test->ASSERT_EQUAL(Vec.capacity(), (unsigned long)0);
+	ASSERT_ERROR(	Vec.reserve(Vec.max_size() + 1) );
+	test->ASSERT_EQUAL(Vec.capacity(), (unsigned long)0);
 }
 
 void	test_vector_insert(UnitTest *test)
@@ -718,6 +696,8 @@ int	main(int argc, char **argv)
 	test.ADD_TEST(test_vector_erase_range);
 	test.ADD_TEST(test_vector_pop_back);
 	test.ADD_TEST(test_vector_resize);
+
+	test.ADD_TEST(test_vector_reserve_overmax);
 
 	bool		runAll(true);
 
