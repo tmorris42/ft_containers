@@ -666,38 +666,38 @@ int	main(int argc, char **argv)
 	if (!argc || !argv)
 		return (0);
 
-	UnitTest	test(false);
-	test.ADD_TEST(test_vector_empty);
-	test.ADD_TEST(test_vector_void_constructor);
-	test.ADD_TEST(test_vector_push_back);
-	test.ADD_TEST(test_vector_push_back_twice);
-	test.ADD_TEST(test_vector_push_back_thrice);
-	test.ADD_TEST(test_vector_push_back_x4);
-	test.ADD_TEST(test_vector_push_back_x5);
-	test.ADD_TEST(test_vector_push_back_x15);
+	INIT;
+	ADD_TEST(test_vector_empty);
+	ADD_TEST(test_vector_void_constructor);
+	ADD_TEST(test_vector_push_back);
+	ADD_TEST(test_vector_push_back_twice);
+	ADD_TEST(test_vector_push_back_thrice);
+	ADD_TEST(test_vector_push_back_x4);
+	ADD_TEST(test_vector_push_back_x5);
+	ADD_TEST(test_vector_push_back_x15);
 
-	test.ADD_TEST(test_vector_iterator_forward);
-	// test.ADD_TEST(test_vector_at); // Causes differences in allocations due to stringstream use in vector::at()
-	test.ADD_TEST(test_vector_operater_bracket);
-	test.ADD_TEST(test_vector_capacity);
-	test.ADD_TEST(test_vector_capacity_cppref);
+	ADD_TEST(test_vector_iterator_forward);
+	// ADD_TEST(test_vector_at); // Causes differences in allocations due to stringstream use in vector::at()
+	ADD_TEST(test_vector_operater_bracket);
+	ADD_TEST(test_vector_capacity);
+	ADD_TEST(test_vector_capacity_cppref);
 
-	test.ADD_TEST(test_vector_max_size);
-	test.ADD_TEST(test_vector_reserve);
-	test.ADD_TEST(test_vector_count_value_constructor);
-	test.ADD_TEST(test_vector_copy_constructor);
-	test.ADD_TEST(test_vector_insert);
+	ADD_TEST(test_vector_max_size);
+	ADD_TEST(test_vector_reserve);
+	ADD_TEST(test_vector_count_value_constructor);
+	ADD_TEST(test_vector_copy_constructor);
+	ADD_TEST(test_vector_insert);
 
-	// test.ADD_TEST(test_vector_insert_count);
-	// test.ADD_TEST(test_vector_insert_iter);
+	// ADD_TEST(test_vector_insert_count);
+	// ADD_TEST(test_vector_insert_iter);
 
-	test.ADD_TEST(test_vector_clear);
-	test.ADD_TEST(test_vector_erase_one);
-	test.ADD_TEST(test_vector_erase_range);
-	test.ADD_TEST(test_vector_pop_back);
-	test.ADD_TEST(test_vector_resize);
+	ADD_TEST(test_vector_clear);
+	ADD_TEST(test_vector_erase_one);
+	ADD_TEST(test_vector_erase_range);
+	ADD_TEST(test_vector_pop_back);
+	ADD_TEST(test_vector_resize);
 
-	test.ADD_TEST(test_vector_reserve_overmax);
+	ADD_TEST(test_vector_reserve_overmax);
 
 	bool		runAll(true);
 
@@ -711,13 +711,13 @@ int	main(int argc, char **argv)
 			intValue >> i;
 			if (i > 0)
 			{
-				test.run(i - 1);
+				RUN_TEST(i - 1);
 				runAll = false;
 			}
 			else
 			{
 				std::cout << "VERBOSE MODE" << std::endl;
-				test.set_verbosity(true);
+				SET_VERBOSITY(true);
 			}
 			++argNumber;
 		}
@@ -725,7 +725,7 @@ int	main(int argc, char **argv)
 	if (!runAll)
 		return(0);
 
-	test.run_all_tests();
-	test.report();
+	RUN_ALL_TESTS();
+	REPORT();
 	return (0);
 }

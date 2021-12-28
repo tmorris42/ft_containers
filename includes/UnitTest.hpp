@@ -19,7 +19,12 @@
  # include <vector>
 # endif
 
-# define ADD_TEST(func) add_test(func, #func)
+# define INIT UnitTest	ut_test(false)
+# define ADD_TEST(func) ut_test.add_test(func, #func)
+# define SET_VERBOSITY(verbosity) ut_test.set_verbosity(verbosity)
+# define RUN_TEST(index) ut_test.run(index)
+# define RUN_ALL_TESTS ut_test.run_all_tests
+# define REPORT ut_test.report
 # define ASSERT_EQUAL(a, b) assertEqual(a, b, #a, #b)
 # define ASSERT_ERROR(operation) {try {operation; throw std::runtime_error("Error: no exception thrown");} catch(const std::exception& e) {std::cerr << e.what() << std::endl;}}
 # define ASSERT_NO_ERROR(operation) {try {operation;} catch(const std::exception& e) {std::cerr << e.what() << std::endl; throw std::runtime_error("Error: exception occurred");}}
