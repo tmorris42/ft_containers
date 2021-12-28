@@ -3,6 +3,10 @@
 
 # include <iostream>
 # include <sstream>
+
+# define NAMESPACE std
+ // SHOULD USE MY VERSION!!! ******IMPORTANT******
+
 # ifdef FT_REAL_VERSION
 #  include <map>
 #  include <stack>
@@ -11,7 +15,8 @@
 # else
 // #  "map.hpp"
 	// #include "stack.hpp"
-#  include "vector.hpp"
+ #  include "vector.hpp"
+ # include <vector>
 # endif
 
 # define ADD_TEST(func) add_test(func, #func)
@@ -36,7 +41,7 @@ class UnitTest
 		unsigned int		testsRun;
 		unsigned int		testsFailed;
 		unsigned int		testsPassed;
-		ft::vector<Test>	tests;
+		NAMESPACE::vector<Test>	tests;
 
 	public:
 		UnitTest();

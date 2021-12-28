@@ -160,7 +160,7 @@ bool		UnitTest::add_test(TestFunction function, std::string description)
 
 void		UnitTest::run_all_tests()
 {
-	for (ft::vector<Test>::iterator it = this->tests.begin(); it != this->tests.end(); ++it)
+	for (NAMESPACE::vector<Test>::iterator it = this->tests.begin(); it != this->tests.end(); ++it)
 	{
 		this->run(*it);
 	}
