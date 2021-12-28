@@ -21,6 +21,8 @@
 
 # define ADD_TEST(func) add_test(func, #func)
 # define ASSERT_EQUAL(a, b) assertEqual(a, b, #a, #b)
+# define ASSERT_ERROR(operation) {try {operation; throw std::runtime_error("Error: no exception thrown");} catch(const std::exception& e) {std::cerr << e.what() << std::endl;}}
+# define ASSERT_NO_ERROR(operation) {try {operation;} catch(const std::exception& e) {std::cerr << e.what() << std::endl; throw std::runtime_error("Error: exception occurred");}}
 
 class UnitTest;
 typedef void (*TestFunction)(UnitTest*);
