@@ -158,7 +158,9 @@ namespace ft
 
 			void	reserve( size_type new_cap ) {
 				if (new_cap > this->max_size())
-					throw std::length_error("Error, new capcity is greater than max_size()"); // Check this exception message against real
+				{
+					throw std::length_error("vector::reserve"); // Check this exception message against real
+				}
 				if (this->capacity() < new_cap)
 				{
 					pointer new_space = this->get_allocator().allocate(new_cap);
