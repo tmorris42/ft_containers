@@ -298,7 +298,7 @@ namespace ft
 					i = N - 1;
 					while (i >= 0)
 					{
-						*(dest + i) = *(src + i);
+						this->get_allocator().construct(dest + i, *(src + i));
 						--i;
 					}
 				}
@@ -307,15 +307,15 @@ namespace ft
 					i = 0;
 					while (i < N)
 					{
-						*(dest + i) = *(src + i);
+						this->get_allocator().construct(dest + i, *(src + i));
 						++i;
 					}
 				}
 			}
 			void	__destroy_space(pointer	start, size_type N) {
-				for (; N > 0; --N)
+				for (int i = N - 1; i >= 0; --i)
 				{
-					this->get_allocator().destroy(start + N);
+					this->get_allocator().destroy(start + i);
 				}
 				this->get_allocator().deallocate(start, N);
 			}
