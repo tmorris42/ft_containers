@@ -6,7 +6,9 @@ SRCS_DIR = srcs
 INCLUDE_DIR = includes
 OBJS_DIR = objs
 
-SRCS = main.cpp UnitTest.cpp vector.cpp
+SRCS = main.cpp UnitTest.cpp
+HEADER_FILES := vector.hpp
+HEADERS := $(addprefix $(INCLUDE_DIR)/, $(HEADER_FILES))
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
 INCLUDES = -I$(INCLUDE_DIR)
 
@@ -24,7 +26,7 @@ all: $(NAME)
 $(REAL): Makefile
 	$(CC) $(REAL_TOGGLE) $(FLAGS) $(addprefix $(SRCS_DIR)/, $(SRCS)) $(INCLUDES) -o $(REAL)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) $(HEADERS)
 	$(CC) $(FLAGS) $(OBJS) $(INCLUDES) -o $(NAME)
 
 $(OBJS_DIR)/%.o : $(SRCS_DIR)/%.cpp $(INCLUDE_DIR)/%.hpp
