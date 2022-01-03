@@ -22,7 +22,7 @@ ifdef DEBUG_OVERRIDE
 FLAGS := $(FLAGS) $(DEBUG_FLAGS)
 endif
 
-all: $(NAME)
+all: $(NAME) $(REAL)
 
 $(REAL): $(REAL_OBJS) $(HEADERS)
 	$(CC) $(REAL_TOGGLE) $(FLAGS) $(REAL_OBJS) $(INCLUDES) -o $(REAL)
