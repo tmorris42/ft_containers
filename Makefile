@@ -42,6 +42,7 @@ real: $(REAL)
 
 clean:
 	rm -rf $(OBJS_DIR)
+	rm -rf mine.log mine.err.log real.log real.err.log
 
 fclean: clean
 	rm -f $(NAME) $(REAL)
