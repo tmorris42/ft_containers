@@ -697,7 +697,9 @@ int	main(int argc, char **argv)
 	ADD_TEST(test_vector_pop_back);
 	ADD_TEST(test_vector_resize);
 
-	ADD_TEST(test_vector_reserve_overmax);
+	ADD_TEST_SUITE(add_test_iterator_suite);
+
+	
 
 	bool		runAll(true);
 

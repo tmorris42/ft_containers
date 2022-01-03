@@ -21,6 +21,7 @@
 
 # define INIT UnitTest	ut_test(false)
 # define ADD_TEST(func) ut_test.add_test(func, #func)
+# define ADD_TEST_SUITE(func) func(ut_test)
 # define SET_VERBOSITY(verbosity) ut_test.set_verbosity(verbosity)
 # define RUN_TEST(index) ut_test.run(index)
 # define RUN_ALL_TESTS ut_test.run_all_tests

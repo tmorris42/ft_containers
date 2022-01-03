@@ -6,8 +6,8 @@ SRCS_DIR = srcs
 INCLUDE_DIR = includes
 OBJS_DIR = objs
 
-SRCS = main.cpp UnitTest.cpp
-HEADER_FILES := vector.hpp
+SRCS = main.cpp UnitTest.cpp test_iterator.cpp
+HEADER_FILES := vector.hpp iterator.hpp
 HEADERS := $(addprefix $(INCLUDE_DIR)/, $(HEADER_FILES))
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
 REAL_OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.real.o))
@@ -48,7 +48,7 @@ fclean: clean
 
 re: fclean all
 
-test: $(NAME) real
+test: all
 	@echo "Generating user logs"
 	@./$(NAME) -v > mine.log 2>mine.err.log
 	@echo "Generating real logs"
