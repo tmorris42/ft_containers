@@ -7,6 +7,8 @@
 # include <sstream> // For exception what() string generation
 # include <limits> // For numeric_limits in max_size()
 
+# include "iterator.hpp"
+
 namespace ft
 {
 	template < class T, class Allocator = std::allocator<T> >
@@ -26,10 +28,10 @@ namespace ft
 
 			// LegacyRandomAccessIterator<T>			iterator;
 			// LegacyRandomAccessIterator<T> const		const_iterator;
-			typedef pointer								iterator;		// should be custom LRAI
-			typedef const_pointer						const_iterator;
-			// std::reverse_iterator<iterator>			reverse_iterator;
-			// std::reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef pointer									iterator;		// should be custom LRAI
+			typedef const_pointer							const_iterator;
+			typedef ft::reverse_iterator<iterator>			reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			
 			// Member functions
 			// Constructors
@@ -140,8 +142,18 @@ namespace ft
 				return (this->__start + this->__size);
 			}
 
-			void	rbegin();
-			void	rend();
+			reverse_iterator	rbegin()  {
+				return (reverse_iterator(this->end()));
+			}
+			const_reverse_iterator	rbegin() const {
+				return (reverse_iterator(this->end()));
+			}
+			reverse_iterator	rend() {
+				return (reverse_iterator(this->begin()));
+			}
+			const_reverse_iterator	rend() const {
+				return (reverse_iterator(this->begin()));
+			}
 
 			// Capacity
 			bool	empty() {
