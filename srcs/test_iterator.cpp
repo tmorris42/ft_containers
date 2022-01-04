@@ -53,10 +53,30 @@ void	test_enable_if(UnitTest *test)
 	test->ASSERT_EQUAL(false, true);
 }
 
+void	test_lexicographical_compare(UnitTest *test)
+{
+	bool	ret;
+	ft::vector<char> v1;
+	v1.push_back('a');
+	v1.push_back('b');
+	v1.push_back('c');
+	v1.push_back('d');
+	ft::vector<char> v2(v1);
+	ret = ft::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end());
+	test->ASSERT_EQUAL(ret, false);
+	v1.pop_back();
+	ret = ft::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end());
+	test->ASSERT_EQUAL(ret, true);
+	v1.push_back('c');
+	ret = ft::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end());
+	test->ASSERT_EQUAL(ret, true);
+}
+
 void	add_test_iterator_suite(UnitTest & ut_test)
 {
 	ADD_TEST(test_random_access_iterator_tag_int);
 	ADD_TEST(test_random_access_iterator_tag_vector);
 	ADD_TEST(test_reverse_iterator_vector);
 	ADD_TEST(test_enable_if);
+	ADD_TEST(test_lexicographical_compare);
 }

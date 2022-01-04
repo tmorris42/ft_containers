@@ -12,12 +12,16 @@
 #  include <stack>
 #  include <vector>
 #  include <iterator>
+#  include <type_traits>
+#  include <algorithm>
    namespace ft = std;
 # else // Create using my version by default
 // #  "map.hpp"
 	// #include "stack.hpp"
 #  include "vector.hpp"
 #  include "iterator.hpp"
+#  include "type_traits.hpp"
+#  include "algorithm.hpp"
 # endif
 
 #endif

@@ -17,7 +17,7 @@ namespace ft
 
 	template <class T, T v>
 	struct s_is_integral {
-		static T value = v;
+		static const T value = v;
 		typedef T value_type;
 		typedef s_is_integral<T, v> type;
 		operator T() { return v; }

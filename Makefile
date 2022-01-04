@@ -7,7 +7,7 @@ INCLUDE_DIR = includes
 OBJS_DIR = objs
 
 SRCS = main.cpp UnitTest.cpp test_iterator.cpp
-HEADER_FILES := vector.hpp iterator.hpp
+HEADER_FILES := vector.hpp iterator.hpp algorithm.hpp type_traits.hpp
 HEADERS := $(addprefix $(INCLUDE_DIR)/, $(HEADER_FILES))
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
 REAL_OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.real.o))
@@ -15,7 +15,8 @@ INCLUDES = -I$(INCLUDE_DIR)
 
 CC_OVERRIDE ?= clang++
 CC	:= $(CC_OVERRIDE)
-FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
+FLAGS = -Wall -Wextra -Werror
+MY_FLAGS = $(FLAGS) -std=c++98 -pedantic
 
 DEBUG_FLAGS ?= -g3
 ifdef DEBUG_OVERRIDE
@@ -28,7 +29,7 @@ $(REAL): $(REAL_OBJS) $(HEADERS)
 	$(CC) $(REAL_TOGGLE) $(FLAGS) $(REAL_OBJS) $(INCLUDES) -o $(REAL)
 
 $(NAME): $(OBJS) $(HEADERS)
-	$(CC) $(FLAGS) $(OBJS) $(INCLUDES) -o $(NAME)
+	$(CC) $(MY_FLAGS) $(OBJS) $(INCLUDES) -o $(NAME)
 
 $(OBJS_DIR)/%.real.o : $(SRCS_DIR)/%.cpp $(INCLUDE_DIR)/%.hpp
 	@mkdir -p objs
