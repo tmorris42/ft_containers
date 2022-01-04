@@ -72,6 +72,60 @@ void	test_lexicographical_compare(UnitTest *test)
 	test->ASSERT_EQUAL(ret, true);
 }
 
+void	test_pair(UnitTest *test)
+{
+	int n = 1;
+	char c = 'a';
+	int a[5] = {1, 2, 3, 4, 5};
+	int & r = n;
+	ft::pair<int, char>	p = ft::make_pair(n, c);
+	test->ASSERT_EQUAL(p.first, 1);
+	test->ASSERT_EQUAL(p.second, 'a');
+
+	ft::pair<int*, int*>	p2 = ft::make_pair(&r, a);
+	n = 7;
+	test->ASSERT_EQUAL(p.first, 1);
+	test->ASSERT_EQUAL(*p2.first, 7);
+	test->ASSERT_EQUAL(*(p2.second + 2), 3);
+
+	// Test comparisons
+	ft::pair<int, char> p3 = p;
+	p3.second = 'b';
+	test->ASSERT_EQUAL(p == p3, false);
+	test->ASSERT_EQUAL(p != p3, true);
+	test->ASSERT_EQUAL(p < p3, true);
+	test->ASSERT_EQUAL(p <= p3, true);
+	test->ASSERT_EQUAL(p > p3, false);
+	test->ASSERT_EQUAL(p >= p3, false);
+	test->ASSERT_EQUAL(p3 < p, false);
+	test->ASSERT_EQUAL(p3 <= p, false);
+	test->ASSERT_EQUAL(p3 > p, true);
+	test->ASSERT_EQUAL(p3 >= p, true);
+	p3.second = 'a';
+	test->ASSERT_EQUAL(p == p3, true);
+	test->ASSERT_EQUAL(p != p3, false);
+	test->ASSERT_EQUAL(p < p3, false);
+	test->ASSERT_EQUAL(p <= p3, true);
+	test->ASSERT_EQUAL(p > p3, false);
+	test->ASSERT_EQUAL(p >= p3, true);
+	test->ASSERT_EQUAL(p3 < p, false);
+	test->ASSERT_EQUAL(p3 <= p, true);
+	test->ASSERT_EQUAL(p3 > p, false);
+	test->ASSERT_EQUAL(p3 >= p, true);
+	p3.first = 0;
+	test->ASSERT_EQUAL(p == p3, false);
+	test->ASSERT_EQUAL(p != p3, true);
+	test->ASSERT_EQUAL(p < p3, false);
+	test->ASSERT_EQUAL(p <= p3, false);
+	test->ASSERT_EQUAL(p > p3, true);
+	test->ASSERT_EQUAL(p >= p3, true);
+	test->ASSERT_EQUAL(p3 < p, true);
+	test->ASSERT_EQUAL(p3 <= p, true);
+	test->ASSERT_EQUAL(p3 > p, false);
+	test->ASSERT_EQUAL(p3 >= p, false);
+
+}
+
 void	add_test_iterator_suite(UnitTest & ut_test)
 {
 	ADD_TEST(test_random_access_iterator_tag_int);
@@ -79,4 +133,5 @@ void	add_test_iterator_suite(UnitTest & ut_test)
 	ADD_TEST(test_reverse_iterator_vector);
 	ADD_TEST(test_enable_if);
 	ADD_TEST(test_lexicographical_compare);
+	ADD_TEST(test_pair);
 }

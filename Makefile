@@ -7,7 +7,7 @@ INCLUDE_DIR = includes
 OBJS_DIR = objs
 
 SRCS = main.cpp UnitTest.cpp test_iterator.cpp
-HEADER_FILES := vector.hpp iterator.hpp algorithm.hpp type_traits.hpp
+HEADER_FILES := vector.hpp iterator.hpp algorithm.hpp type_traits.hpp utility.hpp
 HEADERS := $(addprefix $(INCLUDE_DIR)/, $(HEADER_FILES))
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
 REAL_OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.real.o))
