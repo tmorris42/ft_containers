@@ -6,6 +6,7 @@
 
 # include "UnitTest.hpp"
 # include "test_iterator.hpp"
+# include "test_vector.hpp"
 
 # ifdef FT_REAL_VERSION // Create version using real STL containers
 #  include <map>
