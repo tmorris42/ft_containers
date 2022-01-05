@@ -57,6 +57,7 @@ namespace ft
 			vector( InputIt first, InputIt last, const allocator_type & alloc = allocator_type(),
 					typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)  : __start(0), __capacity(0), __size(0), __alloc(alloc)
 			{
+				this->reserve(last - first);
 				this->insert(this->begin(), first, last);
 			}
 
@@ -200,6 +201,8 @@ namespace ft
 			iterator insert( iterator pos, const T& value )
 			{
 				difference_type		diff = pos - this->begin();
+				if (diff < 0)
+					diff = 0;
 				if (this->__capacity - this->__size < 1)
 				{
 					size_type	new_capacity = 2 * this->__capacity;
