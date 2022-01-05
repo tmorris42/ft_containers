@@ -48,8 +48,21 @@ void	test_vector_copy_constructor(UnitTest *test)
 	test->ASSERT_EQUAL(Vec[4], 42);
 }
 
+void	test_vector_iter_constructor(UnitTest *test)
 {
+	ft::vector<int> original(5, 42);
+	ft::vector<int> Vec(original.begin(), original.end());
+
+	test->ASSERT_EQUAL(Vec.size(), original.size());
 	test->ASSERT_EQUAL(Vec.empty(), false);
+	test->ASSERT_EQUAL(Vec.capacity(), original.capacity());
+	test->ASSERT_EQUAL(Vec[0], 42);
+	test->ASSERT_EQUAL(Vec[1], 42);
+	test->ASSERT_EQUAL(Vec[2], 42);
+	test->ASSERT_EQUAL(Vec[3], 42);
+	test->ASSERT_EQUAL(Vec[4], 42);
+}
+
 void	test_vector_push_back(UnitTest *test)
 {
 	// test->ASSERT_EQUAL()
