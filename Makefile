@@ -37,7 +37,7 @@ $(OBJS_DIR)/%.real.o : $(SRCS_DIR)/%.cpp $(INCLUDE_DIR)/%.hpp
 
 $(OBJS_DIR)/%.o : $(SRCS_DIR)/%.cpp $(INCLUDE_DIR)/%.hpp
 	@mkdir -p objs
-	$(CC) -c $(FLAGS) $(INCLUDES) $< -o $@
+	$(CC) -c $(MY_FLAGS) $(INCLUDES) $< -o $@
 
 real: $(REAL)
 
