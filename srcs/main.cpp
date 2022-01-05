@@ -48,6 +48,7 @@ void	test_vector_copy_constructor(UnitTest *test)
 	test->ASSERT_EQUAL(Vec[4], 42);
 }
 
+{
 void	test_vector_push_back(UnitTest *test)
 {
 	// test->ASSERT_EQUAL()
@@ -686,6 +687,7 @@ int	main(int argc, char **argv)
 	ADD_TEST(test_vector_reserve);
 	ADD_TEST(test_vector_count_value_constructor);
 	ADD_TEST(test_vector_copy_constructor);
+	// ADD_TEST(test_vector_iter_constructor);
 	ADD_TEST(test_vector_insert);
 
 	// ADD_TEST(test_vector_insert_count);
