@@ -545,6 +545,24 @@ void	test_vector_clear(UnitTest *test)
 	test->ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(0));
 }
 
+void	test_vector_assign(UnitTest *test)
+{
+	ft::vector<int> vec(5, 42);
+
+	test->ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(5));
+	unsigned long original_cap = vec.capacity();
+	vec.clear();
+	test->ASSERT_EQUAL(vec.capacity(), original_cap);
+	test->ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(0));
+	vec.assign(3, 15);
+	test->ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(3));
+	test->ASSERT_EQUAL(vec[2], 15);
+	vec.assign(vec.begin(), vec.end() - 1);
+	test->ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(2));
+	test->ASSERT_EQUAL(vec[2], 15);
+
+}
+
 void	test_vector_erase_one(UnitTest *test)
 {
 	ft::vector<int> vec(5, 42);
@@ -712,6 +730,7 @@ int	main(int argc, char **argv)
 	ADD_TEST(test_vector_erase_range);
 	ADD_TEST(test_vector_pop_back);
 	ADD_TEST(test_vector_resize);
+	ADD_TEST(test_vector_assign);
 
 	ADD_TEST_SUITE(add_test_iterator_suite);
 

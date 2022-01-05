@@ -78,7 +78,22 @@ namespace ft
 				__copy_space(this->__start, other->begin());
 			}
 			
-			void	assign();
+			void	assign(size_type n, const value_type & value)
+			{
+				this->clear();
+				this->reserve(n);
+				this->insert(this->begin(), n, value);
+			}
+
+			template <class InputIt>
+			void	assign(InputIt first, InputIt last,
+						typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)
+			{
+				this->clear();
+				this->reserve(last - first);
+				this->insert(this->begin(), first, last);
+			}
+
 			allocator_type	get_allocator() const {
 				return (this->__alloc);
 			};
