@@ -16,7 +16,7 @@
 #  include <type_traits>
 #  include <algorithm>
 #  include <utility>
-   namespace ft = std;
+#  define FT std
 # else // Create using my version by default
 // #  "map.hpp"
 	// #include "stack.hpp"
@@ -25,6 +25,7 @@
 #  include "type_traits.hpp"
 #  include "algorithm.hpp"
 #  include "utility.hpp"
+#  define FT ft
 # endif
 
 #endif

@@ -2,7 +2,7 @@
 
 void	test_vector_void_constructor(UnitTest *test)
 {
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 
 	test->ASSERT_EQUAL(Vec.size(), (unsigned long)0);
 	test->ASSERT_EQUAL(Vec.empty(), true);
@@ -11,7 +11,7 @@ void	test_vector_void_constructor(UnitTest *test)
 
 void	test_vector_count_value_constructor(UnitTest *test)
 {
-	ft::vector<int> Vec(5, 42);
+	FT::vector<int> Vec(5, 42);
 
 	test->ASSERT_EQUAL(Vec.size(), (unsigned long)5);
 	test->ASSERT_EQUAL(Vec.empty(), false);
@@ -25,8 +25,8 @@ void	test_vector_count_value_constructor(UnitTest *test)
 
 void	test_vector_copy_constructor(UnitTest *test)
 {
-	ft::vector<int> original(5, 42);
-	ft::vector<int> Vec(original);
+	FT::vector<int> original(5, 42);
+	FT::vector<int> Vec(original);
 
 	test->ASSERT_EQUAL(Vec.size(), original.size());
 	test->ASSERT_EQUAL(Vec.empty(), false);
@@ -40,8 +40,8 @@ void	test_vector_copy_constructor(UnitTest *test)
 
 void	test_vector_iter_constructor(UnitTest *test)
 {
-	ft::vector<int> original(5, 42);
-	ft::vector<int> Vec(original.begin(), original.end());
+	FT::vector<int> original(5, 42);
+	FT::vector<int> Vec(original.begin(), original.end());
 
 	test->ASSERT_EQUAL(Vec.size(), original.size());
 	test->ASSERT_EQUAL(Vec.empty(), false);
@@ -56,7 +56,7 @@ void	test_vector_iter_constructor(UnitTest *test)
 void	test_vector_push_back(UnitTest *test)
 {
 	// test->ASSERT_EQUAL()
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 	Vec.push_back(5);
 	test->ASSERT_EQUAL(Vec.size(), static_cast<unsigned int>(1));
 	test->ASSERT_EQUAL(Vec.front(), 5);
@@ -65,7 +65,7 @@ void	test_vector_push_back(UnitTest *test)
 void	test_vector_push_back_twice(UnitTest *test)
 {
 	// test->ASSERT_EQUAL()
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 	Vec.push_back(5);
 	test->ASSERT_EQUAL(Vec.size(), static_cast<unsigned int>(1));
 	Vec.push_back(6);
@@ -77,7 +77,7 @@ void	test_vector_push_back_twice(UnitTest *test)
 void	test_vector_push_back_thrice(UnitTest *test)
 {
 	// test->ASSERT_EQUAL()
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 	Vec.push_back(5);
 	test->ASSERT_EQUAL(Vec.size(), static_cast<unsigned int>(1));
 	Vec.push_back(6);
@@ -90,7 +90,7 @@ void	test_vector_push_back_thrice(UnitTest *test)
 
 void	test_vector_push_back_x4(UnitTest *test)
 {
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 	Vec.push_back(5);
 	Vec.push_back(6);
 	Vec.push_back(7);
@@ -102,7 +102,7 @@ void	test_vector_push_back_x4(UnitTest *test)
 
 void	test_vector_push_back_x5(UnitTest *test)
 {
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 	Vec.push_back(5);
 	Vec.push_back(6);
 	Vec.push_back(7);
@@ -115,7 +115,7 @@ void	test_vector_push_back_x5(UnitTest *test)
 
 void	test_vector_push_back_x15(UnitTest *test)
 {
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 	Vec.push_back(5);
 	Vec.push_back(6);
 	Vec.push_back(7);
@@ -138,7 +138,7 @@ void	test_vector_push_back_x15(UnitTest *test)
 
 void	test_vector_empty(UnitTest *test)
 {
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 	test->ASSERT_EQUAL(Vec.empty(), true);
 	Vec.push_back(1);
 	test->ASSERT_EQUAL(Vec.empty(), false);
@@ -148,14 +148,14 @@ void	test_vector_empty(UnitTest *test)
 
 void	test_vector_iterator_forward(UnitTest *test)
 {
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 	Vec.push_back(0);
 	Vec.push_back(1);
 	Vec.push_back(2);
 	Vec.push_back(3);
 	Vec.push_back(4);
-	ft::vector<int>::iterator it = Vec.begin();
-	ft::vector<int>::iterator ite = Vec.end();
+	FT::vector<int>::iterator it = Vec.begin();
+	FT::vector<int>::iterator ite = Vec.end();
 	while (it != ite)
 	{
 		test->ASSERT_EQUAL((*it), it - Vec.begin());
@@ -165,14 +165,14 @@ void	test_vector_iterator_forward(UnitTest *test)
 
 void	test_vector_at(UnitTest *test)
 {
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 	Vec.push_back(0);
 	Vec.push_back(1);
 	Vec.push_back(2);
 	Vec.push_back(3);
 	Vec.push_back(4);
-	ft::vector<int>::reference ref = Vec.at(2);
-	ft::vector<int>::const_reference cref = Vec.at(4);
+	FT::vector<int>::reference ref = Vec.at(2);
+	FT::vector<int>::const_reference cref = Vec.at(4);
 	test->ASSERT_EQUAL(ref, 2);
 	test->ASSERT_EQUAL(cref, 4);
 	ASSERT_ERROR(Vec.at(9))
@@ -181,14 +181,14 @@ void	test_vector_at(UnitTest *test)
 
 void	test_vector_operater_bracket(UnitTest *test)
 {
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 	Vec.push_back(0);
 	Vec.push_back(1);
 	Vec.push_back(2);
 	Vec.push_back(3);
 	Vec.push_back(4);
-	ft::vector<int>::reference ref = Vec[2];
-	ft::vector<int>::const_reference cref = Vec[4];
+	FT::vector<int>::reference ref = Vec[2];
+	FT::vector<int>::const_reference cref = Vec[4];
 	test->ASSERT_EQUAL(ref, 2);
 	test->ASSERT_EQUAL(cref, 4);
 	ASSERT_NO_ERROR(Vec[9])
@@ -197,7 +197,7 @@ void	test_vector_operater_bracket(UnitTest *test)
 
 void	test_vector_capacity(UnitTest *test)
 {
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 	test->ASSERT_EQUAL(Vec.capacity(), (unsigned long)(0));
 	Vec.push_back(5);
 	test->ASSERT_EQUAL(Vec.capacity(), (unsigned long)1);
@@ -234,7 +234,7 @@ void	test_vector_capacity(UnitTest *test)
 void	test_vector_capacity_cppref(UnitTest *test)
 {
 	int sz = 200;
-    ft::vector<int> v1;
+    FT::vector<int> v1;
  
  	test->stdout_redirect();
 
@@ -258,7 +258,7 @@ void	test_vector_capacity_cppref(UnitTest *test)
 
 void	test_vector_max_size(UnitTest *test)
 {
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 	
 	test->ASSERT_EQUAL(Vec.max_size(), (unsigned long)2305843009213693951);
 	// test->ASSERT_EQUAL(Vec.max_size(), (unsigned long)9223372036854775807);
@@ -266,7 +266,7 @@ void	test_vector_max_size(UnitTest *test)
 
 void	test_vector_reserve(UnitTest *test)
 {
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 	
 	// test->ASSERT_EQUAL(Vec.max_size(), (unsigned long)2305843009213693951);
 	test->ASSERT_EQUAL(Vec.capacity(), (unsigned long)0);
@@ -280,7 +280,7 @@ void	test_vector_reserve(UnitTest *test)
 
 void	test_vector_reserve_overmax(UnitTest *test)
 {
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 	
 	// test->ASSERT_EQUAL(Vec.max_size(), (unsigned long)2305843009213693951);
 	test->ASSERT_EQUAL(Vec.capacity(), (unsigned long)0);
@@ -290,13 +290,13 @@ void	test_vector_reserve_overmax(UnitTest *test)
 
 void	test_vector_insert(UnitTest *test)
 {
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 	Vec.push_back(5);
 	Vec.push_back(6);
 	Vec.push_back(7);
 	Vec.push_back(8);
 	Vec.push_back(9);
-	ft::vector<int>::iterator it = Vec.insert(Vec.begin() + 2, 42);
+	FT::vector<int>::iterator it = Vec.insert(Vec.begin() + 2, 42);
 	test->ASSERT_EQUAL(*it, 42);
 	test->ASSERT_EQUAL(Vec.size(), static_cast<unsigned int>(6));
 	test->ASSERT_EQUAL(Vec.front(), 5);
@@ -328,7 +328,7 @@ void	test_vector_insert(UnitTest *test)
 
 void	test_vector_insert_count(UnitTest *test)
 {
-	ft::vector<int> Vec;
+	FT::vector<int> Vec;
 	Vec.push_back(5);
 	Vec.push_back(6);
 	Vec.push_back(7);
@@ -424,8 +424,8 @@ void	test_vector_insert_count(UnitTest *test)
 
 void	test_vector_insert_iter(UnitTest *test)
 {
-	ft::vector<int> Vec;
-	ft::vector<int> vec2;
+	FT::vector<int> Vec;
+	FT::vector<int> vec2;
 
 	Vec.push_back(5);
 	Vec.push_back(6);
@@ -526,7 +526,7 @@ void	test_vector_insert_iter(UnitTest *test)
 
 void	test_vector_clear(UnitTest *test)
 {
-	ft::vector<int> vec(5, 42);
+	FT::vector<int> vec(5, 42);
 
 	test->ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(5));
 	unsigned long original_cap = vec.capacity();
@@ -537,7 +537,7 @@ void	test_vector_clear(UnitTest *test)
 
 void	test_vector_assign(UnitTest *test)
 {
-	ft::vector<int> vec(5, 42);
+	FT::vector<int> vec(5, 42);
 
 	test->ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(5));
 	unsigned long original_cap = vec.capacity();
@@ -555,7 +555,7 @@ void	test_vector_assign(UnitTest *test)
 
 void	test_vector_erase_one(UnitTest *test)
 {
-	ft::vector<int> vec(5, 42);
+	FT::vector<int> vec(5, 42);
 
 	test->ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(5));
 	unsigned long original_cap = vec.capacity();
@@ -566,7 +566,7 @@ void	test_vector_erase_one(UnitTest *test)
 
 void	test_vector_erase_range(UnitTest *test)
 {
-	ft::vector<int> vec;
+	FT::vector<int> vec;
 
 	vec.push_back(1);
 	vec.push_back(2);
@@ -581,7 +581,7 @@ void	test_vector_erase_range(UnitTest *test)
 
 	test->ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(10));
 	unsigned long original_cap = vec.capacity();
-	ft::vector<int>::iterator ret = vec.erase(vec.begin()+2, vec.begin()+6);
+	FT::vector<int>::iterator ret = vec.erase(vec.begin()+2, vec.begin()+6);
 	test->ASSERT_EQUAL(*ret, vec[2]);
 	test->ASSERT_EQUAL(vec.capacity(), original_cap);
 	test->ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(6));
@@ -596,7 +596,7 @@ void	test_vector_erase_range(UnitTest *test)
 
 void	test_vector_pop_back(UnitTest *test)
 {
-	ft::vector<int> vec;
+	FT::vector<int> vec;
 
 	vec.push_back(1);
 	vec.push_back(2);
@@ -611,9 +611,9 @@ void	test_vector_pop_back(UnitTest *test)
 
 	test->ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(10));
 	unsigned long original_cap = vec.capacity();
-	ft::vector<int>::iterator end = vec.end();
+	FT::vector<int>::iterator end = vec.end();
 	int count = 0;
-	for (ft::vector<int>::iterator it = vec.begin(); it != end; ++it)
+	for (FT::vector<int>::iterator it = vec.begin(); it != end; ++it)
 	{
 		test->ASSERT_EQUAL(*it, count + 1);
 		++count;
@@ -623,7 +623,7 @@ void	test_vector_pop_back(UnitTest *test)
 	vec.pop_back();
 	end = vec.end();
 	count = 0;
-	for (ft::vector<int>::iterator it = vec.begin(); it != end; ++it)
+	for (FT::vector<int>::iterator it = vec.begin(); it != end; ++it)
 	{
 		test->ASSERT_EQUAL(*it, count + 1);
 		++count;
@@ -635,7 +635,7 @@ void	test_vector_pop_back(UnitTest *test)
 
 void	test_vector_resize(UnitTest *test)
 {
-	ft::vector<int> vec;
+	FT::vector<int> vec;
 
 	vec.push_back(0);
 	vec.push_back(1);
@@ -650,9 +650,9 @@ void	test_vector_resize(UnitTest *test)
 
 	test->ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(10));
 	unsigned long original_cap = vec.capacity();
-	ft::vector<int>::iterator end = vec.end();
+	FT::vector<int>::iterator end = vec.end();
 	int count = 0;
-	for (ft::vector<int>::iterator it = vec.begin(); it != end; ++it)
+	for (FT::vector<int>::iterator it = vec.begin(); it != end; ++it)
 	{
 		test->ASSERT_EQUAL(*it, count);
 		++count;
@@ -661,7 +661,7 @@ void	test_vector_resize(UnitTest *test)
 	vec.resize(8);
 	end = vec.end();
 	count = 0;
-	for (ft::vector<int>::iterator it = vec.begin(); it != end; ++it)
+	for (FT::vector<int>::iterator it = vec.begin(); it != end; ++it)
 	{
 		test->ASSERT_EQUAL(*it, count);
 		++count;
@@ -672,7 +672,7 @@ void	test_vector_resize(UnitTest *test)
 	vec.resize(15, 42);
 	end = vec.end();
 	count = 0;
-	for (ft::vector<int>::iterator it = vec.begin(); it != end; ++it)
+	for (FT::vector<int>::iterator it = vec.begin(); it != end; ++it)
 	{
 		if (count < 8)
 			test->ASSERT_EQUAL(*it, count);
@@ -688,10 +688,10 @@ void	test_vector_resize(UnitTest *test)
 
 void	test_vector_swap(UnitTest *test)
 {
-	ft::vector<int> v1(3, 100);
-	ft::vector<int> v2(5, 200);
+	FT::vector<int> v1(3, 100);
+	FT::vector<int> v2(5, 200);
 
-	ft::vector<int>::iterator it = v1.begin() + 2;
+	FT::vector<int>::iterator it = v1.begin() + 2;
 	v1.swap(v2);
 	test->ASSERT_EQUAL(v1.size(), static_cast<unsigned int>(5));
 	test->ASSERT_EQUAL(v2.size(), static_cast<unsigned int>(3));
@@ -702,11 +702,11 @@ void	test_vector_swap(UnitTest *test)
 
 void	test_vector_swap_overload(UnitTest *test)
 {
-	ft::vector<int> v1(3, 100);
-	ft::vector<int> v2(5, 200);
+	FT::vector<int> v1(3, 100);
+	FT::vector<int> v2(5, 200);
 
-	ft::vector<int>::iterator it = v1.begin() + 2;
-	ft::swap(v1, v2);
+	FT::vector<int>::iterator it = v1.begin() + 2;
+	FT::swap(v1, v2);
 	test->ASSERT_EQUAL(v1.size(), static_cast<unsigned int>(5));
 	test->ASSERT_EQUAL(v2.size(), static_cast<unsigned int>(3));
 	test->ASSERT_EQUAL(v1.at(3), 200);
@@ -716,8 +716,8 @@ void	test_vector_swap_overload(UnitTest *test)
 
 void	test_vector_comparisons(UnitTest *test)
 {
-	ft::vector<int> a(3, 100);
-	ft::vector<int> b(5, 200);
+	FT::vector<int> a(3, 100);
+	FT::vector<int> b(5, 200);
 
 	test->ASSERT_EQUAL(a == b, false);
 	test->ASSERT_EQUAL(a != b, true);

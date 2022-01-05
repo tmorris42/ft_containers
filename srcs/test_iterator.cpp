@@ -3,8 +3,8 @@
 void	test_random_access_iterator_tag_int(UnitTest *test)
 {
 		
-	typedef ft::iterator_traits<int*> traits;
-	if (typeid(traits::iterator_category) == typeid(ft::random_access_iterator_tag))
+	typedef FT::iterator_traits<int*> traits;
+	if (typeid(traits::iterator_category) == typeid(FT::random_access_iterator_tag))
 		test->ASSERT_EQUAL(true, true);
 	else
 		test->ASSERT_EQUAL(true, false);
@@ -13,8 +13,8 @@ void	test_random_access_iterator_tag_int(UnitTest *test)
 void	test_random_access_iterator_tag_vector(UnitTest *test)
 {
 		
-	typedef ft::iterator_traits<ft::vector<int>::iterator> traits;
-	if (typeid(traits::iterator_category) == typeid(ft::random_access_iterator_tag))
+	typedef FT::iterator_traits<FT::vector<int>::iterator> traits;
+	if (typeid(traits::iterator_category) == typeid(FT::random_access_iterator_tag))
 		test->ASSERT_EQUAL(true, true);
 	else
 		test->ASSERT_EQUAL(true, false);
@@ -22,14 +22,14 @@ void	test_random_access_iterator_tag_vector(UnitTest *test)
 
 void	test_reverse_iterator_vector(UnitTest *test)
 {
-	ft::vector<int>	v;
+	FT::vector<int>	v;
 	for (int x = 0; x < 10; ++x)
 	{
 		v.push_back(x);
 	}
 
-	ft::vector<int>::reverse_iterator	rit;
-	ft::vector<int>::reverse_iterator	rite;
+	FT::vector<int>::reverse_iterator	rit;
+	FT::vector<int>::reverse_iterator	rite;
 	rit = v.rbegin();
 	rite = v.rend();
 	int	expected = v.size() - 1;
@@ -56,19 +56,19 @@ void	test_enable_if(UnitTest *test)
 void	test_lexicographical_compare(UnitTest *test)
 {
 	bool	ret;
-	ft::vector<char> v1;
+	FT::vector<char> v1;
 	v1.push_back('a');
 	v1.push_back('b');
 	v1.push_back('c');
 	v1.push_back('d');
-	ft::vector<char> v2(v1);
-	ret = ft::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end());
+	FT::vector<char> v2(v1);
+	ret = FT::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end());
 	test->ASSERT_EQUAL(ret, false);
 	v1.pop_back();
-	ret = ft::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end());
+	ret = FT::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end());
 	test->ASSERT_EQUAL(ret, true);
 	v1.push_back('c');
-	ret = ft::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end());
+	ret = FT::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end());
 	test->ASSERT_EQUAL(ret, true);
 }
 
@@ -78,18 +78,18 @@ void	test_pair(UnitTest *test)
 	char c = 'a';
 	int a[5] = {1, 2, 3, 4, 5};
 	int & r = n;
-	ft::pair<int, char>	p = ft::make_pair(n, c);
+	FT::pair<int, char>	p = FT::make_pair(n, c);
 	test->ASSERT_EQUAL(p.first, 1);
 	test->ASSERT_EQUAL(p.second, 'a');
 
-	ft::pair<int*, int*>	p2 = ft::make_pair(&r, a);
+	FT::pair<int*, int*>	p2 = FT::make_pair(&r, a);
 	n = 7;
 	test->ASSERT_EQUAL(p.first, 1);
 	test->ASSERT_EQUAL(*p2.first, 7);
 	test->ASSERT_EQUAL(*(p2.second + 2), 3);
 
 	// Test comparisons
-	ft::pair<int, char> p3 = p;
+	FT::pair<int, char> p3 = p;
 	p3.second = 'b';
 	test->ASSERT_EQUAL(p == p3, false);
 	test->ASSERT_EQUAL(p != p3, true);

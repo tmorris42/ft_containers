@@ -5,6 +5,7 @@
 # include <typeinfo> // typeid
 # include "main.hpp"
 # include "UnitTest.hpp"
+# include "vector.hpp"
 
 void	add_test_iterator_suite(UnitTest & ut_test);
 
