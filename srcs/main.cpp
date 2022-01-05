@@ -710,6 +710,20 @@ void	test_vector_swap(UnitTest *test)
 	test->ASSERT_EQUAL(*it, 100);
 }
 
+void	test_vector_swap_overload(UnitTest *test)
+{
+	ft::vector<int> v1(3, 100);
+	ft::vector<int> v2(5, 200);
+
+	ft::vector<int>::iterator it = v1.begin() + 2;
+	ft::swap(v1, v2);
+	test->ASSERT_EQUAL(v1.size(), static_cast<unsigned int>(5));
+	test->ASSERT_EQUAL(v2.size(), static_cast<unsigned int>(3));
+	test->ASSERT_EQUAL(v1.at(3), 200);
+	test->ASSERT_EQUAL(v2.at(2), 100);
+	test->ASSERT_EQUAL(*it, 100);
+}
+
 void	test_vector_comparisons(UnitTest *test)
 {
 	ft::vector<int> a(3, 100);
@@ -762,6 +776,7 @@ int	main(int argc, char **argv)
 	ADD_TEST(test_vector_resize);
 	ADD_TEST(test_vector_assign);
 	ADD_TEST(test_vector_swap);
+	ADD_TEST(test_vector_swap_overload);
 	ADD_TEST(test_vector_comparisons);
 
 	ADD_TEST_SUITE(add_test_iterator_suite);

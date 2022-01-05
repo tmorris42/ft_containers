@@ -75,8 +75,11 @@ namespace ft
 				__destroy_space(this->__start, this->__size);
 			};
 			vector &	operator=(vector const & other) {
-				this->reserve(other->size());
-				__copy_space(this->__start, other->begin());
+				if (this != &other)
+				{
+					this->assign(other.begin(), other.end());
+				}
+				return (*this);
 			}
 			
 			void	assign(size_type n, const value_type & value)
@@ -417,6 +420,12 @@ namespace ft
 	bool	operator>=(vector<T, U> const & lhs, vector<T, U> const & rhs)
 	{
 		return (!(lhs < rhs));
+	}
+
+	template < class T, class U >
+	void	swap(vector<T, U> & v1, vector<T, U> & v2)
+	{
+		v1.swap(v2);
 	}
 
 }
