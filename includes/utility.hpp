@@ -23,7 +23,7 @@ namespace ft
 		// }
 
 		template <class U1, class U2>
-		pair( const pair<U1, U2> & p) : first(p.first), second(p.second) {};
+		pair( const pair<U1, U2> & p) : first(p.first), second(p.second) {}
 	};
 
 	template <class T1, class T2>
