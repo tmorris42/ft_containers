@@ -52,11 +52,12 @@ namespace ft
 				}
 			}
 
-			// template< class InputIt >
-			// vector( InputIt first, InputIt last, const Allocator& alloc = Allocator() )  : __start(0), __capacity(0), __size(0), __alloc(alloc)
-			// {
-			// 	// use insert
-			// }
+			template< class InputIt >
+			vector( InputIt first, InputIt last, const allocator_type & alloc = allocator_type(),
+					typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)  : __start(0), __capacity(0), __size(0), __alloc(alloc)
+			{
+				this->insert(this->begin(), first, last);
+			}
 
 			vector( const vector& other ) : __start(0), __capacity(0), __size(0),  __alloc(other.get_allocator())
 			{
