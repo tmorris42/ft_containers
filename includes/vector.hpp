@@ -289,7 +289,7 @@ namespace ft
 			iterator	erase(iterator first, iterator last)
 			{
 				//check if first and last are in range, or not?
-				size_type N = last - first;
+				difference_type N = last - first;
 				while (first + N != this->end())
 				{
 					(*first) = (*first + N);

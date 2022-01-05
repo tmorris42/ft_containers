@@ -591,7 +591,8 @@ void	test_vector_erase_range(UnitTest *test)
 
 	test->ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(10));
 	unsigned long original_cap = vec.capacity();
-	vec.erase(vec.begin()+2, vec.begin()+6);
+	ft::vector<int>::iterator ret = vec.erase(vec.begin()+2, vec.begin()+6);
+	test->ASSERT_EQUAL(*ret, vec[2]);
 	test->ASSERT_EQUAL(vec.capacity(), original_cap);
 	test->ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(6));
 	test->ASSERT_EQUAL(vec.at(1), 2);
@@ -599,6 +600,8 @@ void	test_vector_erase_range(UnitTest *test)
 	test->ASSERT_EQUAL(vec.at(3), 8);
 	test->ASSERT_EQUAL(vec.at(4), 9);
 	test->ASSERT_EQUAL(vec.at(5), 10);
+	ret = vec.erase(vec.begin()+2, vec.end());
+	test->ASSERT_EQUAL(*ret, *vec.end());
 }
 
 void	test_vector_pop_back(UnitTest *test)
