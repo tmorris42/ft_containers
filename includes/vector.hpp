@@ -192,10 +192,11 @@ namespace ft
 			// Modifiers
 			void	clear()
 			{
-				for (; this->__size > 0; --this->__size)
+				for (size_type i = 0; i < this->size(); ++i)
 				{
-					this->get_allocator().destroy(this->__start + this->__size);
+					this->get_allocator().destroy(this->__start + i);
 				}
+				this->__size = 0;
 			}
 			
 			iterator insert( iterator pos, const T& value )
