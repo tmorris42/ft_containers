@@ -9,6 +9,7 @@
 
 # include "iterator.hpp"
 # include "type_traits.hpp"
+# include "algorithm.hpp"
 
 namespace ft
 {
@@ -375,17 +376,48 @@ namespace ft
 
 
 	template < class T, class U >
-	bool	operator==(vector<T, U> const & lhs, vector<T, U> const & rhs);
+	bool	operator==(vector<T, U> const & lhs, vector<T, U> const & rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return (false);
+		typename vector<T, U>::iterator it1 = lhs.begin();
+		typename vector<T, U>::iterator it2 = rhs.begin();
+		typename vector<T, U>::iterator ite1 = lhs.end();
+		typename vector<T, U>::iterator ite2 = rhs.end();
+		while (it1 != ite1 && it2 != ite2)
+		{
+			if (*it1 != *it2)
+				return (false);
+			++it1;
+			++it2;
+		}
+		return (true);
+	}
 	template < class T, class U >
-	bool	operator!=(vector<T, U> const & lhs, vector<T, U> const & rhs);
+	bool	operator!=(vector<T, U> const & lhs, vector<T, U> const & rhs)
+	{
+		return (!(lhs == rhs));
+	}
 	template < class T, class U >
-	bool	operator<(vector<T, U> const & lhs, vector<T, U> const & rhs);
+	bool	operator<(vector<T, U> const & lhs, vector<T, U> const & rhs)
+	{
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
 	template < class T, class U >
-	bool	operator<=(vector<T, U> const & lhs, vector<T, U> const & rhs);
+	bool	operator<=(vector<T, U> const & lhs, vector<T, U> const & rhs)
+	{
+		return (!(rhs < lhs));
+	}
 	template < class T, class U >
-	bool	operator>(vector<T, U> const & lhs, vector<T, U> const & rhs);
+	bool	operator>(vector<T, U> const & lhs, vector<T, U> const & rhs)
+	{
+		return (rhs < lhs);
+	}
 	template < class T, class U >
-	bool	operator>=(vector<T, U> const & lhs, vector<T, U> const & rhs);
+	bool	operator>=(vector<T, U> const & lhs, vector<T, U> const & rhs)
+	{
+		return (!(lhs < rhs));
+	}
 
 }
 #endif
