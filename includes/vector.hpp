@@ -317,7 +317,24 @@ namespace ft
 					this->push_back(value);
 			}
 
-			void	swap();
+			void	swap(vector<T, Allocator> & x)
+			{
+				if (this == &x)
+					return ;
+
+				pointer start_tmp = x.__start;
+				size_type size_tmp = x.__size;
+				size_type cap_tmp = x.__capacity;
+				allocator_type alloc_tmp = x.__alloc;
+				x.__start = this->__start;
+				x.__size = this->__size;
+				x.__capacity = this->__capacity;
+				x.__alloc = this->__alloc;	
+				this->__start = start_tmp;
+				this->__size = size_tmp;
+				this->__capacity = cap_tmp;
+				this->__alloc = alloc_tmp;
+			}
 
 		private:
 			pointer			__start;	//pointer to start	
