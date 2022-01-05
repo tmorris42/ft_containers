@@ -49,6 +49,7 @@ void	test_vector_copy_constructor(UnitTest *test)
 }
 
 {
+	test->ASSERT_EQUAL(Vec.empty(), false);
 void	test_vector_push_back(UnitTest *test)
 {
 	// test->ASSERT_EQUAL()
