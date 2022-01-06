@@ -518,10 +518,49 @@ void	test_vector_insert_iter(UnitTest *test)
 
 	// vec2.push_back(-1);
 	vec2.insert(vec2.begin(), Vec.begin(), Vec.end());
-	// test->ASSERT_EQUAL(vec2, Vec); // == not implemented yet
 	test->ASSERT_EQUAL(vec2.size(), Vec.size());
+
+	test->ASSERT_EQUAL(vec2[0], 500);
+	test->ASSERT_EQUAL(vec2[1], 500);
+	test->ASSERT_EQUAL(vec2[2], 500);
+	test->ASSERT_EQUAL(vec2[3], 500);
+	test->ASSERT_EQUAL(vec2[4], 500);
+	test->ASSERT_EQUAL(vec2[5], 500);
+	test->ASSERT_EQUAL(vec2[6], 500);
+	test->ASSERT_EQUAL(vec2[7], 500);
+	test->ASSERT_EQUAL(vec2[8], 500);
+	test->ASSERT_EQUAL(vec2[9], 500);
+	test->ASSERT_EQUAL(vec2[10], 5);
+	test->ASSERT_EQUAL(vec2[11], 6);
+	test->ASSERT_EQUAL(vec2[12], 42);
+	test->ASSERT_EQUAL(vec2[13], 42);
+	test->ASSERT_EQUAL(vec2[14], 42);
+	test->ASSERT_EQUAL(vec2[15], 42);
+	test->ASSERT_EQUAL(vec2[16], 42);
+	test->ASSERT_EQUAL(vec2[17], 42);
+	test->ASSERT_EQUAL(vec2[18], 42);
+	test->ASSERT_EQUAL(vec2[19], 42);
+	test->ASSERT_EQUAL(vec2[20], 42);
+	test->ASSERT_EQUAL(vec2[21], 42);
+	test->ASSERT_EQUAL(vec2[22], 7);
+	test->ASSERT_EQUAL(vec2[23], 8);
+	test->ASSERT_EQUAL(vec2[24], 9);
+	test->ASSERT_EQUAL(vec2[25], 1000);
+	test->ASSERT_EQUAL(vec2[26], 1000);
+	test->ASSERT_EQUAL(vec2[27], 1000);
+	test->ASSERT_EQUAL(vec2[28], 1000);
+	test->ASSERT_EQUAL(vec2[29], 1000);
+	test->ASSERT_EQUAL(vec2[30], 1000);
+	test->ASSERT_EQUAL(vec2[31], 1000);
+	test->ASSERT_EQUAL(vec2[32], 1000);
+	test->ASSERT_EQUAL(vec2[33], 1000);
+	test->ASSERT_EQUAL(vec2[34], 1000);
+
+
+
 	test->ASSERT_EQUAL(*(vec2.begin()), *(Vec.begin()));
 	test->ASSERT_EQUAL(*(vec2.end() - 1), *(Vec.end() - 1));
+	test->ASSERT_EQUALQ(vec2, Vec); // == not implemented yet
 }
 
 void	test_vector_clear(UnitTest *test)
@@ -749,11 +788,11 @@ void	add_test_vector_suite(UnitTest & ut_test)
 	ADD_TEST(test_vector_reserve);
 	ADD_TEST(test_vector_count_value_constructor);
 	ADD_TEST(test_vector_copy_constructor);
-	// ADD_TEST(test_vector_iter_constructor);
+	ADD_TEST(test_vector_iter_constructor);
 	ADD_TEST(test_vector_insert);
 
-	// ADD_TEST(test_vector_insert_count);
-	// ADD_TEST(test_vector_insert_iter);
+	ADD_TEST(test_vector_insert_count); // Allocates different amount of memory than REAL
+	ADD_TEST(test_vector_insert_iter);
 
 	ADD_TEST(test_vector_clear);
 	ADD_TEST(test_vector_erase_one);

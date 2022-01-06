@@ -269,11 +269,10 @@ namespace ft
 			template< class InputIt >
 			void insert( iterator pos, InputIt first, InputIt last )
 			{
-				--pos;
 				while (first != last)
 				{
-					this->insert(pos + 1, *first);
-					++first;
+					this->insert(pos, *(last - 1));
+					--last;
 				}
 			}
 
