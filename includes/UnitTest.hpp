@@ -28,6 +28,7 @@
 # define RUN_ALL_TESTS ut_test.run_all_tests
 # define REPORT ut_test.report
 # define ASSERT_EQUAL(a, b) assertEqual(a, b, #a, #b)
+# define ASSERT_EQUALQ(a, b) assertEqualQ(a, b, #a, #b)
 # define ASSERT_ERROR(operation) {try {operation; throw std::runtime_error("Error: no exception thrown");} catch(const std::exception& e) {std::cerr << e.what() << std::endl;}}
 # define ASSERT_NO_ERROR(operation) {try {operation;} catch(const std::exception& e) {std::cerr << e.what() << std::endl; throw std::runtime_error("Error: exception occurred");}}
 
@@ -87,6 +88,17 @@ class UnitTest
 		{
 			if (this->verbose)
 				std::cout << std::endl << "checking: " << aName << "[ " << a << " ] == " << bName << "[ " << b << " ]";
+			if (a != b)
+				throw std::runtime_error("Error: arguments are not equal");
+			else
+				return true;
+		}
+
+		template < typename T, typename U >
+		bool		assertEqualQ(T a, U b, std::string aName, std::string bName)
+		{
+			if (this->verbose)
+				std::cout << std::endl << "checking: " << aName << " == " << bName;
 			if (a != b)
 				throw std::runtime_error("Error: arguments are not equal");
 			else
