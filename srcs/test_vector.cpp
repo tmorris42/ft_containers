@@ -356,6 +356,21 @@ int	test_vector_insert()
 return (0);
 }
 
+int	test_vector_insert_count_allocation_amount()
+{
+	FT::vector<int> Vec;
+	Vec.push_back(5);
+	Vec.push_back(6);
+	Vec.push_back(7);
+	Vec.push_back(8);
+	Vec.push_back(9);
+	Vec.insert(Vec.begin(), (std::size_t)10, 42);
+	Vec.insert(Vec.begin(), (std::size_t)10, 42);
+	Vec.insert(Vec.begin(), (std::size_t)10, 42);
+	ASSERT_EQUAL(Vec.capacity(), static_cast<unsigned int>(50));
+	return (0);
+}
+
 int	test_vector_insert_count()
 {
 	FT::vector<int> Vec;
@@ -414,7 +429,6 @@ int	test_vector_insert_count()
 	ASSERT_EQUAL(Vec[24], 9);
 	Vec.insert(Vec.end(), (std::size_t)10, 1000);
 	ASSERT_EQUAL(Vec.size(), static_cast<unsigned int>(35));
-	ASSERT_EQUAL(Vec.capacity(), static_cast<unsigned int>(50));
 	ASSERT_EQUAL(Vec[0], 500);
 	ASSERT_EQUAL(Vec[1], 500);
 	ASSERT_EQUAL(Vec[2], 500);
@@ -843,6 +857,7 @@ void	add_test_vector_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_vector_insert);
 
 	ADD_TEST(testlist, test_vector_insert_count); // Allocates different amount of memory than REAL
+	ADD_TEST(testlist, test_vector_insert_count_allocation_amount); // Allocates different amount of memory than REAL
 	ADD_TEST(testlist, test_vector_insert_iter);
 
 	ADD_TEST(testlist, test_vector_clear);
