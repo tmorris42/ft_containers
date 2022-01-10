@@ -1,167 +1,98 @@
 #include "UnitTest.hpp"
 
-UnitTest::UnitTest() : stdout_buffer(NULL), buffer(), verbose(false), testsRun(), testsFailed(), testsPassed(), tests()
+void	load_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, TestFunction2 function, std::string description)
 {
-	return ;
+	// std::cout << "Adding test (" << description << ")" << std::endl;
+	Test2 newTest;
+	newTest.desc = description;
+	newTest.func = function;
+	newTest.id = testlist->size();
+	newTest.status = 0;
+	testlist->push_back(newTest);
+	// std::cout << "Tests added so far: " << testlist->size() << std::endl;
 }
 
-UnitTest::UnitTest(bool verbosity) : stdout_buffer(NULL), buffer(), verbose(verbosity), testsRun(), testsFailed(), testsPassed(), tests()
+void	print_test_results(Test2 *test)
 {
-	return ;
-}
-
-UnitTest::UnitTest(UnitTest const & src) : stdout_buffer(NULL), buffer(NULL), verbose(src.verbose), testsRun(), testsFailed(), testsPassed(), tests()
-{
-	*this = src;
-	return ;
-}
-
-UnitTest::~UnitTest()
-{
-	// this->tests.resize(0);
-	return ;
-}
-
-UnitTest const &	UnitTest::operator=(UnitTest const & rhs)
-{
-	if (this != &rhs)
+	std::cout << test->desc << ": ";
+	if (WIFEXITED(test->status) && !WEXITSTATUS(test->status))
 	{
-		this->stdout_buffer = rhs.stdout_buffer;
-	}
-	return (*this);
-}
-
-void	UnitTest::stdout_redirect()
-{
-    this->stdout_buffer = std::cout.rdbuf(this->buffer.rdbuf());
-}
-
-std::string UnitTest::stdout_restore()
-{
-    std::cout.rdbuf( this->stdout_buffer );
-    std::string output = this->buffer.str();
-    buffer.str("");
-    buffer.clear();
-    if (this->verbose)
-        std::cout << output << std::endl;
-    return (output);
-}
-
-void	UnitTest::run(void (*test_case)(UnitTest *self))
-{
-	++testsRun;
-	std::cout << "Running test #" << this->testsRun << ": ";
-	try
-	{
-		test_case(this);
-		std::cout << "\x1B[32mPASS\x1B[m";
-		++testsPassed;
-	}
-	catch(const std::exception& e)
-	{
-		std::cout << "\x1B[31mFAIL\x1B[m";
-		if (this->verbose)
-			std::cout << " -- " << e.what();
-		++testsFailed;
-	}	
-	std::cout << std::endl;
-}
-
-void	UnitTest::run(void (*test_case)(UnitTest *self), std::string const & title)
-{
-	++testsRun;
-	std::cout << "Test #" << this->testsRun << " - " << title << ": ";
-	try
-	{
-		test_case(this);
-		std::cout << "\x1B[32mPASS\x1B[m";
-		++testsPassed;
-	}
-	catch(const std::exception& e)
-	{
-		std::cout << "\x1B[31mFAIL\x1B[m";
-		if (this->verbose)
-			std::cout << " -- " << e.what();
-		++testsFailed;
-	}	
-	std::cout << std::endl;
-}
-
-void	UnitTest::run(Test test)
-{
-	++testsRun;
-	std::cout << "Test #" << test.id << "(" << this->testsRun << "/\?\?) - " << test.desc << " : ";
-	try
-	{
-		test.func(this);
-		if (this->verbose)
-			std::cout << std::endl;
-		std::cout << "\x1B[32mPASS\x1B[m";
-		++testsPassed;
-	}
-	catch(const std::exception& e)
-	{
-		if (this->verbose)
-			std::cout << std::endl;
-		std::cout << "\x1B[31mFAIL\x1B[m";
-		if (this->verbose)
-			std::cout << " -- " << e.what();
-		++testsFailed;
-	}	
-	std::cout << std::endl;
-}
-
-void	UnitTest::run(unsigned int id)
-{
-	if (id < this->tests.size())
-	{
-		this->run(this->tests[id]);
+		std::cout << "\x1B[32mOK\x1B[m";
+		// ++ut_tests_passed;
 	}
 	else
 	{
-		std::cout << "No test with id == " << id + 1 << std::endl;
+		std::cout << "\x1B[31m";
+		if (WIFSIGNALED(test->status))
+		{
+			switch (WTERMSIG(test->status))
+			{
+				case SIGSEGV: std::cout << "SIGSEGV"; break;
+				default: std::cout << "SIGNAL";
+			}
+		}
+		else
+			std::cout << "KO";
+		std::cout << "\x1B[m";
 	}
-}
-
-double	UnitTest::report()
-{
-	double	score;
-
-	std::cout << std::endl << "Ran " << this->testsRun << " test";
-	if (this->testsRun == 0 || this->testsRun > 1)
-		std::cout << "s";
 	std::cout << std::endl;
-	std::cout << "Passed: \x1B[32m" << this->testsPassed << "\x1B[m" << std::endl;
-	std::cout << "Failed: \x1B[31m" << this->testsFailed << "\x1B[m" << std::endl;
-	score = static_cast<double>(this->testsPassed) / static_cast<double>(this->testsRun);
-	std::cout << "Score: " << score * 100.0 << "%" << std::endl;
-	return (score);
 }
 
-void		UnitTest::set_verbosity(bool verbosity)
+int		launch_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, Test2 *test)
 {
-	this->verbose = verbosity;
-}
+	TestFunction2 func = test->func;
+	pid_t pid;
 
-bool		UnitTest::get_verbosity()
-{
-	return (this->verbose);
-}
-
-bool		UnitTest::add_test(TestFunction function, std::string description)
-{
-	Test newTest;
-	newTest.desc = description;
-	newTest.func = function;
-	newTest.id = this->tests.size() + 1;
-	this->tests.push_back(newTest);
-	return (true);
-}
-
-void		UnitTest::run_all_tests()
-{
-	for (FRAMEWORK_NAMESPACE::vector<Test>::iterator it = this->tests.begin(); it != this->tests.end(); ++it)
+	pid = fork();
+	if (pid < 0)
 	{
-		this->run(*it);
+		//error
 	}
+	else if (!pid)
+	{
+		//child
+		testlist->~vector();
+		try
+		{
+			exit(func());
+		}
+		catch (std::exception)
+		{
+			exit(-1);
+		}
+	}
+	else
+	{
+		//parent
+		waitpid(pid, &(test->status), 0);
+		print_test_results(test);
+		return (-1 * (!WIFEXITED(test->status) || WEXITSTATUS(test->status)));
+	}
+	return (0);
+}
+
+int		launch_all_tests(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
+{
+	int	success;
+	int	total;
+	FRAMEWORK_NAMESPACE::vector<Test2>::iterator it;
+	FRAMEWORK_NAMESPACE::vector<Test2>::iterator ite;
+
+	success = 0;
+	total = 0;
+	it = testlist->begin();
+	ite = testlist->end();
+	while (it != ite)
+	{
+		// std::cout << "Running test " << (*it).id << std::endl;
+		++total;
+		success += (launch_test(testlist, &(*it)) == 0);
+		++it;
+	}
+	if (success == total)
+		std::cout << "\x1B[32m" << std::endl;
+	else
+		std::cout << "\x1B[31m" << std::endl;
+	std::cout << success << "/" << total << " passed" << "\x1B[m" << std::endl;
+	return (0);
 }

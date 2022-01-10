@@ -3,10 +3,11 @@
 
 # include <iostream> // std::cout
 # include <typeinfo> // typeid
+
 # include "main.hpp"
 # include "UnitTest.hpp"
 # include "vector.hpp"
 
-void	add_test_vector_suite(UnitTest & ut_test);
+void	add_test_vector_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
 
 #endif

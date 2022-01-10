@@ -4,6 +4,11 @@
 # include <iostream>
 # include <sstream>
 
+# include <sys/types.h> //	waitpid, fork
+# include <sys/wait.h>	//	waitpid
+# include <unistd.h> 	//	fork
+# include <stdlib.h>	// exit
+
 # define FRAMEWORK_NAMESPACE std
  // SHOULD USE MY VERSION!!! ******IMPORTANT******
 
@@ -20,90 +25,37 @@
  # define FT ft
 # endif
 
-# define INIT UnitTest	ut_test(false)
-# define ADD_TEST(func) ut_test.add_test(func, #func)
-# define ADD_TEST_SUITE(func) func(ut_test)
-# define SET_VERBOSITY(verbosity) ut_test.set_verbosity(verbosity)
-# define RUN_TEST(index) ut_test.run(index)
-# define RUN_ALL_TESTS ut_test.run_all_tests
-# define REPORT ut_test.report
+extern bool VERBOSE;
+
+# define ADD_TEST(testlist, func)	load_test(testlist, func, #func)
+# define RUN_ALL_TESTS(testlist) launch_all_tests(testlist)
 # define ASSERT_EQUAL(a, b) assertEqual(a, b, #a, #b)
-# define ASSERT_EQUALQ(a, b) assertEqualQ(a, b, #a, #b)
 # define ASSERT_ERROR(operation) {try {operation; throw std::runtime_error("Error: no exception thrown");} catch(const std::exception& e) {std::cerr << e.what() << std::endl;}}
 # define ASSERT_NO_ERROR(operation) {try {operation;} catch(const std::exception& e) {std::cerr << e.what() << std::endl; throw std::runtime_error("Error: exception occurred");}}
 
-class UnitTest;
-typedef void (*TestFunction)(UnitTest*);
-
-struct Test
+typedef int	(*TestFunction2)(void);
+struct Test2
 {
 	std::string	desc;
 	int			id;
-	TestFunction	func;
+	TestFunction2	func;
+	int			status;
 };
 
-class UnitTest
+template < typename T, typename U >
+bool		assertEqual(T a, U b, std::string aName, std::string bName)
 {
-	private:
-		std::streambuf		*stdout_buffer;
-		std::stringstream	buffer;
-		bool				verbose;
-		unsigned int		testsRun;
-		unsigned int		testsFailed;
-		unsigned int		testsPassed;
-		FRAMEWORK_NAMESPACE::vector<Test>	tests;
+	if (VERBOSE)
+		std::cout << std::endl << "checking: " << aName << "[ " << a << " ] == " << bName << "[ " << b << " ]";
+	if (a != b)
+	{
+		exit(-1);
+	}
+	else
+		return true;
+}
 
-	public:
-		UnitTest();
-		UnitTest(bool verbosity);
-		UnitTest(UnitTest const & src);
-		virtual ~UnitTest();
-		UnitTest const &	operator=(UnitTest const & rhs);
-		void		run(void (*f)(UnitTest *self));
-		void		run(Test test);
-		void		run(void (*f)(UnitTest *self), std::string const & title);
-		void		run(unsigned int id);
-		double		report();
-		void		stdout_redirect();
-		std::string	stdout_restore();
-		void		set_verbosity(bool verbosity);
-		bool		get_verbosity();
-		bool		add_test(TestFunction function, std::string description);
-		void		run_all_tests();
-		
-		
-		template < typename T, typename U >
-		bool		assertEqual(T a, U b)
-		{
-			if (this->verbose)
-				std::cout << "checking: " << a << " == " << b << std::endl;
-			if (a != b)
-				throw std::runtime_error("Error: arguments are not equal");
-			else
-				return true;
-		}
-
-		template < typename T, typename U >
-		bool		assertEqual(T a, U b, std::string aName, std::string bName)
-		{
-			if (this->verbose)
-				std::cout << std::endl << "checking: " << aName << "[ " << a << " ] == " << bName << "[ " << b << " ]";
-			if (a != b)
-				throw std::runtime_error("Error: arguments are not equal");
-			else
-				return true;
-		}
-
-		template < typename T, typename U >
-		bool		assertEqualQ(T a, U b, std::string aName, std::string bName)
-		{
-			if (this->verbose)
-				std::cout << std::endl << "checking: " << aName << " == " << bName;
-			if (a != b)
-				throw std::runtime_error("Error: arguments are not equal");
-			else
-				return true;
-		}
-};
+void	load_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, TestFunction2 function, std::string description);
+int		launch_all_tests(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
 
 #endif
