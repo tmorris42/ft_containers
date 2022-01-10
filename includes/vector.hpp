@@ -295,7 +295,7 @@ namespace ft
 				difference_type N = last - first;
 				while (first + N != this->end())
 				{
-					(*first) = (*first + N);
+					(*first) = *(first + N);
 					++first;
 				}
 				this->__size -= N;
