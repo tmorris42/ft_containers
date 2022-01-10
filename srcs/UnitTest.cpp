@@ -14,7 +14,7 @@ void	load_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, TestFunction2 funct
 
 void	print_test_results(Test2 *test)
 {
-	std::cout << test->desc << ": ";
+	std::cout << "#" << test->id << ": " << test->desc << ": ";
 	if (WIFEXITED(test->status) && !WEXITSTATUS(test->status))
 	{
 		std::cout << "\x1B[32mOK\x1B[m";
@@ -84,7 +84,6 @@ int		launch_all_tests(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ite = testlist->end();
 	while (it != ite)
 	{
-		// std::cout << "Running test " << (*it).id << std::endl;
 		++total;
 		success += (launch_test(testlist, &(*it)) == 0);
 		++it;
