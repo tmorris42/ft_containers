@@ -13,6 +13,7 @@ int	main(int argc, char **argv)
 	FRAMEWORK_NAMESPACE::vector<Test2> tests;
 	add_test_vector_suite(&tests);
 	add_test_iterator_suite(&tests);
+	add_test_vector_string_suite(&tests);
 
 	if (argc > 1)
 	{
