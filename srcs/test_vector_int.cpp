@@ -1,6 +1,6 @@
-#include "test_vector.hpp"
+#include "test_vector_int.hpp"
 
-int	test_vector_void_constructor()
+int	test_vector_int_void_constructor()
 {
 	FT::vector<int> Vec;
 
@@ -11,7 +11,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_count_value_constructor()
+int	test_vector_int_count_value_constructor()
 {
 	FT::vector<int> Vec(5, 42);
 
@@ -27,7 +27,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_copy_constructor()
+int	test_vector_int_copy_constructor()
 {
 	FT::vector<int> original(5, 42);
 	FT::vector<int> Vec(original);
@@ -44,7 +44,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_iter_constructor()
+int	test_vector_int_iter_constructor()
 {
 	FT::vector<int> original(5, 42);
 	FT::vector<int> Vec(original.begin(), original.end());
@@ -61,7 +61,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_push_back()
+int	test_vector_int_push_back()
 {
 	// ASSERT_EQUAL()
 	FT::vector<int> Vec;
@@ -72,7 +72,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_push_back_twice()
+int	test_vector_int_push_back_twice()
 {
 	// ASSERT_EQUAL()
 	FT::vector<int> Vec;
@@ -86,7 +86,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_push_back_thrice()
+int	test_vector_int_push_back_thrice()
 {
 	// ASSERT_EQUAL()
 	FT::vector<int> Vec;
@@ -102,7 +102,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_push_back_x4()
+int	test_vector_int_push_back_x4()
 {
 	FT::vector<int> Vec;
 	Vec.push_back(5);
@@ -116,7 +116,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_push_back_x5()
+int	test_vector_int_push_back_x5()
 {
 	FT::vector<int> Vec;
 	Vec.push_back(5);
@@ -131,7 +131,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_push_back_x15()
+int	test_vector_int_push_back_x15()
 {
 	FT::vector<int> Vec;
 	Vec.push_back(5);
@@ -156,7 +156,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_empty()
+int	test_vector_int_empty()
 {
 	FT::vector<int> Vec;
 	ASSERT_EQUAL(Vec.empty(), true);
@@ -168,7 +168,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_iterator_forward()
+int	test_vector_int_iterator_forward()
 {
 	FT::vector<int> Vec;
 	Vec.push_back(0);
@@ -187,7 +187,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_at()
+int	test_vector_int_at()
 {
 	FT::vector<int> Vec;
 	Vec.push_back(0);
@@ -205,7 +205,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_operater_bracket()
+int	test_vector_int_operater_bracket()
 {
 	FT::vector<int> Vec;
 	Vec.push_back(0);
@@ -223,7 +223,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_capacity()
+int	test_vector_int_capacity()
 {
 	FT::vector<int> Vec;
 	ASSERT_EQUAL(Vec.capacity(), (unsigned long)(0));
@@ -260,7 +260,7 @@ int	test_vector_capacity()
 return (0);
 }
 
-int	test_vector_capacity_cppref()
+int	test_vector_int_capacity_cppref()
 {
 	int sz = 200;
     FT::vector<int> v1;
@@ -282,7 +282,7 @@ int	test_vector_capacity_cppref()
 	return (0);
 }
 
-int	test_vector_max_size()
+int	test_vector_int_max_size()
 {
 	FT::vector<int> Vec;
 	
@@ -291,7 +291,7 @@ int	test_vector_max_size()
 return (0);
 }
 
-int	test_vector_reserve()
+int	test_vector_int_reserve()
 {
 	FT::vector<int> Vec;
 	
@@ -306,7 +306,7 @@ int	test_vector_reserve()
 return (0);
 }
 
-int	test_vector_reserve_overmax()
+int	test_vector_int_reserve_overmax()
 {
 	FT::vector<int> Vec;
 	
@@ -317,7 +317,7 @@ int	test_vector_reserve_overmax()
 return (0);
 }
 
-int	test_vector_insert()
+int	test_vector_int_insert()
 {
 	FT::vector<int> Vec;
 	Vec.push_back(5);
@@ -356,7 +356,7 @@ int	test_vector_insert()
 return (0);
 }
 
-int	test_vector_insert_count_allocation_amount()
+int	test_vector_int_insert_count_allocation_amount()
 {
 	FT::vector<int> Vec;
 	Vec.push_back(5);
@@ -371,7 +371,7 @@ int	test_vector_insert_count_allocation_amount()
 	return (0);
 }
 
-int	test_vector_insert_count()
+int	test_vector_int_insert_count()
 {
 	FT::vector<int> Vec;
 	Vec.push_back(5);
@@ -467,7 +467,7 @@ int	test_vector_insert_count()
 return (0);
 }
 
-int	test_vector_insert_iter()
+int	test_vector_int_insert_iter()
 {
 	FT::vector<int> Vec;
 	FT::vector<int> vec2;
@@ -610,7 +610,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_clear()
+int	test_vector_int_clear()
 {
 	FT::vector<int> vec(5, 42);
 
@@ -623,7 +623,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_assign()
+int	test_vector_int_assign()
 {
 	FT::vector<int> vec(5, 42);
 
@@ -643,7 +643,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_erase_one()
+int	test_vector_int_erase_one()
 {
 	FT::vector<int> vec(5, 42);
 
@@ -656,7 +656,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_erase_range()
+int	test_vector_int_erase_range()
 {
 	FT::vector<int> vec;
 
@@ -688,7 +688,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_pop_back()
+int	test_vector_int_pop_back()
 {
 	FT::vector<int> vec;
 
@@ -729,7 +729,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_resize()
+int	test_vector_int_resize()
 {
 	FT::vector<int> vec;
 
@@ -784,7 +784,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_swap()
+int	test_vector_int_swap()
 {
 	FT::vector<int> v1(3, 100);
 	FT::vector<int> v2(5, 200);
@@ -800,7 +800,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_swap_overload()
+int	test_vector_int_swap_overload()
 {
 	FT::vector<int> v1(3, 100);
 	FT::vector<int> v2(5, 200);
@@ -816,7 +816,7 @@ return (0);
 return (0);
 }
 
-int	test_vector_comparisons()
+int	test_vector_int_comparisons()
 {
 	FT::vector<int> a(3, 100);
 	FT::vector<int> b(5, 200);
@@ -832,41 +832,41 @@ return (0);
 return (0);
 }
 
-void	add_test_vector_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
+void	add_test_vector_int_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
-	ADD_TEST(testlist, test_vector_empty);
-	ADD_TEST(testlist, test_vector_void_constructor);
-	ADD_TEST(testlist, test_vector_push_back);
-	ADD_TEST(testlist, test_vector_push_back_twice);
-	ADD_TEST(testlist, test_vector_push_back_thrice);
-	ADD_TEST(testlist, test_vector_push_back_x4);
-	ADD_TEST(testlist, test_vector_push_back_x5);
-	ADD_TEST(testlist, test_vector_push_back_x15);
+	ADD_TEST(testlist, test_vector_int_empty);
+	ADD_TEST(testlist, test_vector_int_void_constructor);
+	ADD_TEST(testlist, test_vector_int_push_back);
+	ADD_TEST(testlist, test_vector_int_push_back_twice);
+	ADD_TEST(testlist, test_vector_int_push_back_thrice);
+	ADD_TEST(testlist, test_vector_int_push_back_x4);
+	ADD_TEST(testlist, test_vector_int_push_back_x5);
+	ADD_TEST(testlist, test_vector_int_push_back_x15);
 
-	ADD_TEST(testlist, test_vector_iterator_forward);
-	// ADD_TEST(testlist, test_vector_at); // Causes differences in allocations due to stringstream use in vector::at()
-	ADD_TEST(testlist, test_vector_operater_bracket);
-	ADD_TEST(testlist, test_vector_capacity);
-	ADD_TEST(testlist, test_vector_capacity_cppref);
+	ADD_TEST(testlist, test_vector_int_iterator_forward);
+	// ADD_TEST(testlist, test_vector_int_at); // Causes differences in allocations due to stringstream use in vector::at()
+	ADD_TEST(testlist, test_vector_int_operater_bracket);
+	ADD_TEST(testlist, test_vector_int_capacity);
+	ADD_TEST(testlist, test_vector_int_capacity_cppref);
 
-	ADD_TEST(testlist, test_vector_max_size);
-	ADD_TEST(testlist, test_vector_reserve);
-	ADD_TEST(testlist, test_vector_count_value_constructor);
-	ADD_TEST(testlist, test_vector_copy_constructor);
-	ADD_TEST(testlist, test_vector_iter_constructor);
-	ADD_TEST(testlist, test_vector_insert);
+	ADD_TEST(testlist, test_vector_int_max_size);
+	ADD_TEST(testlist, test_vector_int_reserve);
+	ADD_TEST(testlist, test_vector_int_count_value_constructor);
+	ADD_TEST(testlist, test_vector_int_copy_constructor);
+	ADD_TEST(testlist, test_vector_int_iter_constructor);
+	ADD_TEST(testlist, test_vector_int_insert);
 
-	ADD_TEST(testlist, test_vector_insert_count); // Allocates different amount of memory than REAL
-	ADD_TEST(testlist, test_vector_insert_count_allocation_amount); // Allocates different amount of memory than REAL
-	ADD_TEST(testlist, test_vector_insert_iter);
+	ADD_TEST(testlist, test_vector_int_insert_count); // Allocates different amount of memory than REAL
+	ADD_TEST(testlist, test_vector_int_insert_count_allocation_amount); // Allocates different amount of memory than REAL
+	ADD_TEST(testlist, test_vector_int_insert_iter);
 
-	ADD_TEST(testlist, test_vector_clear);
-	ADD_TEST(testlist, test_vector_erase_one);
-	ADD_TEST(testlist, test_vector_erase_range);
-	ADD_TEST(testlist, test_vector_pop_back);
-	ADD_TEST(testlist, test_vector_resize);
-	ADD_TEST(testlist, test_vector_assign);
-	ADD_TEST(testlist, test_vector_swap);
-	ADD_TEST(testlist, test_vector_swap_overload);
-	ADD_TEST(testlist, test_vector_comparisons);
+	ADD_TEST(testlist, test_vector_int_clear);
+	ADD_TEST(testlist, test_vector_int_erase_one);
+	ADD_TEST(testlist, test_vector_int_erase_range);
+	ADD_TEST(testlist, test_vector_int_pop_back);
+	ADD_TEST(testlist, test_vector_int_resize);
+	ADD_TEST(testlist, test_vector_int_assign);
+	ADD_TEST(testlist, test_vector_int_swap);
+	ADD_TEST(testlist, test_vector_int_swap_overload);
+	ADD_TEST(testlist, test_vector_int_comparisons);
 }

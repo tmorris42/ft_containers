@@ -11,7 +11,7 @@ int	main(int argc, char **argv)
 	bool		runAll(true);
 
 	FRAMEWORK_NAMESPACE::vector<Test2> tests;
-	add_test_vector_suite(&tests);
+	add_test_vector_int_suite(&tests);
 	add_test_iterator_suite(&tests);
 	add_test_vector_string_suite(&tests);
 

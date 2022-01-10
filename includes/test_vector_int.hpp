@@ -8,6 +8,6 @@
 # include "UnitTest.hpp"
 # include "vector.hpp"
 
-void	add_test_vector_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
+void	add_test_vector_int_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
 
 #endif
