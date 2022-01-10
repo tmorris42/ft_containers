@@ -7,11 +7,14 @@ INCLUDE_DIR = includes
 OBJS_DIR = objs
 
 SRCS = main.cpp UnitTest.cpp test_iterator.cpp test_vector_int.cpp test_vector_string.cpp
-HEADER_FILES := vector.hpp iterator.hpp algorithm.hpp type_traits.hpp utility.hpp
-HEADERS := $(addprefix $(INCLUDE_DIR)/, $(HEADER_FILES))
+# HEADER_FILES := vector.hpp iterator.hpp algorithm.hpp type_traits.hpp utility.hpp
+# HEADERS := $(addprefix $(INCLUDE_DIR)/, $(HEADER_FILES))
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
 REAL_OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.real.o))
 INCLUDES = -I$(INCLUDE_DIR)
+
+#https://stackoverflow.com/questions/97338/gcc-dependency-generation-for-a-different-output-directory
+DEPS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.d))
 
 CC_OVERRIDE ?= clang++
 CC	:= $(CC_OVERRIDE)
@@ -25,19 +28,26 @@ endif
 
 all: $(NAME) $(REAL)
 
-$(REAL): $(REAL_OBJS) $(HEADERS)
+$(OBJS_DIR):
+	@mkdir -p objs
+
+$(REAL): $(REAL_OBJS)
 	$(CC) $(REAL_TOGGLE) $(FLAGS) $(REAL_OBJS) $(INCLUDES) -o $(REAL)
 
-$(NAME): $(OBJS) $(HEADERS)
+$(NAME): $(OBJS)
 	$(CC) $(MY_FLAGS) $(OBJS) $(INCLUDES) -o $(NAME)
 
-$(OBJS_DIR)/%.real.o : $(SRCS_DIR)/%.cpp $(INCLUDE_DIR)/%.hpp
-	@mkdir -p objs
+$(OBJS_DIR)/%.real.o : $(SRCS_DIR)/%.cpp $(INCLUDE_DIR)/%.hpp | $(OBJS_DIR)
 	$(CC) $(REAL_TOGGLE) -c $(FLAGS) $(INCLUDES) $< -o $@
 
-$(OBJS_DIR)/%.o : $(SRCS_DIR)/%.cpp $(INCLUDE_DIR)/%.hpp
-	@mkdir -p objs
+$(OBJS_DIR)/%.o : $(SRCS_DIR)/%.cpp $(OBJS_DIR)/%.d $(INCLUDE_DIR)/%.hpp | $(OBJS_DIR)
 	$(CC) -c $(MY_FLAGS) $(INCLUDES) $< -o $@
+
+$(OBJS_DIR)/%.d: $(SRCS_DIR)/%.cpp | $(OBJS_DIR)
+	$(CC) -MF"$@" -MG -MM -MP -MT"$@" -MT"$(<:.cpp=.o)" -c $(FLAGS) $(INCLUDES) $< > $@
+
+$(OBJS_DIR)/%.real.d: $(SRCS_DIR)/%.cpp | $(OBJS_DIR)
+	$(CC) -MM -MD -MP $(REAL_TOGGLE) -c $(FLAGS) $(INCLUDES) $< > $(OBJS_DIR)/$@
 
 real: $(REAL)
 
@@ -59,5 +69,7 @@ test: all
 	@echo "-----------------"
 	@diff -s mine.log real.log
 	@diff -s mine.err.log real.err.log
+
+include $(DEPS)
 
 .PHONY: all clean fclean re test
