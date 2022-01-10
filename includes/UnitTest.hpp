@@ -28,6 +28,7 @@
 extern bool VERBOSE;
 
 # define ADD_TEST(testlist, func)	load_test(testlist, func, #func)
+# define RUN_TEST(testlist, id)	launch_test(&testlist, &(testlist.at(id)))
 # define RUN_ALL_TESTS(testlist) launch_all_tests(testlist)
 # define ASSERT_EQUAL(a, b) assertEqual(a, b, #a, #b)
 # define ASSERT_ERROR(operation) {try {operation; throw std::runtime_error("Error: no exception thrown");} catch(const std::exception& e) {std::cerr << e.what() << std::endl;}}
@@ -56,6 +57,7 @@ bool		assertEqual(T a, U b, std::string aName, std::string bName)
 }
 
 void	load_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, TestFunction2 function, std::string description);
+int		launch_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, Test2 *test);
 int		launch_all_tests(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
 
 #endif
