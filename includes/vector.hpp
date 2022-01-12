@@ -93,9 +93,21 @@ namespace ft
 			void	assign(InputIt first, InputIt last,
 						typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)
 			{
-				this->clear();
-				this->reserve(last - first);
-				this->insert(this->begin(), first, last);
+				// this->clear();
+				iterator	it = this->begin();
+				iterator	ite = this->end();
+				this->resize(last - first);
+				while (it != ite && first != last)
+				{
+					(*it) = (*first);
+					++it;
+					++first;
+				}
+				if (first != last)
+					this->insert(this->end(), first, last);
+				// if ()
+				// this->reserve(last - first);
+				// this->insert(this->begin(), first, last);
 			}
 
 			allocator_type	get_allocator() const {
@@ -270,10 +282,27 @@ namespace ft
 			void insert( iterator pos, InputIt first, InputIt last,
 				typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)
 			{
+				difference_type	diff = pos - this->begin();
+				size_type	count = last - first;
+
+				if (this->__capacity - this->__size < count)
+				{
+					size_type	new_capacity = this->__capacity;
+					if (count > this->__capacity)
+						new_capacity += count - (this->__capacity - this->__size);
+					else if ((this->__capacity * 2) - this->__size < count)
+						new_capacity += count - (this->__capacity - this->__size);
+					else
+						new_capacity *= 2;
+					this->reserve(new_capacity);
+				}
+				this->resize(this->size() + (count));
+				this->__copy_space(this->__start + diff + count, this->__start + diff, this->__size - diff);
 				while (first != last)
 				{
-					this->insert(pos, *(last - 1));
-					--last;
+					*pos = *first;
+					++first;
+					++pos;
 				}
 			}
 
@@ -286,6 +315,7 @@ namespace ft
 					*pos = *(pos + 1);
 					++pos;
 				}
+				this->get_allocator().destroy(pos);
 				this->__size -= 1;
 				return (ret);
 			}
