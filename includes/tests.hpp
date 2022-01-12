@@ -6,12 +6,14 @@
 
 # include "main.hpp"
 # include "UnitTest.hpp"
-# include "vector.hpp"
+// # include "vector.hpp"
 
 void	add_test_iterator_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
 void	add_test_vector_class_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
 void	add_test_vector_int_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
 void	add_test_vector_string_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
 void	add_test_vector_struct_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
+
+void	add_test_stack_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
 
 #endif

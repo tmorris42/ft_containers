@@ -18,7 +18,7 @@
 #  define FT std
 # else // Create using my version by default
 // #  "map.hpp"
-	// #include "stack.hpp"
+#  include "stack.hpp"
 #  include "vector.hpp"
 #  include "iterator.hpp"
 #  include "type_traits.hpp"

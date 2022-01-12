@@ -17,6 +17,8 @@ int	main(int argc, char **argv)
 	add_test_vector_struct_suite(&tests);
 	add_test_vector_class_suite(&tests);
 
+	add_test_stack_suite(&tests);
+
 	if (argc > 1)
 	{
 		int argNumber = 1;
