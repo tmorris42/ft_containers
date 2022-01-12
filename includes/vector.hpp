@@ -267,7 +267,8 @@ namespace ft
 			}
 			
 			template< class InputIt >
-			void insert( iterator pos, InputIt first, InputIt last )
+			void insert( iterator pos, InputIt first, InputIt last,
+				typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)
 			{
 				while (first != last)
 				{
