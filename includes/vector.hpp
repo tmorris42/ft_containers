@@ -178,7 +178,7 @@ namespace ft
 			}
 
 			// Capacity
-			bool	empty() {
+			bool	empty() const {
 				return (this->begin() == this->end());
 			}
 			
