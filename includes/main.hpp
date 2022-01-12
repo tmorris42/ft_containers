@@ -9,6 +9,7 @@
 # include "test_vector_int.hpp"
 # include "test_vector_string.hpp"
 # include "test_vector_struct.hpp"
+# include "test_vector_class.hpp"
 
 # ifdef FT_REAL_VERSION // Create version using real STL containers
 #  include <map>

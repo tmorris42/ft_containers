@@ -15,6 +15,7 @@ int	main(int argc, char **argv)
 	add_test_iterator_suite(&tests);
 	add_test_vector_string_suite(&tests);
 	add_test_vector_struct_suite(&tests);
+	add_test_vector_class_suite(&tests);
 
 	if (argc > 1)
 	{

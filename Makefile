@@ -11,6 +11,7 @@ SRCS = main.cpp UnitTest.cpp \
 			test_vector_int.cpp \
 			test_vector_string.cpp \
 			test_vector_struct.cpp \
+			test_vector_class.cpp \
 
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))

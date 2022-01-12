@@ -31,6 +31,7 @@ extern bool VERBOSE;
 # define RUN_TEST(testlist, id)	launch_test(&testlist, &(testlist.at(id)))
 # define RUN_ALL_TESTS(testlist) launch_all_tests(testlist)
 # define ASSERT_EQUAL(a, b) assertEqual(a, b, #a, #b)
+# define ASSERT_EQUALQ(a, b) assertEqualQ(a, b, #a, #b)
 # define ASSERT_ERROR(operation) {try {operation; throw std::runtime_error("Error: no exception thrown");} catch(const std::exception& e) {std::cerr << e.what() << std::endl;}}
 # define ASSERT_NO_ERROR(operation) {try {operation;} catch(const std::exception& e) {std::cerr << e.what() << std::endl; throw std::runtime_error("Error: exception occurred");}}
 
@@ -48,6 +49,19 @@ bool		assertEqual(T a, U b, std::string aName, std::string bName)
 {
 	if (VERBOSE)
 		std::cout << std::endl << "checking: " << aName << "[ " << a << " ] == " << bName << "[ " << b << " ]";
+	if (a != b)
+	{
+		exit(-1);
+	}
+	else
+		return true;
+}
+
+template < typename T, typename U >
+bool		assertEqualQ(T a, U b, std::string aName, std::string bName)
+{
+	if (VERBOSE)
+		std::cout << std::endl << "checking: " << aName << "[ INVALID_OSTREAM ] == " << bName << "[ INVALID_OSTREAM ]";
 	if (a != b)
 	{
 		exit(-1);
