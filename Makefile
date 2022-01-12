@@ -42,17 +42,17 @@ $(REAL): $(REAL_OBJS)
 $(NAME): $(OBJS)
 	$(CC) $(MY_FLAGS) $(OBJS) $(INCLUDES) -o $(NAME)
 
-$(OBJS_DIR)/%.real.o : $(SRCS_DIR)/%.cpp $(INCLUDE_DIR)/%.hpp | $(OBJS_DIR)
+$(OBJS_DIR)/%.real.o : $(SRCS_DIR)/%.cpp $(OBJS_DIR)/%.real.d | $(OBJS_DIR)
 	$(CC) $(REAL_TOGGLE) -c $(FLAGS) $(INCLUDES) $< -o $@
 
-$(OBJS_DIR)/%.o : $(SRCS_DIR)/%.cpp $(OBJS_DIR)/%.d $(INCLUDE_DIR)/%.hpp | $(OBJS_DIR)
+$(OBJS_DIR)/%.o : $(SRCS_DIR)/%.cpp $(OBJS_DIR)/%.d | $(OBJS_DIR)
 	$(CC) -c $(MY_FLAGS) $(INCLUDES) $< -o $@
 
 $(OBJS_DIR)/%.d: $(SRCS_DIR)/%.cpp | $(OBJS_DIR)
 	$(CC) -MF"$@" -MG -MM -MP -MT"$@" -MT"$(<:.cpp=.o)" -c $(FLAGS) $(INCLUDES) $< > $@
 
 $(OBJS_DIR)/%.real.d: $(SRCS_DIR)/%.cpp | $(OBJS_DIR)
-	$(CC) -MM -MD -MP $(REAL_TOGGLE) -c $(FLAGS) $(INCLUDES) $< > $(OBJS_DIR)/$@
+	$(CC) -MM -MD -MP $(REAL_TOGGLE) -c $(FLAGS) $(INCLUDES) $< > $@
 
 real: $(REAL)
 

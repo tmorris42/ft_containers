@@ -1,4 +1,4 @@
-#include "test_vector_int.hpp"
+#include "tests.hpp"
 
 int	test_vector_int_void_constructor()
 {

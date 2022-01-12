@@ -1,4 +1,4 @@
-#include "test_vector_class.hpp"
+#include "tests.hpp"
 
 
 int	test_vector_vector_basic()

@@ -1,4 +1,4 @@
-#include "test_vector_struct.hpp"
+#include "tests.hpp"
 
 struct Person
 {
