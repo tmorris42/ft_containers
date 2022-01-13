@@ -286,6 +286,7 @@ namespace ft
 					*pos = *(pos + 1);
 					++pos;
 				}
+				this->get_allocator().destroy(pos);
 				this->__size -= 1;
 				return (ret);
 			}
