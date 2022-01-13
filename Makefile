@@ -37,10 +37,10 @@ all: $(NAME) $(REAL)
 $(OBJS_DIR):
 	@mkdir -p objs
 
-$(REAL): $(REAL_OBJS)
+$(REAL): $(REAL_OBJS) | $(OBJS_DIR)
 	$(CC) $(REAL_TOGGLE) $(FLAGS) $(REAL_OBJS) $(INCLUDES) -o $(REAL)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) | $(OBJS_DIR)
 	$(CC) $(MY_FLAGS) $(OBJS) $(INCLUDES) -o $(NAME)
 
 $(OBJS_DIR)/%.real.o : $(SRCS_DIR)/%.cpp $(OBJS_DIR)/%.real.d | $(OBJS_DIR)
@@ -55,16 +55,16 @@ $(OBJS_DIR)/%.d: $(SRCS_DIR)/%.cpp | $(OBJS_DIR)
 $(OBJS_DIR)/%.real.d: $(SRCS_DIR)/%.cpp | $(OBJS_DIR)
 	$(CC) -MM -MD -MP $(REAL_TOGGLE) -c $(FLAGS) $(INCLUDES) $< > $@
 
-real: $(REAL)
+real: $(REAL) | $(OBJS_DIR)
 
 clean:
-	rm -rf $(OBJS_DIR)
+	rm -rf $(OBJS_DIR)/*.o $(OBJS_DIR)/*.d
 	rm -rf mine.log mine.err.log real.log real.err.log
 
 fclean: clean
 	rm -f $(NAME) $(REAL)
 
-re: fclean all
+re: fclean all | $(OBJS_DIR)
 
 test: all
 	@echo "Generating user logs"
