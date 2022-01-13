@@ -46,8 +46,25 @@ int test_rb_tree_insert()
 	return (0);
 }
 
+int test_rb_playground()
+{
+	ft::RB_Tree<int> rb;
+
+	rb.insert(6);
+	rb.insert(5);
+	rb.insert(7);
+	rb.insert(10);
+	rb.insert(9);
+	rb.insert(4);
+
+
+	printBT(&rb);
+	return (0);
+}
+
 void	add_test_rb_tree_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_rb_tree_void_constructor);
 	ADD_TEST(testlist, test_rb_tree_insert);
+	ADD_TEST(testlist, test_rb_playground);
 }
