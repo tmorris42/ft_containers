@@ -299,6 +299,11 @@ namespace ft
 					(*first) = *(first + N);
 					++first;
 				}
+				while (first != this->end())
+				{
+					this->get_allocator().destroy(first);
+					++first;
+				}
 				this->__size -= N;
 				return (last);
 			}
