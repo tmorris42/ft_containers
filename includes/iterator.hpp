@@ -10,33 +10,33 @@ namespace ft
 	class iterator_traits
 	{
 		public:
-			static typename Iterator::difference_type	difference_type;
-			static typename Iterator::value_type		value_type;
-			static typename Iterator::pointer			pointer;
-			static typename Iterator::reference			reference;
-			static typename Iterator::iterator_category	iterator_category;
+			typedef typename Iterator::difference_type	difference_type;
+			typedef typename Iterator::value_type		value_type;
+			typedef typename Iterator::pointer			pointer;
+			typedef typename Iterator::reference			reference;
+			typedef typename Iterator::iterator_category	iterator_category;
 	};
 
 	template <class T>
 	class iterator_traits<T*>
 	{
 		public:
-			static std::ptrdiff_t					difference_type;
-			static T								value_type;
-			static T								*pointer;
-			static T								&reference;
-			static ft::random_access_iterator_tag	iterator_category;
+			typedef std::ptrdiff_t					difference_type;
+			typedef T								value_type;
+			typedef T								*pointer;
+			typedef T								&reference;
+			typedef ft::random_access_iterator_tag	iterator_category;
 	};
 
 	template <class T>
 	class iterator_traits<const T*>
 	{
 		public:
-			static std::ptrdiff_t						difference_type;
-			static T								value_type;
-			static const T *						pointer;
-			static const T &						reference;
-			static ft::random_access_iterator_tag	iterator_category;
+			typedef std::ptrdiff_t						difference_type;
+			typedef T								value_type;
+			typedef const T *						pointer;
+			typedef const T &						reference;
+			typedef ft::random_access_iterator_tag	iterator_category;
 	};
 
 	// reverse_iterator
