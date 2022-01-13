@@ -27,4 +27,6 @@
 #  define FT ft
 # endif
 
+#  include "red_black.hpp"
+
 #endif
