@@ -1,6 +1,7 @@
 #include "UnitTest.hpp"
 
-void	load_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, TestFunction2 function, std::string description)
+void load_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist,
+			   TestFunction2 function, std::string description)
 {
 	// std::cout << "Adding test (" << description << ")" << std::endl;
 	Test2 newTest;
@@ -12,7 +13,7 @@ void	load_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, TestFunction2 funct
 	// std::cout << "Tests added so far: " << testlist->size() << std::endl;
 }
 
-void	print_test_results(Test2 *test)
+void print_test_results(Test2 *test)
 {
 	std::cout << "#" << test->id << ": " << test->desc << ": ";
 	if (WIFEXITED(test->status) && !WEXITSTATUS(test->status))
@@ -27,8 +28,11 @@ void	print_test_results(Test2 *test)
 		{
 			switch (WTERMSIG(test->status))
 			{
-				case SIGSEGV: std::cout << "SIGSEGV"; break;
-				default: std::cout << "SIGNAL";
+			case SIGSEGV:
+				std::cout << "SIGSEGV";
+				break;
+			default:
+				std::cout << "SIGNAL";
 			}
 		}
 		else
@@ -38,7 +42,7 @@ void	print_test_results(Test2 *test)
 	std::cout << std::endl;
 }
 
-int		launch_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, Test2 *test)
+int launch_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, Test2 *test)
 {
 	TestFunction2 func = test->func;
 	pid_t pid;
@@ -71,10 +75,10 @@ int		launch_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, Test2 *test)
 	return (0);
 }
 
-int		launch_all_tests(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
+int launch_all_tests(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
-	int	success;
-	int	total;
+	int success;
+	int total;
 	FRAMEWORK_NAMESPACE::vector<Test2>::iterator it;
 	FRAMEWORK_NAMESPACE::vector<Test2>::iterator ite;
 
@@ -92,6 +96,7 @@ int		launch_all_tests(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 		std::cout << "\x1B[32m" << std::endl;
 	else
 		std::cout << "\x1B[31m" << std::endl;
-	std::cout << success << "/" << total << " passed" << "\x1B[m" << std::endl;
+	std::cout << success << "/" << total << " passed"
+			  << "\x1B[m" << std::endl;
 	return (0);
 }
