@@ -13,39 +13,35 @@
 
 namespace ft
 {
-	template < class T, class Allocator = std::allocator<T> >
+	template < class T, class Allocator = std::allocator < T > >
 	class vector
 	{
 		public:
 			// Member types
-			typedef T					value_type;
-			typedef Allocator			allocator_type;
-			typedef std::ptrdiff_t		difference_type;	// should be iterator_trais<iterator>::difference_type (usually equiv. ptrdiff_t)
-			typedef std::size_t			size_type;			// An unsigned integral type that can represent any non-negative value of difference_type (Usually size_t)
-
-			typedef typename allocator_type::pointer			pointer;
-			typedef typename allocator_type::const_pointer		const_pointer;
+			typedef T											value_type;
+			typedef Allocator									allocator_type;
 			typedef	typename allocator_type::reference			reference;
 			typedef typename allocator_type::const_reference	const_reference;
-
-			// LegacyRandomAccessIterator<T>			iterator;
-			// LegacyRandomAccessIterator<T> const		const_iterator;
-			typedef pointer									iterator;		// should be custom LRAI
-			typedef const_pointer							const_iterator;
-			typedef ft::reverse_iterator<iterator>			reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef typename allocator_type::pointer			pointer;
+			typedef typename allocator_type::const_pointer		const_pointer;
+			// LegacyRandomAccessIterator<T>					iterator;
+			// LegacyRandomAccessIterator<T> const				const_iterator;
+			typedef pointer										iterator;		// should be custom LRAI
+			typedef const_pointer								const_iterator;
+			typedef ft::reverse_iterator<iterator>				reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
+			typedef std::ptrdiff_t								difference_type;	// should be iterator_trais<iterator>::difference_type (usually equiv. ptrdiff_t)
+			typedef std::size_t									size_type;			// An unsigned integral type that can represent any non-negative value of difference_type (Usually size_t)
 			
 			// Member functions
 			// Constructors
-			vector() : __start(0), __capacity(0), __size(0), __alloc(Allocator())
+			explicit vector(const Allocator & alloc = allocator_type()) : __start(0), __capacity(0), __size(0),  __alloc(alloc)
 			{
 			}
 
-			explicit vector(const Allocator & alloc) : __start(0), __capacity(0), __size(0),  __alloc(alloc)
-			{
-			}
-
-			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())  : __start(0), __capacity(0), __size(0), __alloc(alloc)
+			explicit vector( size_type count, const value_type & value = value_type(),
+								const allocator_type & alloc = allocator_type()) 
+							: __start(0), __capacity(0), __size(0), __alloc(alloc)
 			{
 				this->reserve(count);
 				for (size_type i = 0; i < count; ++i)
@@ -55,14 +51,15 @@ namespace ft
 			}
 
 			template< class InputIt >
-			vector( InputIt first, InputIt last, const allocator_type & alloc = allocator_type(),
+			vector( InputIt first, InputIt last,
+					const allocator_type & alloc = allocator_type(),
 					typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)  : __start(0), __capacity(0), __size(0), __alloc(alloc)
 			{
 				this->reserve(last - first);
 				this->insert(this->begin(), first, last);
 			}
 
-			vector( const vector& other ) : __start(0), __capacity(0), __size(0),  __alloc(other.get_allocator())
+			vector( const vector & other ) : __start(0), __capacity(0), __size(0),  __alloc(other.get_allocator())
 			{
 				this->reserve(other.capacity());
 				this->__copy_space(this->__start, other.begin(), (other.size())); //use insert instead?
