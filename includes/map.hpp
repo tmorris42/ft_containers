@@ -39,6 +39,26 @@ namespace ft
 			typedef const_pointer							const_iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+
+			explicit map(const key_compare &comp = key_compare(),
+						 const allocator_type &alloc = allocator_type())
+				:  __alloc(alloc), __comp(comp)
+			{
+			}
+			// template <class InputIterator>
+  			// map (InputIterator first, InputIterator last,
+			// 		const key_compare& comp = key_compare(),
+			// 		const allocator_type& alloc = allocator_type());
+			// map (const map& x);
+			bool	empty()
+			{
+				return false;
+			}
+
+
+		private:
+			allocator_type	__alloc;
+			key_compare		__comp;
 	};
 } 
 #endif
