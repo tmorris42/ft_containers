@@ -16,14 +16,16 @@ namespace ft
 		bool		color;
 	};
 
-	template <class ValueType>
+	template <class ValueType, class Allocator = std::allocator < ValueType > >
 	class RB_Tree
 	{
 		public:
 			typedef Node<ValueType> node_type;
 			typedef ValueType		value_type;
+			typedef Allocator		allocator_type;
 			node_type	*root;
-			RB_Tree() : root(NULL)
+
+			RB_Tree() : root(NULL), __alloc(allocator_type())
 			{
 				return;
 			}
@@ -168,6 +170,7 @@ namespace ft
 				node->color = RB_BLACK;
 				return (node);
 			}
+			allocator_type	__alloc;
 	};
 }
 
