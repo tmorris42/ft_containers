@@ -56,9 +56,12 @@ int test_rb_playground()
 	rb.insert(10);
 	rb.insert(9);
 	rb.insert(4);
+	printBT(&rb);
 
+	rb.delete_node(rb.root, 7);
 
 	printBT(&rb);
+	rb.delete_tree(rb.root);
 	return (0);
 }
 
