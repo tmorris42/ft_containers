@@ -29,18 +29,20 @@ int	main(int argc, char **argv)
 			std::stringstream intValue(argv[argNumber]);
 			int i;
 			intValue >> i;
-			if (i > 0)
+			if (i > 0 && (unsigned int)i <= tests.size())
 			{
-				RUN_TEST(tests, i);
+				RUN_TEST(tests, i - 1);
 				runAll = false;
 			}
 			else
 			{
-				if (!VERBOSE)
+				if (!VERBOSE && !std::strcmp(argv[argNumber], "-v"))
 				{
 					std::cout << "VERBOSE MODE" << std::endl;
 					VERBOSE = true;
 				}
+				else
+					std::cout << "ERROR: test #" << i << " not found." << std::endl;
 			}
 			++argNumber;
 		}
