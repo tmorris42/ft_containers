@@ -79,22 +79,22 @@ namespace ft
 				return (NULL);
 			}
 
-			node_type	*max(node_type *root)
+			node_type	*max(node_type *node)
 			{
-				if (root == NULL)
+				if (node == NULL)
 					return (NULL);
-				if (root->right)
-					return (this->max(root->right));
-				return (root);
+				if (node->right)
+					return (this->max(node->right));
+				return (node);
 			}
 
-			node_type	*min(node_type *root)
+			node_type	*min(node_type *node)
 			{
-				if (root == NULL)
+				if (node == NULL)
 					return (NULL);
-				if (root->left)
-					return (this->min(root->left));
-				return (root);
+				if (node->left)
+					return (this->min(node->left));
+				return (node);
 			}
 
 			node_type **get_reference(node_type *node)
@@ -108,33 +108,33 @@ namespace ft
 					node_addr = &(node->parent->left);
 				return (node_addr);
 			}
-			void	delete_node(node_type *root, value_type const & value)
+			void	delete_node(node_type *node, value_type const & value)
 			{
-				if (root == NULL)
+				if (node == NULL)
 					return ;
-				if (value < root->value)
-					this->delete_node(root->left, value);
-				else if (value > root->value)
-					this->delete_node(root->right, value);
-				else //value == root->value
+				if (value < node->value)
+					this->delete_node(node->left, value);
+				else if (value > node->value)
+					this->delete_node(node->right, value);
+				else //value == node->value
 				{
-					node_type **root_addr = this->get_reference(root);
-					if (!root->left && !root->right)			
-						this->destroy_node(root);
-					else if (!root->left)
+					node_type **node_addr = this->get_reference(node);
+					if (!node->left && !node->right)			
+						this->destroy_node(node);
+					else if (!node->left)
 					{
-						*root_addr = root->right;
-						this->destroy_node(root);
+						*node_addr = node->right;
+						this->destroy_node(node);
 					}
-					else if (!root->right)
+					else if (!node->right)
 					{
-						*root_addr = root->left;
-						this->destroy_node(root);
+						*node_addr = node->left;
+						this->destroy_node(node);
 					}
 					else
 					{
-						node_type *replacement = this->max(root->left);
-						root->value = replacement->value;
+						node_type *replacement = this->max(node->left);
+						node->value = replacement->value;
 						this->destroy_node(replacement);
 					}				
 				}
