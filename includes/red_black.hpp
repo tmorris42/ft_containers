@@ -16,7 +16,7 @@ namespace ft
 		bool		color;
 	};
 
-	template <class ValueType, class Allocator = std::allocator < ValueType > >
+	template <class ValueType, class Allocator = std::allocator < Node < ValueType > > >
 	class RB_Tree
 	{
 		public:
@@ -155,14 +155,15 @@ namespace ft
 			void	destroy_node(node_type *node)
 			{
 				node_type **node_addr = this->get_reference(node);
+				__alloc.deallocate(node, 1);
 				*node_addr = NULL;
-				delete node;
 			}
 
 		private:
 			node_type	*node_new(node_type *parent, value_type const & value)
 			{
-				node_type	*node = new node_type();
+				node_type	*node = __alloc.allocate(1);
+				// __alloc.construct(node, 0);
 				node->value = value;
 				node->left = NULL;
 				node->right = NULL;
