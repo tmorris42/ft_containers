@@ -29,7 +29,7 @@ namespace ft
 			}
 			~RB_Tree()
 			{
-
+				this->delete_tree(this->root);
 			}
 
 			node_type *recursive_search(node_type *current_node, value_type const & value)
