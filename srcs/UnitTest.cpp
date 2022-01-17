@@ -7,7 +7,7 @@ void load_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist,
 	Test2 newTest;
 	newTest.desc = description;
 	newTest.func = function;
-	newTest.id = testlist->size();
+	newTest.id = testlist->size() + 1;
 	newTest.status = 0;
 	testlist->push_back(newTest);
 	// std::cout << "Tests added so far: " << testlist->size() << std::endl;

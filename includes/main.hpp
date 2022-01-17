@@ -3,6 +3,7 @@
 
 # include <iostream>
 # include <sstream>
+# include <cstring>	//strcmp
 
 # include "UnitTest.hpp"
 # include "tests.hpp"
