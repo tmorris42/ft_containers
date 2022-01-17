@@ -42,7 +42,27 @@ int test_rb_tree_insert()
 	ASSERT_EQUAL(rb.search(6)->value, 6);
 	ASSERT_EQUAL(rb.search(7)->value, 7);
 	ASSERT_EQUAL(rb.search(8), (ft::Node<int>*)NULL);
-	printBT(&rb);
+	// printBT(&rb);
+	return (0);
+}
+
+int test_rb_tree_delete()
+{
+	ft::RB_Tree<int> rb;
+
+	rb.insert(6);
+	rb.insert(5);
+	rb.insert(7);
+	rb.insert(10);
+	rb.insert(9);
+	rb.insert(4);
+	// printBT(&rb);
+
+	rb.delete_node(rb.root, 7);
+
+	// printBT(&rb);
+
+	rb.delete_tree(rb.root);
 	return (0);
 }
 
@@ -61,6 +81,7 @@ int test_rb_playground()
 	rb.delete_node(rb.root, 7);
 
 	printBT(&rb);
+
 	rb.delete_tree(rb.root);
 	return (0);
 }
@@ -69,5 +90,7 @@ void	add_test_rb_tree_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_rb_tree_void_constructor);
 	ADD_TEST(testlist, test_rb_tree_insert);
+	ADD_TEST(testlist, test_rb_tree_delete);
+
 	ADD_TEST(testlist, test_rb_playground);
 }

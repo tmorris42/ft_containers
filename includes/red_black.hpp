@@ -121,23 +121,28 @@ namespace ft
 				else //value == node->value
 				{
 					node_type **node_addr = this->get_reference(node);
-					if (!node->left && !node->right)			
+					if (!node->left && !node->right)
+					{
+						*node_addr = NULL;
 						this->destroy_node(node);
+					}
 					else if (!node->left)
 					{
 						*node_addr = node->right;
+						node->right->parent = node->parent;
 						this->destroy_node(node);
 					}
 					else if (!node->right)
 					{
 						*node_addr = node->left;
+						node->left->parent = node->parent;
 						this->destroy_node(node);
 					}
 					else
 					{
 						node_type *replacement = this->max(node->left);
 						node->value = replacement->value;
-						this->destroy_node(replacement);
+						this->delete_node(node->left, replacement->value);
 					}				
 				}
 				return ;
@@ -147,16 +152,18 @@ namespace ft
 			{
 				if (!node)
 					return ;
+				node_type **node_addr = this->get_reference(node);
 				delete_tree(node->left);
 				delete_tree(node->right);
 				destroy_node(node);
+				*node_addr = NULL;
 			}
 
 			void	destroy_node(node_type *node)
 			{
-				node_type **node_addr = this->get_reference(node);
+				// node_type **node_addr = this->get_reference(node);
 				__alloc.deallocate(node, 1);
-				*node_addr = NULL;
+				// *node_addr = NULL;
 			}
 
 		private:
