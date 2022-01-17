@@ -27,6 +27,10 @@ namespace ft
 			{
 				return;
 			}
+			~RB_Tree()
+			{
+
+			}
 
 			node_type *recursive_search(node_type *current_node, value_type const & value)
 			{
@@ -73,6 +77,84 @@ namespace ft
 					}
 				}
 				return (NULL);
+			}
+
+			node_type	*max(node_type *root)
+			{
+				if (root == NULL)
+					return (NULL);
+				if (root->right)
+					return (this->max(root->right));
+				return (root);
+			}
+
+			node_type	*min(node_type *root)
+			{
+				if (root == NULL)
+					return (NULL);
+				if (root->left)
+					return (this->min(root->left));
+				return (root);
+			}
+
+			node_type **get_reference(node_type *node)
+			{
+				node_type **node_addr;
+				if (!node || !node->parent)
+					return (&this->root);
+				if (node->parent->value < node->value)
+					node_addr = &(node->parent->right);
+				else
+					node_addr = &(node->parent->left);
+				return (node_addr);
+			}
+			void	delete_node(node_type *root, value_type const & value)
+			{
+				if (root == NULL)
+					return ;
+				if (value < root->value)
+					this->delete_node(root->left, value);
+				else if (value > root->value)
+					this->delete_node(root->right, value);
+				else //value == root->value
+				{
+					node_type **root_addr = this->get_reference(root);
+					if (!root->left && !root->right)			
+						this->destroy_node(root);
+					else if (!root->left)
+					{
+						*root_addr = root->right;
+						this->destroy_node(root);
+					}
+					else if (!root->right)
+					{
+						*root_addr = root->left;
+						this->destroy_node(root);
+					}
+					else
+					{
+						node_type *replacement = this->max(root->left);
+						root->value = replacement->value;
+						this->destroy_node(replacement);
+					}				
+				}
+				return ;
+			}
+
+			void	delete_tree(node_type *node)
+			{
+				if (!node)
+					return ;
+				delete_tree(node->left);
+				delete_tree(node->right);
+				destroy_node(node);
+			}
+
+			void	destroy_node(node_type *node)
+			{
+				node_type **node_addr = this->get_reference(node);
+				*node_addr = NULL;
+				delete node;
 			}
 
 		private:
