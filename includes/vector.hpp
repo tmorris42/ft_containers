@@ -66,10 +66,10 @@ namespace ft
 				this->__size = other.size();
 			}
 
-			~vector()
-			{
-				this->clear();
-				this->get_allocator().deallocate(this->begin(), this->capacity());
+			~vector() {
+				// std::cout << "Deleting vector" << std::endl;
+				// get_allocator().deallocate(__start, 1);
+				__destroy_space(this->__start, this->__size);
 			};
 			vector &	operator=(vector const & other) {
 				if (this != &other)
@@ -196,8 +196,7 @@ namespace ft
 				{
 					pointer new_space = this->get_allocator().allocate(new_cap);
 					this->__copy_space(new_space, this->__start, this->__size);
-					this->clear();
-					this->get_allocator().deallocate(this->start, this->capacity())
+					this->__destroy_space(this->__start, this->__size);
 					this->__start = new_space;
 					this->__capacity = new_cap;
 				}
@@ -371,6 +370,13 @@ namespace ft
 						++i;
 					}
 				}
+			}
+			void	__destroy_space(pointer	start, size_type N) {
+				for (int i = N - 1; i >= 0; --i)
+				{
+					this->get_allocator().destroy(start + i);
+				}
+				this->get_allocator().deallocate(start, N);
 			}
 	};
 
