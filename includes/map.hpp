@@ -11,6 +11,7 @@
 # include "type_traits.hpp"
 # include "algorithm.hpp"
 # include "utility.hpp"
+# include "red_black.hpp"
 
 namespace ft
 {
@@ -42,7 +43,7 @@ namespace ft
 
 			explicit map(const key_compare &comp = key_compare(),
 						 const allocator_type &alloc = allocator_type())
-				:  __alloc(alloc), __comp(comp)
+				:  __alloc(alloc), __comp(comp), c()
 			{
 			}
 			// template <class InputIterator>
@@ -52,13 +53,43 @@ namespace ft
 			// map (const map& x);
 			bool	empty()
 			{
-				return false;
+				return (this->size() == 0);
 			}
+
+			size_type	size() const
+			{
+				return (this->c.size());
+			}
+
+			size_type	max_size() const
+			{
+				return (this->__alloc.max_size());
+			}
+
+			ft::pair<iterator, bool>	insert (value_type & val)
+			{
+				ft::Node<value_type>	*node;
+
+				node = this->c.search(val);
+
+				if (!node)
+				{
+					node = this->c.insert(val);
+					return (make_pair(&node->value, true));
+				}
+				return (make_pair(&node->value, false));
+			}
+
+			// mapped_type & operator[](const key_type & k)
+			// {
+			// 	return ((*((this->insert(make_pair(k,mapped_type()))).first)).second);
+			// }
 
 
 		private:
-			allocator_type	__alloc;
-			key_compare		__comp;
+			allocator_type						__alloc;
+			key_compare							__comp;
+			ft::RB_Tree< ft::pair<Key, T> >		c;
 	};
 } 
 #endif

@@ -21,6 +21,8 @@ int	main(int argc, char **argv)
 
 	add_test_rb_tree_suite(&tests);
 
+	add_test_map_suite(&tests);
+
 	if (argc > 1)
 	{
 		int argNumber = 1;

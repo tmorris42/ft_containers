@@ -16,6 +16,16 @@ namespace ft
 		bool		color;
 	};
 
+	template <class ValueType>
+	Node<ValueType> const operator++(Node<ValueType> & a)
+	{
+		Node<ValueType> *next;
+
+		next = a.min(a.right);
+		if (!next)
+			next = a.parent;
+	}
+
 	template <class ValueType, class Allocator = std::allocator < Node < ValueType > > >
 	class RB_Tree
 	{
@@ -164,6 +174,18 @@ namespace ft
 				// node_type **node_addr = this->get_reference(node);
 				__alloc.deallocate(node, 1);
 				// *node_addr = NULL;
+			}
+
+			size_t	size_subtree(node_type *node) const
+			{
+				if (!node)
+					return (0);
+				return (this->size_subtree(node->left) + 1 + this->size_subtree(node->right));
+			}
+
+			size_t	size() const
+			{
+				return (size_subtree(this->root));
 			}
 
 		private:
