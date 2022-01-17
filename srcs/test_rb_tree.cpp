@@ -57,8 +57,9 @@ int test_rb_tree_delete()
 	rb.insert(9);
 	rb.insert(4);
 	// printBT(&rb);
-
+	ASSERT_EQUAL(rb.search(7)->value, 7);
 	rb.delete_node(rb.root, 7);
+	ASSERT_EQUAL(rb.search(7), (ft::Node<int>*)NULL);
 
 	// printBT(&rb);
 
