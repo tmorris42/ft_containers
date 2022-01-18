@@ -14,6 +14,10 @@ namespace ft
 		Node		*right;
 		Node		*parent;
 		bool		color;
+
+		Node(ValueType const & val)
+		: value(val), left(NULL), right(NULL), parent(NULL), color(RB_BLACK)
+		{}
 	};
 
 	template <class ValueType>
@@ -92,6 +96,7 @@ namespace ft
 				}
 				return (NULL);
 			}
+			
 
 			node_type	*max(node_type *node)
 			{
@@ -212,7 +217,10 @@ namespace ft
 			node_type	*node_new(node_type *parent, value_type const & value)
 			{
 				node_type	*node = __alloc.allocate(1);
-				return (initialize_node(node, parent, value));
+				__alloc.construct(node, value);
+				node->parent = parent;
+				return (node);
+				// return (initialize_node(node, parent, value));
 			}
 			allocator_type	__alloc;
 	};
