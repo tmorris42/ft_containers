@@ -66,7 +66,7 @@ namespace ft
 				return (this->__alloc.max_size());
 			}
 
-			ft::pair<iterator, bool>	insert (value_type & val)
+			bool	insert (value_type & val)
 			{
 				ft::Node<value_type>	*node;
 
@@ -75,9 +75,9 @@ namespace ft
 				if (!node)
 				{
 					node = this->c.insert(val);
-					return (make_pair(&node->value, true));
+					return (true);
 				}
-				return (make_pair(&node->value, false));
+				return (false);
 			}
 
 			// mapped_type & operator[](const key_type & k)
@@ -89,7 +89,7 @@ namespace ft
 		private:
 			allocator_type						__alloc;
 			key_compare							__comp;
-			ft::RB_Tree< ft::pair<Key, T> >		c;
+			ft::RB_Tree< value_type >		c;
 	};
 } 
 #endif
