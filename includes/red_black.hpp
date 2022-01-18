@@ -4,6 +4,8 @@
 #define RB_BLACK 0
 #define RB_RED 1
 
+#include <memory> // std::allocator
+
 namespace ft
 {
 	template <class ValueType>
