@@ -2,7 +2,7 @@
 
 int	test_map_void_constructor()
 {
-	ft::map<int, int> m;
+	FT::map<int, int> m;
 
 	ASSERT_EQUAL(m.empty(), true);
 	return (0);
