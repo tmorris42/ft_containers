@@ -13,9 +13,12 @@ void printBT(const std::string& prefix, const ft::Node<T>* node, bool isLeft)
     if(node)
     {
         std::cout << prefix;
-
         std::cout << (isLeft ? "├──" : "└──" );
 
+		if (node->color == RB_RED)
+			std::cout << "R:";
+		else
+			std::cout << "B:";
         // print the value of the node
         std::cout << node->value << std::endl;
 
