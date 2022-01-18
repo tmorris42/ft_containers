@@ -89,6 +89,18 @@ int test_rb_pair()
 	return (0);
 }
 
+int test_rb_pair_const()
+{
+	ft::RB_Tree< FT::pair<const char, int> >	rb;
+
+	FT::pair<const char, int>	p1('a', 10);
+	FT::pair<const char, int>	p2('b', 20);
+	rb.insert(p1);
+	rb.insert(p2);
+	printBT(&rb);
+	return (0);
+}
+
 int test_rb_playground()
 {
 	ft::RB_Tree<int> rb;
@@ -115,6 +127,7 @@ void	add_test_rb_tree_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_rb_tree_insert);
 	ADD_TEST(testlist, test_rb_tree_delete);
 	ADD_TEST(testlist, test_rb_pair);
+	ADD_TEST(testlist, test_rb_pair_const);
 
 	ADD_TEST(testlist, test_rb_playground);
 }
