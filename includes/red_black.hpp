@@ -52,7 +52,7 @@ namespace ft
 			{
 				node_type	*current_node = this->root;
 				if (!this->root)
-					this->root = node_new(this->root, value);
+					this->root = node_new(NULL, value);
 				while (current_node)
 				{
 					if (current_node->value == value)
@@ -62,6 +62,7 @@ namespace ft
 						if (!current_node->left)
 						{
 							current_node->left = node_new(current_node, value);
+							current_node->left->color = RB_RED;
 							return (current_node->left);
 						}
 						else
@@ -72,6 +73,7 @@ namespace ft
 						if (!current_node->right)
 						{
 							current_node->right = node_new(current_node, value);
+							current_node->right->color = RB_RED;
 							return (current_node->right);
 						}
 						else
