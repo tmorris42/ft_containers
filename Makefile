@@ -2,9 +2,9 @@ NAME = ft_containers.out
 REAL = real.out
 REAL_TOGGLE = -DFT_REAL_VERSION=1
 
-SRCS_DIR = srcs
-INCLUDE_DIR = includes
-OBJS_DIR = objs
+SRCS_DIR = srcs/
+INCLUDE_DIR = includes/
+OBJS_DIR = objs/
 
 SRCS = main.cpp UnitTest.cpp \
 			test_iterator.cpp \
@@ -17,11 +17,9 @@ SRCS = main.cpp UnitTest.cpp \
 			test_map.cpp \
 
 
-OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
-REAL_OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.real.o))
+OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.cpp=.o))
+REAL_OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.cpp=.real.o))
 INCLUDES = -I$(INCLUDE_DIR)
-
-#https://stackoverflow.com/questions/97338/gcc-dependency-generation-for-a-different-output-directory
 DEPS = $(OBJS:.o=.d)
 
 CC_OVERRIDE ?= clang++
@@ -34,6 +32,9 @@ ifdef DEBUG_OVERRIDE
 FLAGS := $(FLAGS) $(DEBUG_FLAGS)
 endif
 
+$(NAME): $(OBJS) | $(OBJS_DIR)
+	$(CC) $(MY_FLAGS) $(OBJS) $(INCLUDES) -o $(NAME)
+
 all: $(NAME) $(REAL)
 
 $(OBJS_DIR):
@@ -42,16 +43,13 @@ $(OBJS_DIR):
 $(REAL): $(REAL_OBJS) | $(OBJS_DIR)
 	$(CC) $(REAL_TOGGLE) $(FLAGS) $(REAL_OBJS) $(INCLUDES) -o $(REAL)
 
-$(NAME): $(OBJS) | $(OBJS_DIR)
-	$(CC) $(MY_FLAGS) $(OBJS) $(INCLUDES) -o $(NAME)
-
-$(OBJS_DIR)/%.real.o : $(SRCS_DIR)/%.cpp | $(OBJS_DIR)
+$(OBJS_DIR)%.real.o : $(SRCS_DIR)%.cpp | $(OBJS_DIR)
 	$(CC) $(REAL_TOGGLE) -c $(FLAGS) $(INCLUDES) $< -o $@
 
-$(OBJS_DIR)/%.o : $(SRCS_DIR)/%.cpp | $(OBJS_DIR)
+$(OBJS_DIR)%.o : $(SRCS_DIR)%.cpp | $(OBJS_DIR)
 	$(CC) $(MY_FLAGS) -c $(INCLUDES) $< -o $@
 
-$(OBJS_DIR)/%.real.d: $(SRCS_DIR)/%.cpp | $(OBJS_DIR)
+$(OBJS_DIR)%.real.d: $(SRCS_DIR)%.cpp | $(OBJS_DIR)
 	$(CC) $(FLAGS) -c $(INCLUDES) $< > $@
 
 real: $(REAL) | $(OBJS_DIR)
