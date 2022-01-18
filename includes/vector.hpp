@@ -56,7 +56,11 @@ namespace ft
 					typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)  : __start(0), __capacity(0), __size(0), __alloc(alloc)
 			{
 				this->reserve(last - first);
-				this->insert(this->begin(), first, last);
+				// this->insert(this->begin(), first, last);
+				for ( ; first != last; ++first)
+				{
+					this->push_back(*first);
+				}
 			}
 
 			vector( const vector & other ) : __start(0), __capacity(0), __size(0),  __alloc(other.get_allocator())
@@ -68,8 +72,8 @@ namespace ft
 
 			~vector() {
 				// std::cout << "Deleting vector" << std::endl;
-				// get_allocator().deallocate(__start, 1);
-				__destroy_space(this->__start, this->__size);
+				// get_allocator().deallocate(__start, this->capacity());
+				__destruct_vector(); //Should destruct, or only deallocate???
 			};
 			vector &	operator=(vector const & other) {
 				if (this != &other)
@@ -133,10 +137,10 @@ namespace ft
 				return (*__start);
 			};
 			reference	back() {
-				return (*(this->__start + this->__size - 1));
+				return (*(this->__start + this->size() - 1));
 			};
 			const_reference	back() const {
-				return (*(this->__start + this->__size - 1));
+				return (*(this->__start + this->size() - 1));
 			};
 
 			pointer	data() {
@@ -155,10 +159,10 @@ namespace ft
 				return (this->__start);
 			}
 			iterator	end() {
-				return (this->__start + this->__size);
+				return (this->__start + this->size());
 			}
 			const_iterator	end() const {
-				return (this->__start + this->__size);
+				return (this->__start + this->size());
 			}
 
 			reverse_iterator	rbegin()  {
@@ -195,8 +199,8 @@ namespace ft
 				if (this->capacity() < new_cap)
 				{
 					pointer new_space = this->get_allocator().allocate(new_cap);
-					this->__copy_space(new_space, this->__start, this->__size);
-					this->__destroy_space(this->__start, this->__size);
+					this->__copy_space(new_space, this->__start, this->size());
+					this->__destroy_space(this->__start, this->size());
 					this->__start = new_space;
 					this->__capacity = new_cap;
 				}
@@ -220,19 +224,19 @@ namespace ft
 				difference_type		diff = pos - this->begin();
 				if (diff < 0)
 					diff = 0;
-				if (this->__capacity - this->__size < 1)
+				if (this->__capacity - this->size() < 1)
 				{
 					size_type	new_capacity = 2 * this->__capacity;
 					if (this->__capacity == 0)
 						new_capacity = 1;
 					this->reserve(new_capacity);
-					this->__copy_space(this->__start + diff + 1, this->__start + diff, this->__size - diff);
+					this->__copy_space(this->__start + diff + 1, this->__start + diff, this->size() - diff);
 					this->get_allocator().construct(this->__start + diff, value);
 					++this->__size;
 				}
 				else
 				{
-					this->__copy_space(this->__start + diff + 1, this->__start + diff, this->__size - diff);
+					this->__copy_space(this->__start + diff + 1, this->__start + diff, this->size() - diff);
 					this->get_allocator().construct(this->__start + diff, value);
 					++this->__size;
 				}
@@ -242,18 +246,18 @@ namespace ft
 			void insert( iterator pos, size_type count, const value_type& value )
 			{
 				difference_type		diff = pos - this->begin();
-				if (this->__capacity - this->__size < count)
+				if (this->__capacity - this->size() < count)
 				{
 					size_type	new_capacity = this->__capacity;
 					if (count > this->__capacity)
-						new_capacity += count - (this->__capacity - this->__size);
-					else if ((this->__capacity * 2) - this->__size < count)
-						new_capacity += count - (this->__capacity - this->__size);
+						new_capacity += count - (this->__capacity - this->size());
+					else if ((this->__capacity * 2) - this->size() < count)
+						new_capacity += count - (this->__capacity - this->size());
 					else
 						new_capacity *= 2;
 					this->reserve(new_capacity);
 				}
-				this->__copy_space(this->__start + diff + count, this->__start + diff, this->__size - diff);
+				this->__copy_space(this->__start + diff + count, this->__start + diff, this->size() - diff);
 				while (count > 0)
 				{
 					this->get_allocator().construct(this->__start + diff, value);
@@ -330,11 +334,11 @@ namespace ft
 					return ;
 
 				pointer start_tmp = x.__start;
-				size_type size_tmp = x.__size;
+				size_type size_tmp = x.size();
 				size_type cap_tmp = x.__capacity;
 				allocator_type alloc_tmp = x.__alloc;
 				x.__start = this->__start;
-				x.__size = this->__size;
+				x.__size = this->size();
 				x.__capacity = this->__capacity;
 				x.__alloc = this->__alloc;	
 				this->__start = start_tmp;
@@ -344,7 +348,8 @@ namespace ft
 			}
 
 		private:
-			pointer			__start;	//pointer to start	
+			pointer __start;				//pointer to start
+			pointer	__end;					// pointer to end of elements;
 			size_type		__capacity;		// allocated size
 			size_type		__size;		// number of elements
 			allocator_type	__alloc; // Allocator
@@ -377,6 +382,13 @@ namespace ft
 					this->get_allocator().destroy(start + i);
 				}
 				this->get_allocator().deallocate(start, N);
+			}
+			void	__destruct_vector() {
+				for (int i = this->size() - 1; i >= 0; --i)
+				{
+					this->get_allocator().destroy(this->__start + i);
+				}
+				this->get_allocator().deallocate(this->__start, this->capacity());
 			}
 	};
 
