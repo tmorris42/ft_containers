@@ -64,22 +64,57 @@ namespace ft
 			{
 				return (recursive_search(this->root, value));
 			}
+			void	swap_nodes(node_type *node1, node_type *node2)
+			{
+				node_type *tmp;
+				node_type **tmp_addr;
+
+				tmp_addr = this->get_reference(node1);
+				*tmp_addr = node2;
+				tmp_addr = this->get_reference(node2);
+				*tmp_addr = node1;
+				tmp_addr = NULL;
+				
+				tmp = node1->parent;
+				node1->parent = node2->parent;
+				node2->parent = tmp;
+
+				tmp = node1->left;
+				node1->left = node2->parent;
+				node2->left = tmp;
+
+				tmp = node1->right;
+				node1->right = node2->parent;
+				node2->right = tmp;
+			}
+			void		replace_node(node_type *oldNode, node_type * newNode)
+			{
+				this->swap_nodes(oldNode, newNode);
+				this->destroy_node(oldNode);
+			}
 			node_type *insert(value_type const & value)
 			{
 				node_type	*current_node = this->root;
+				node_type	*new_node = node_new(NULL, value);
 				if (!this->root)
-					this->root = node_new(NULL, value);
+				{
+					this->root = new_node;
+				}
 				while (current_node)
 				{
 					if (current_node->value == value)
-						return (NULL);
+					{
+						this->replace_node(current_node, new_node);
+						break ;
+					}
 					if (value < current_node->value)
 					{
 						if (!current_node->left)
 						{
-							current_node->left = node_new(current_node, value);
+							new_node->parent = current_node;
+							current_node->left = new_node;
 							current_node->left->color = RB_RED;
-							return (current_node->left);
+							break ;
 						}
 						else
 							current_node = current_node->left;
@@ -88,17 +123,61 @@ namespace ft
 					{
 						if (!current_node->right)
 						{
-							current_node->right = node_new(current_node, value);
+							new_node->parent = current_node;
+							current_node->right = new_node;
 							current_node->right->color = RB_RED;
-							return (current_node->right);
+							break ;
 						}
 						else
 							current_node = current_node->right;
 					}
 				}
-				return (NULL);
+				this->recolor(new_node);
+				return (new_node);
 			}
-			
+			void		recolor(node_type *new_node)
+			{
+				if (new_node == this->root)
+					new_node->color = RB_BLACK;
+				else if (new_node->parent && new_node->parent->color == RB_RED)
+				{
+					node_type *grandparent = getGrandparent(new_node);
+					node_type *uncle = getUncle(new_node);
+					if (uncle && uncle->color == RB_RED)
+					{
+						uncle->color = RB_BLACK;
+						new_node->parent->color = RB_BLACK;
+						grandparent->color = RB_RED;
+						this->recolor(grandparent);
+						return ;
+					}
+					else if (uncle && uncle->color == RB_BLACK)
+					{
+						// Have to rotate
+					}
+				}
+			}
+
+			node_type	*getSibling(node_type *node)
+			{
+				if (!node || !node->parent)
+					return (NULL);
+				if (node->parent->right == node)
+					return (node->parent->left);
+				return (node->parent->right);
+			}
+			node_type	*getGrandparent(node_type *node)
+			{
+				if (!node || !node->parent)
+					return (NULL);
+				return (node->parent->parent);
+			}
+			node_type	*getUncle(node_type *node)
+			{
+				if (!node)
+					return (NULL);
+				return (this->getSibling(node->parent));
+			}
 
 			node_type	*max(node_type *node)
 			{

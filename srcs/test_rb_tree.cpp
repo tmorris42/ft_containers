@@ -170,7 +170,39 @@ int test_rb_ascending_insert()
 	ASSERT_EQUAL(rb.root->left->value, 5);
 	ASSERT_EQUAL(rb.root->right->color, RB_RED);
 	ASSERT_EQUAL(rb.root->right->value, 10);
+	return (0);
+}
 
+int test_rb_recoloring_insert()
+{
+	ft::RB_Tree<int>	rb;
+	void				*nptr = NULL;
+
+	rb.insert(5);
+	ASSERT_EQUAL(rb.root->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root->value, 5);
+	rb.insert(8);
+	ASSERT_EQUAL(rb.root->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root->value, 5);
+	ASSERT_EQUAL(rb.root->left, nptr);
+	ASSERT_EQUAL(rb.root->right->color, RB_RED);
+	ASSERT_EQUAL(rb.root->right->value, 8);
+	rb.insert(4);
+	ASSERT_EQUAL(rb.root->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root->value, 5);
+	ASSERT_EQUAL(rb.root->left->color, RB_RED);
+	ASSERT_EQUAL(rb.root->left->value, 4);
+	ASSERT_EQUAL(rb.root->right->color, RB_RED);
+	ASSERT_EQUAL(rb.root->right->value, 8);
+	rb.insert(11);
+	ASSERT_EQUAL(rb.root->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root->value, 5);
+	ASSERT_EQUAL(rb.root->left->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root->left->value, 4);
+	ASSERT_EQUAL(rb.root->right->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root->right->value, 8);
+	ASSERT_EQUAL(rb.root->right->right->color, RB_RED);
+	ASSERT_EQUAL(rb.root->right->right->value, 11);
 	return (0);
 }
 
@@ -184,6 +216,7 @@ void	add_test_rb_tree_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_rb_single_element);
 	ADD_TEST(testlist, test_rb_two_elements);
 	ADD_TEST(testlist, test_rb_ascending_insert);
+	ADD_TEST(testlist, test_rb_recoloring_insert);
 
-	ADD_TEST(testlist, test_rb_playground);
+	// ADD_TEST(testlist, test_rb_playground);
 }
