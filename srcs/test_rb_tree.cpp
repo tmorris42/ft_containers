@@ -66,13 +66,9 @@ int test_rb_tree_delete()
 	rb.insert(10);
 	rb.insert(9);
 	rb.insert(4);
-	// printBT(&rb);
 	ASSERT_EQUAL(rb.search(7)->value, 7);
 	rb.delete_node(rb.root, 7);
 	ASSERT_EQUAL(rb.search(7), (ft::Node<int>*)NULL);
-
-	// printBT(&rb);
-
 	rb.delete_tree(rb.root);
 	return (0);
 }
@@ -85,7 +81,6 @@ int test_rb_pair()
 	FT::pair<char, int>	p2('b', 20);
 	rb.insert(p1);
 	rb.insert(p2);
-	printBT(&rb);
 	return (0);
 }
 
@@ -97,27 +92,6 @@ int test_rb_pair_const()
 	FT::pair<const char, int>	p2('b', 20);
 	rb.insert(p1);
 	rb.insert(p2);
-	printBT(&rb);
-	return (0);
-}
-
-int test_rb_playground()
-{
-	ft::RB_Tree<int> rb;
-
-	rb.insert(6);
-	rb.insert(5);
-	rb.insert(7);
-	rb.insert(10);
-	rb.insert(9);
-	rb.insert(4);
-	printBT(&rb);
-
-	rb.delete_node(rb.root, 7);
-
-	printBT(&rb);
-
-	rb.delete_tree(rb.root);
 	return (0);
 }
 
@@ -203,6 +177,27 @@ int test_rb_recoloring_insert()
 	ASSERT_EQUAL(rb.root->right->value, 8);
 	ASSERT_EQUAL(rb.root->right->right->color, RB_RED);
 	ASSERT_EQUAL(rb.root->right->right->value, 11);
+	return (0);
+}
+
+
+int test_rb_playground()
+{
+	ft::RB_Tree<int> rb;
+
+	rb.insert(6);
+	rb.insert(5);
+	rb.insert(7);
+	rb.insert(10);
+	rb.insert(9);
+	rb.insert(4);
+	printBT(&rb);
+
+	rb.delete_node(rb.root, 7);
+
+	printBT(&rb);
+
+	rb.delete_tree(rb.root);
 	return (0);
 }
 

@@ -137,27 +137,85 @@ namespace ft
 			}
 			void		recolor(node_type *new_node)
 			{
+				if (!new_node)
+					return ;
 				if (new_node == this->root)
 					new_node->color = RB_BLACK;
 				else if (new_node->parent && new_node->parent->color == RB_RED)
 				{
+					node_type *parent = getParent(new_node);
 					node_type *grandparent = getGrandparent(new_node);
 					node_type *uncle = getUncle(new_node);
 					if (uncle && uncle->color == RB_RED)
 					{
 						uncle->color = RB_BLACK;
-						new_node->parent->color = RB_BLACK;
+						parent->color = RB_BLACK;
 						grandparent->color = RB_RED;
 						this->recolor(grandparent);
 						return ;
 					}
-					else if (uncle && uncle->color == RB_BLACK)
+					else
 					{
 						// Have to rotate
+						if (parent->left == new_node)
+						{
+							if (grandparent && grandparent->right == parent)
+								this->rotate_right(new_node);
+							this->rotate_left(parent);
+						}
+						else
+						{
+							if (grandparent && grandparent->left == parent)
+								this->rotate_left(new_node);
+							this->rotate_right(parent);
+						}
+						this->swap_color(parent, grandparent);
+						this->root->color = RB_BLACK;
 					}
 				}
 			}
+			void	swap_color(node_type *node1, node_type *node2)
+			{
+				bool tmp;
 
+				if (!node1 || !node2)
+					return ;
+				tmp = node1->color;
+				node1->color = node2->color;
+				node2->color = tmp;
+			}
+			void	rotate_left(node_type *child)
+			{
+				node_type *parent = this->getParent(child);
+				node_type *grandparent = this->getGrandparent(child);
+				node_type **parent_addr = this->get_reference(parent);
+				if (!child || !parent)
+					return ;
+				
+				*parent_addr = child;
+				child->parent = grandparent;
+				parent->left = child->right;
+				if (child->right)
+					child->right->parent = parent;
+				child->right = parent;
+				parent->parent = child;
+			}
+			void	rotate_right(node_type *child)
+			{
+				node_type *parent = this->getParent(child);
+				node_type *grandparent = this->getGrandparent(child);
+				node_type **parent_addr = this->get_reference(parent);
+				if (!child || !parent)
+					return ;
+				
+				*parent_addr = child;
+				child->parent = grandparent;
+				parent->right = child->left;
+				if (child->left)
+					child->left->parent = parent;
+				child->left = parent;
+				parent->parent = child;
+			}
 			node_type	*getSibling(node_type *node)
 			{
 				if (!node || !node->parent)
@@ -171,6 +229,12 @@ namespace ft
 				if (!node || !node->parent)
 					return (NULL);
 				return (node->parent->parent);
+			}
+			node_type	*getParent(node_type *node)
+			{
+				if (!node)
+					return (NULL);
+				return (node->parent);
 			}
 			node_type	*getUncle(node_type *node)
 			{
@@ -258,18 +322,16 @@ namespace ft
 			{
 				if (!node)
 					return ;
-				node_type **node_addr = this->get_reference(node);
 				delete_tree(node->left);
 				delete_tree(node->right);
 				destroy_node(node);
-				*node_addr = NULL;
 			}
 
 			void	destroy_node(node_type *node)
 			{
-				// node_type **node_addr = this->get_reference(node);
+				node_type **node_addr = this->get_reference(node);
 				__alloc.deallocate(node, 1);
-				// *node_addr = NULL;
+				*node_addr = NULL;
 			}
 
 			size_t	size_subtree(node_type *node) const
