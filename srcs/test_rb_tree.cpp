@@ -1,5 +1,12 @@
 #include "tests.hpp"
 
+template <class T1, class T2>
+std::ostream & 	operator<<(std::ostream & os, FT::pair<T1, T2> p)
+{
+	os << "Pair<" << p.first << ", " << p.second << ">" << std::endl;
+	return (os);
+}
+
 template <class T>
 void printBT(const std::string& prefix, const ft::Node<T>* node, bool isLeft)
 {
@@ -67,6 +74,18 @@ int test_rb_tree_delete()
 	return (0);
 }
 
+int test_rb_pair()
+{
+	ft::RB_Tree< FT::pair<char, int> >	rb;
+
+	FT::pair<char, int>	p1('a', 10);
+	FT::pair<char, int>	p2('b', 20);
+	rb.insert(p1);
+	rb.insert(p2);
+	printBT(&rb);
+	return (0);
+}
+
 int test_rb_playground()
 {
 	ft::RB_Tree<int> rb;
@@ -92,6 +111,7 @@ void	add_test_rb_tree_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_rb_tree_void_constructor);
 	ADD_TEST(testlist, test_rb_tree_insert);
 	ADD_TEST(testlist, test_rb_tree_delete);
+	ADD_TEST(testlist, test_rb_pair);
 
 	ADD_TEST(testlist, test_rb_playground);
 }

@@ -89,6 +89,10 @@ namespace ft
 					return (this->max(node->right));
 				return (node);
 			}
+			node_type	*max()
+			{
+				return (this->max(this->root));
+			}
 
 			node_type	*min(node_type *node)
 			{
@@ -97,6 +101,10 @@ namespace ft
 				if (node->left)
 					return (this->min(node->left));
 				return (node);
+			}
+			node_type	*min()
+			{
+				return (this->min(this->root));
 			}
 
 			node_type **get_reference(node_type *node)
@@ -167,16 +175,20 @@ namespace ft
 			}
 
 		private:
-			node_type	*node_new(node_type *parent, value_type const & value)
+			node_type	*initialize_node(node_type *node, node_type *parent, value_type const & value)
 			{
-				node_type	*node = __alloc.allocate(1);
-				// __alloc.construct(node, 0);
+				// this->__alloc.construct(node, value);
 				node->value = value;
 				node->left = NULL;
 				node->right = NULL;
 				node->parent = parent;
 				node->color = RB_BLACK;
 				return (node);
+			}
+			node_type	*node_new(node_type *parent, value_type const & value)
+			{
+				node_type	*node = __alloc.allocate(1);
+				return (initialize_node(node, parent, value));
 			}
 			allocator_type	__alloc;
 	};
