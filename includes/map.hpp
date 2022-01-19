@@ -36,8 +36,8 @@ namespace ft
 			typedef	typename allocator_type::reference			reference;
 			typedef typename allocator_type::const_reference	const_reference;
 
-			typedef pointer									iterator;		// should be a bidirectional iterator
-			typedef const_pointer							const_iterator;
+			typedef typename RB_Tree< value_type >::iterator			iterator;		// should be a bidirectional iterator
+			typedef typename RB_Tree< const value_type >::iterator	const_iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
@@ -66,18 +66,20 @@ namespace ft
 				return (this->__alloc.max_size());
 			}
 
-			bool	insert (value_type & val)
+			ft::pair<iterator, bool>	insert (value_type & val)
 			{
-				ft::Node<value_type>	*node;
+				iterator	node;
+				ft::pair<iterator, bool>	ret;
 
+				ret.second = false;
 				node = this->c.search(val);
-
 				if (!node)
 				{
 					node = this->c.insert(val);
-					return (true);
+					ret.second = true;
 				}
-				return (false);
+				ret.first = node;
+				return (ret);
 			}
 
 			// mapped_type & operator[](const key_type & k)

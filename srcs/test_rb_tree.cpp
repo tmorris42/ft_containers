@@ -292,6 +292,20 @@ int test_rb_inc()
 	return (0);
 }
 
+int	test_rb_size()
+{
+	ft::RB_Tree<int> rb;
+
+	ASSERT_EQUAL(rb.size(), static_cast<unsigned long>(0));
+	rb.insert(5);
+	ASSERT_EQUAL(rb.size(), static_cast<unsigned long>(1));
+	rb.insert(6);
+	ASSERT_EQUAL(rb.size(), static_cast<unsigned long>(2));
+	rb.insert(4);
+	ASSERT_EQUAL(rb.size(), static_cast<unsigned long>(3));
+	return (0);
+}
+
 int test_rb_playground()
 {
 	ft::RB_Tree<int> rb;
@@ -327,6 +341,7 @@ void	add_test_rb_tree_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_rb_end);
 	ADD_TEST(testlist, test_rb_dec);
 	ADD_TEST(testlist, test_rb_inc);
+	ADD_TEST(testlist, test_rb_size);
 
 	// ADD_TEST(testlist, test_rb_playground);
 }

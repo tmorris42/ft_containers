@@ -96,6 +96,11 @@ namespace ft
 			return (temp);
 		}
 
+		bool operator!() const
+		{
+			return (this->before_the_start || this->past_the_end || (!this->data));
+		}
+
 		private:
 			pointer	data;
 			bool 	past_the_end;
@@ -256,10 +261,11 @@ namespace ft
 				this->swap_nodes(oldNode, newNode);
 				this->destroy_node(oldNode);
 			}
-			node_type *insert(value_type const & value)
+			iterator insert(value_type const & value)
 			{
 				node_type	*current_node = this->root;
 				node_type	*new_node = node_new(NULL, value);
+				iterator	it;
 				if (!this->root)
 				{
 					this->root = new_node;
@@ -297,7 +303,8 @@ namespace ft
 					}
 				}
 				this->recolor(new_node);
-				return (new_node);
+				it = iterator(new_node);
+				return (it);
 			}
 			void		recolor(node_type *new_node)
 			{
