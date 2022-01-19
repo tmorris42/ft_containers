@@ -12,12 +12,12 @@ namespace ft
 	class RBIterator
 	{
 		typedef ft::biderectional_iterator_tag	iterator_category;
-		typedef ValueType	value_type;
-		typedef ptrdiff_t	difference_type;
-		typedef *ValueType	pointer;
-		typedef &ValueType	reference;
+		typedef  ValueType	value_type;
+		typedef std::ptrdiff_t	difference_type;
+		typedef  ValueType *	pointer;
+		typedef  ValueType &	reference;
 
-		RBIterator(pointer ptr = NULL) : data(ptr){}
+		RBIterator(pointer ptr = 0) : data(ptr){}
 		RBIterator(RBIterator const & src)  : data(src.data) {}
 		RBIterator const & operator=(RBIterator const & src) {
 			if (this != &src)
