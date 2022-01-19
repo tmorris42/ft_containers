@@ -4,6 +4,7 @@
 namespace ft
 {
 	struct random_access_iterator_tag {};
+	struct biderectional_iterator_tag {};
 
 	// iterator_traits
 	template <class Iterator>

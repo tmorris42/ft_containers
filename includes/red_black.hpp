@@ -9,6 +9,42 @@
 namespace ft
 {
 	template <class ValueType>
+	class RBIterator
+	{
+		typedef ft::biderectional_iterator_tag	iterator_category;
+		typedef ValueType	value_type;
+		typedef ptrdiff_t	difference_type;
+		typedef *ValueType	pointer;
+		typedef &ValueType	reference;
+
+		RBIterator(pointer ptr = NULL) : data(ptr){}
+		RBIterator(RBIterator const & src)  : data(src.data) {}
+		RBIterator const & operator=(RBIterator const & src) {
+			if (this != &src)
+				this->data = src.data;
+			return (*this);
+		}
+		~RBIterator() {}
+
+		bool	operator==(RBIterator const & other) { return (this->data == other.data); }
+		bool	operator!=(RBIterator const & other) { return (this->data != other.data); }
+
+		pointer		operator*() { return (this->data); }
+		reference	operator->() { return (&(this->operator*())); }
+
+		RBIterator const &	operator++() {
+			
+		}
+		RBIterator const &	operator++(int) {}
+		RBIterator const &	operator--() {}
+		RBIterator const &	operator--(int) {}
+
+		private:
+			pointer	data;
+
+	};
+
+	template <class ValueType>
 	struct Node
 	{
 		ValueType	value;
