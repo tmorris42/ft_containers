@@ -8,45 +8,142 @@
 
 namespace ft
 {
-	template <class ValueType>
+	template <class NodeType>
 	class RBIterator
 	{
+		public:
 		typedef ft::biderectional_iterator_tag	iterator_category;
-		typedef  ValueType	value_type;
+		typedef NodeType		node_type;
+		typedef typename node_type::value_type	value_type;
 		typedef std::ptrdiff_t	difference_type;
-		typedef  ValueType *	pointer;
-		typedef  ValueType &	reference;
+		typedef NodeType *	pointer;
+		typedef NodeType &	reference;
 
-		RBIterator(pointer ptr = 0) : data(ptr){}
-		RBIterator(RBIterator const & src)  : data(src.data) {}
+		RBIterator(pointer ptr = 0)
+		: data(ptr), past_the_end(false), before_the_start(false)
+		{}
+		RBIterator(RBIterator const & src)
+		: data(src.data), past_the_end(src.past_the_end), before_the_start(src.before_the_start)
+		{}
 		RBIterator const & operator=(RBIterator const & src) {
 			if (this != &src)
+			{
 				this->data = src.data;
+				this->past_the_end = src.past_the_end;
+				this->before_the_start = src.before_the_start;
+			}
 			return (*this);
 		}
 		~RBIterator() {}
 
-		bool	operator==(RBIterator const & other) { return (this->data == other.data); }
-		bool	operator!=(RBIterator const & other) { return (this->data != other.data); }
-
-		pointer		operator*() { return (this->data); }
-		reference	operator->() { return (&(this->operator*())); }
-
-		RBIterator const &	operator++() {
-			
+		bool operator==(RBIterator const &other)
+		{
+			if (this->past_the_end != other.past_the_end)
+				return (false);
+			if (this->before_the_start != other.before_the_start)
+				return (false);
+			return (this->data == other.data);
 		}
-		RBIterator const &	operator++(int) {}
-		RBIterator const &	operator--() {}
-		RBIterator const &	operator--(int) {}
+		bool operator!=(RBIterator const &other)
+		{
+			return (!(*this == other));
+		}
+
+		reference		operator*() { return (*(this->data)); }
+		pointer	operator->() { return (&(this->operator*())); }
+
+		RBIterator & operator++()
+		{
+			if (this->past_the_end)
+				return (*this);
+			if (this->before_the_start)
+			{
+				this->before_the_start = false;
+				return (*this);
+			}
+			if (this->data && this->data->right)
+			{
+				this->data = this->data->min(this->data->right);
+			}
+			else
+				this->data = this->getNextGreaterParent();
+			return (*this);			
+		}
+		RBIterator operator++(int) {
+			RBIterator temp;
+			temp = *this;
+			this->operator++();
+			return (temp);
+		}
+		RBIterator &	operator--() {
+			if (this->before_the_start)
+				return (*this);
+			if (this->past_the_end)
+			{
+				this->past_the_end = false;
+				return (*this);
+			}
+			if (this->data && this->data->left)
+				this->data = this->data->max(this->data->left);
+			else
+				this->data = this->getNextLesserParent();
+			return (*this);
+		}
+		RBIterator operator--(int) {
+			RBIterator temp;
+			temp = *this;
+			this->operator--();
+			return (temp);
+		}
 
 		private:
 			pointer	data;
+			bool 	past_the_end;
+			bool	before_the_start;
+
+			pointer getNextGreaterParent()
+			{
+				if (!this->data)
+					return (NULL);
+				pointer current = this->data;
+				value_type	target = current->value;
+				while (current && current->value <= target)
+				{
+					current = current->parent;
+				}
+				if (!current)
+				{
+					this->past_the_end = true;
+					return (this->data);
+				}
+				return (current);
+			}
+			pointer getNextLesserParent()
+			{
+				if (!this->data)
+					return (NULL);
+				pointer current = this->data;
+				value_type	target = current->value;
+				while (current && current->value >= target)
+				{
+					current = current->parent;
+				}
+				if (!current)
+				{
+					this->before_the_start = true;
+					return (this->data);
+				}
+				return (current);
+			}
 
 	};
 
 	template <class ValueType>
 	struct Node
 	{
+		typedef Node	node_type;
+		typedef ValueType	value_type;
+
 		ValueType	value;
 		Node		*left;
 		Node		*right;
@@ -56,6 +153,32 @@ namespace ft
 		Node(ValueType const & val)
 		: value(val), left(NULL), right(NULL), parent(NULL), color(RB_BLACK)
 		{}
+
+		node_type	*max(node_type *node)
+		{
+			if (node == NULL)
+				return (NULL);
+			if (node->right)
+				return (this->max(node->right));
+			return (node);
+		}
+		node_type	*max()
+		{
+			return (this->max(this));
+		}
+		node_type	*min(node_type *node)
+		{
+			if (node == NULL)
+				return (NULL);
+			if (node->left)
+				return (this->min(node->left));
+			return (node);
+		}
+		node_type	*min()
+		{
+			return (this->min(this));
+		}
+
 	};
 
 	template <class ValueType>
@@ -75,6 +198,11 @@ namespace ft
 			typedef Node<ValueType> node_type;
 			typedef ValueType		value_type;
 			typedef Allocator		allocator_type;
+
+			typedef RBIterator<node_type>					iterator;		// should be custom LRAI
+			typedef RBIterator<const node_type>				const_iterator;
+			typedef ft::reverse_iterator<iterator>			reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			node_type	*root;
 
 			RB_Tree() : root(NULL), __alloc(allocator_type())
@@ -281,28 +409,42 @@ namespace ft
 
 			node_type	*max(node_type *node)
 			{
-				if (node == NULL)
-					return (NULL);
-				if (node->right)
-					return (this->max(node->right));
-				return (node);
+				return (node->max());
 			}
 			node_type	*max()
 			{
 				return (this->max(this->root));
 			}
-
 			node_type	*min(node_type *node)
 			{
-				if (node == NULL)
-					return (NULL);
-				if (node->left)
-					return (this->min(node->left));
-				return (node);
+				return (node->min());
 			}
 			node_type	*min()
 			{
 				return (this->min(this->root));
+			}
+
+			iterator	begin()
+			{
+				iterator it(this->min());
+				return (it);
+			}
+			iterator	end()
+			{
+				iterator it(this->max());
+				++it;
+				return (it);
+			}
+			reverse_iterator	rbegin()
+			{
+				iterator it(this->max());
+				return (it);
+			}
+			reverse_iterator	rend()
+			{
+				iterator it(this->min());
+				--it;
+				return (it);
 			}
 
 			node_type **get_reference(node_type *node)

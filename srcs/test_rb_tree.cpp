@@ -1,3 +1,4 @@
+#ifndef FT_REAL_VERSION
 #include "tests.hpp"
 
 template <class T1, class T2>
@@ -180,6 +181,116 @@ int test_rb_recoloring_insert()
 	return (0);
 }
 
+// int test_rb_recoloring_delete()
+// {
+// 	ft::RB_Tree<int>	rb;
+// 	void				*nptr = NULL;
+
+// 	rb.insert(5);
+// 	ASSERT_EQUAL(rb.root->color, RB_BLACK);
+// 	ASSERT_EQUAL(rb.root->value, 5);
+// 	rb.insert(8);
+// 	ASSERT_EQUAL(rb.root->color, RB_BLACK);
+// 	ASSERT_EQUAL(rb.root->value, 5);
+// 	ASSERT_EQUAL(rb.root->left, nptr);
+// 	ASSERT_EQUAL(rb.root->right->color, RB_RED);
+// 	ASSERT_EQUAL(rb.root->right->value, 8);
+// 	rb.insert(4);
+// 	ASSERT_EQUAL(rb.root->color, RB_BLACK);
+// 	ASSERT_EQUAL(rb.root->value, 5);
+// 	ASSERT_EQUAL(rb.root->left->color, RB_RED);
+// 	ASSERT_EQUAL(rb.root->left->value, 4);
+// 	ASSERT_EQUAL(rb.root->right->color, RB_RED);
+// 	ASSERT_EQUAL(rb.root->right->value, 8);
+// 	rb.insert(11);
+// 	ASSERT_EQUAL(rb.root->color, RB_BLACK);
+// 	ASSERT_EQUAL(rb.root->value, 5);
+// 	ASSERT_EQUAL(rb.root->left->color, RB_BLACK);
+// 	ASSERT_EQUAL(rb.root->left->value, 4);
+// 	ASSERT_EQUAL(rb.root->right->color, RB_BLACK);
+// 	ASSERT_EQUAL(rb.root->right->value, 8);
+// 	ASSERT_EQUAL(rb.root->right->right->color, RB_RED);
+// 	ASSERT_EQUAL(rb.root->right->right->value, 11);
+// 	rb.delete()
+// 	return (0);
+// }
+
+int test_rb_begin()
+{
+	ft::RB_Tree<int> rb;
+	ft::RB_Tree<int>::iterator	it;
+
+	rb.insert(5);
+	rb.insert(6);
+	rb.insert(4);
+	it = rb.begin();
+	ASSERT_EQUAL((it++)->value, 4);
+	ASSERT_EQUAL(it->value, 5);
+	ASSERT_EQUAL((++it)->value, 6);
+	return (0);
+}
+
+int test_rb_end()
+{
+	ft::RB_Tree<int> rb;
+	ft::RB_Tree<int>::iterator	it;
+	ft::RB_Tree<int>::iterator	ite;
+	int count;
+
+	rb.insert(5);
+	rb.insert(6);
+	rb.insert(4);
+	it = rb.begin();
+	ite = rb.end();
+	count = 4;
+	while (it != ite)
+	{
+		ASSERT_EQUAL(it->value, count);
+		++count;
+		++it;
+	}
+	return (0);
+}
+
+int test_rb_dec()
+{
+	ft::RB_Tree<int> rb;
+	ft::RB_Tree<int>::iterator	it;
+	ft::RB_Tree<int>::iterator	ite;
+
+	rb.insert(5);
+	rb.insert(6);
+	rb.insert(4);
+	it = rb.begin();
+	ASSERT_EQUAL(it->value, 4);
+	++it;
+	ASSERT_EQUAL(it->value, 5);
+	--it;
+	ASSERT_EQUAL(it->value, 4);
+	--it;
+	ASSERT_EQUAL(it->value, 4);
+	return (0);
+}
+
+int test_rb_inc()
+{
+	ft::RB_Tree<int> rb;
+	ft::RB_Tree<int>::iterator	it;
+	ft::RB_Tree<int>::iterator	ite;
+
+	rb.insert(5);
+	rb.insert(6);
+	rb.insert(4);
+	it = rb.begin();
+	ASSERT_EQUAL(it->value, 4);
+	++it;
+	ASSERT_EQUAL(it->value, 5);
+	++it;
+	ASSERT_EQUAL(it->value, 6);
+	++it;
+	ASSERT_EQUAL(it->value, 6);
+	return (0);
+}
 
 int test_rb_playground()
 {
@@ -212,6 +323,11 @@ void	add_test_rb_tree_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_rb_two_elements);
 	ADD_TEST(testlist, test_rb_ascending_insert);
 	ADD_TEST(testlist, test_rb_recoloring_insert);
+	ADD_TEST(testlist, test_rb_begin);
+	ADD_TEST(testlist, test_rb_end);
+	ADD_TEST(testlist, test_rb_dec);
+	ADD_TEST(testlist, test_rb_inc);
 
 	// ADD_TEST(testlist, test_rb_playground);
 }
+#endif

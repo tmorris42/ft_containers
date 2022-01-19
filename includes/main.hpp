@@ -25,9 +25,8 @@
 #  include "type_traits.hpp"
 #  include "algorithm.hpp"
 #  include "utility.hpp"
+#  include "red_black.hpp"
 #  define FT ft
 # endif
-
-#  include "red_black.hpp"
 
 #endif
