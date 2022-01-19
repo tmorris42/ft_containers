@@ -82,10 +82,21 @@ namespace ft
 				return (ret);
 			}
 
-			// mapped_type & operator[](const key_type & k)
-			// {
-			// 	return ((*((this->insert(make_pair(k,mapped_type()))).first)).second);
-			// }
+			mapped_type & operator[](const key_type & k)
+			{
+				mapped_type m;
+				value_type v(k, m);
+				return (this->insert(v).first->value.second);
+			}
+
+			iterator begin()
+			{
+				return (this->c.begin());
+			}
+			iterator end()
+			{
+				return (this->c.end());
+			}
 
 
 		private:
