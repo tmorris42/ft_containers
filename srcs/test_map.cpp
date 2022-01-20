@@ -37,7 +37,7 @@ int test_map_size()
 	return (0);
 }
 
-int test_map_brackets()
+int test_map_brackets_write()
 {
 	FT::map<char, int> m;
 
@@ -59,10 +59,24 @@ int test_map_brackets()
 	return (0);
 }
 
+int test_map_brackets_read()
+{
+	FT::map<char, int> m;
+
+	m['a'] = 10;
+	m['c'] = 30;	
+	m['b'] = 20;
+	ASSERT_EQUAL(m['a'], 10);
+	ASSERT_EQUAL(m['b'], 20);
+	ASSERT_EQUAL(m['c'], 30);
+	return (0);
+}
+
 void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_map_void_constructor);
 	ADD_TEST(testlist, test_map_empty);
 	ADD_TEST(testlist, test_map_size);
-	ADD_TEST(testlist, test_map_brackets);
+	ADD_TEST(testlist, test_map_brackets_write);
+	ADD_TEST(testlist, test_map_brackets_read);
 }
