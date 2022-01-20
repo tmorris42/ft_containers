@@ -86,7 +86,12 @@ namespace ft
 			{
 				mapped_type m;
 				value_type v(k, m);
-				return (this->insert(v).first->value.second);
+				pair<iterator, bool> ret;
+				ret = this->insert(v);//.first->value.second;
+				std::cout << ret.first->value.first << std::endl;
+				std::cout << ret.first->value.second << std::endl;
+				// if (ret.second)
+				return (ret.first->value.second);
 			}
 
 			iterator begin()

@@ -196,7 +196,7 @@ namespace ft
 			next = a.parent;
 	}
 
-	template <class ValueType, class Allocator = std::allocator < Node < ValueType > > >
+	template <class ValueType, class Compare = std::less < ValueType >, class Allocator = std::allocator < Node < ValueType > > >
 	class RB_Tree
 	{
 		public:
@@ -229,9 +229,11 @@ namespace ft
 					return (recursive_search(current_node->left, value));
 				return (recursive_search(current_node->right, value));
 			}
-			node_type *search(value_type const & value)
+			iterator search(value_type const & value)
 			{
-				return (recursive_search(this->root, value));
+				iterator it;
+				it = iterator(recursive_search(this->root, value));
+				return (it);
 			}
 			void	swap_nodes(node_type *node1, node_type *node2)
 			{
@@ -261,6 +263,11 @@ namespace ft
 				this->swap_nodes(oldNode, newNode);
 				this->destroy_node(oldNode);
 			}
+			bool	values_equal(value_type const & value1, value_type const & value2) const
+			{
+				return (!less_func(value1, value2) && !less_func(value2, value1));
+			}
+
 			iterator insert(value_type const & value)
 			{
 				node_type	*current_node = this->root;
