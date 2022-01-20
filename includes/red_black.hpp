@@ -331,14 +331,14 @@ namespace ft
 						if (parent->left == new_node)
 						{
 							if (grandparent && grandparent->right == parent)
-								this->rotate_right(new_node);
-							this->rotate_left(parent);
+								this->rotateLeft(new_node);
+							this->rotateRight(parent);
 						}
 						else
 						{
 							if (grandparent && grandparent->left == parent)
-								this->rotate_left(new_node);
-							this->rotate_right(parent);
+								this->rotateRight(new_node);
+							this->rotateLeft(parent);
 						}
 						this->swap_color(parent, grandparent);
 						this->root->color = RB_BLACK;
@@ -355,37 +355,59 @@ namespace ft
 				node1->color = node2->color;
 				node2->color = tmp;
 			}
-			void	rotate_left(node_type *child)
+			node_type *rotateLeft(node_type *node)
 			{
-				node_type *parent = this->getParent(child);
-				node_type *grandparent = this->getGrandparent(child);
-				node_type **parent_addr = this->get_reference(parent);
-				if (!child || !parent)
-					return ;
-				
-				*parent_addr = child;
-				child->parent = grandparent;
-				parent->left = child->right;
-				if (child->right)
-					child->right->parent = parent;
-				child->right = parent;
-				parent->parent = child;
+				node_type *parent = this->getParent(node);
+				node_type *grandparent = this->getGrandparent(node);
+
+				if (!node || !parent || parent->right != node)
+					return (NULL);
+
+				// Attach left child of node to parent
+				if (node->left)
+					node->left->parent = parent;
+				parent->right = node->left;
+
+				// Attach node to root or grandparent
+				if (!grandparent)
+					this->root = node;
+				else if (grandparent->left == parent)
+					grandparent->left = node;
+				else
+					grandparent->right = node;
+
+				// Reattach parent as child of node
+				parent->parent = node;
+				node->left = parent;
+
+				return (node);
 			}
-			void	rotate_right(node_type *child)
+			node_type *rotateRight(node_type *node)
 			{
-				node_type *parent = this->getParent(child);
-				node_type *grandparent = this->getGrandparent(child);
-				node_type **parent_addr = this->get_reference(parent);
-				if (!child || !parent)
-					return ;
-				
-				*parent_addr = child;
-				child->parent = grandparent;
-				parent->right = child->left;
-				if (child->left)
-					child->left->parent = parent;
-				child->left = parent;
-				parent->parent = child;
+				node_type *parent = this->getParent(node);
+				node_type *grandparent = this->getGrandparent(node);
+
+				if (!node || !parent || parent->left != node)
+					return (NULL);
+
+				// Attach left child of node to parent
+				if (node->right)
+					node->right->parent = parent;
+				parent->left = node->right;
+
+				// Attach node to root or grandparent
+				if (!grandparent)
+					this->root = node;
+				else if (grandparent->right == parent)
+					grandparent->right = node;
+				else
+					grandparent->left = node;
+
+				// Reattach parent as child of node
+				parent->parent = node;
+				node->right = parent;
+
+				return (node);
 			}
 			node_type	*getSibling(node_type *node)
 			{
