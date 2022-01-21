@@ -50,12 +50,12 @@ int test_map_brackets_write()
 	FT::map<char, int>::iterator ite = m.end();
 	while (it != ite)
 	{
-		ASSERT_EQUAL(it->value.second, count);
+		ASSERT_EQUAL(it->second, count);
 		count += 10;
 		++it;
 	}
 	ASSERT_EQUAL(m.size(), (unsigned int)3);
-	ASSERT_EQUAL((m.begin())->value.second, 10);
+	ASSERT_EQUAL((m.begin())->second, 10);
 	return (0);
 }
 
@@ -86,7 +86,7 @@ int test_map_insert_duplicate()
 	ASSERT_EQUAL(m.size(), (unsigned int)1);
 	m.insert(p2);
 	ASSERT_EQUAL(m.size(), (unsigned int)1);
-	ASSERT_EQUAL(m.begin()->value.second, 20);
+	ASSERT_EQUAL(m.begin()->second, 20);
 	return (0);
 }
 

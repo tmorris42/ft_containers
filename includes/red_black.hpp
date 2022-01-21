@@ -4,6 +4,7 @@
 #define RB_BLACK 0
 #define RB_RED 1
 
+#include <functional> // std::less
 #include <memory> // std::allocator
 
 namespace ft
@@ -49,8 +50,8 @@ namespace ft
 			return (!(*this == other));
 		}
 
-		reference		operator*() { return (*(this->data)); }
-		pointer	operator->() { return (&(this->operator*())); }
+		value_type	&	operator*() { return (this->data->value); }
+		value_type	*	operator->() { return (&(this->operator*())); }
 
 		RBIterator & operator++()
 		{
@@ -240,9 +241,9 @@ namespace ft
 				node_type *tmp;
 				node_type **tmp_addr;
 
-				tmp_addr = this->get_reference(node1);
+				tmp_addr = this->get_reference(node1);  //CHECK HERE FOR BLANKING ROOT
 				*tmp_addr = node2;
-				tmp_addr = this->get_reference(node2);
+				tmp_addr = this->get_reference(node2); //CHECK HERE FOR BLANKING ROOT
 				*tmp_addr = node1;
 				tmp_addr = NULL;
 				
@@ -262,10 +263,15 @@ namespace ft
 			{
 				this->swap_nodes(oldNode, newNode);
 				this->destroy_node(oldNode);
+				// this->deallocate_node(oldNode);
 			}
 			bool	values_equal(value_type const & value1, value_type const & value2) const
 			{
-				return (!less_func(value1, value2) && !less_func(value2, value1));
+				return (!Compare()(value1, value2) && !Compare()(value2, value1));
+			}
+			bool	values_less_than(value_type const & value1, value_type const & value2) const
+			{
+				return (Compare()(value1, value2));
 			}
 
 			iterator insert(value_type const & value)
@@ -279,12 +285,13 @@ namespace ft
 				}
 				while (current_node)
 				{
-					if (current_node->value == value)
+					if (values_equal(current_node->value, value))
 					{
+						std::cout << "REPLACING A NODE!" << std::endl;
 						this->replace_node(current_node, new_node);
 						break ;
 					}
-					if (value < current_node->value)
+					if (values_less_than(value, current_node->value))
 					{
 						if (!current_node->left)
 						{
@@ -543,9 +550,20 @@ namespace ft
 
 			void	destroy_node(node_type *node)
 			{
-				node_type **node_addr = this->get_reference(node);
-				__alloc.deallocate(node, 1);
-				*node_addr = NULL;
+				if (!node)
+					return ;
+				if (!node->parent && this->root == node)
+					this->root = NULL;
+				else if (node->parent && node->parent->right == node)
+					node->parent->right = NULL;
+				else if (node->parent && node->parent->left == node)
+					node->parent->left = NULL;
+				this->deallocate_node(node);
+			}
+
+			void	deallocate_node(node_type *node)
+			{
+				this->__alloc.deallocate(node, 1);
 			}
 
 			size_t	size_subtree(node_type *node) const
@@ -580,6 +598,7 @@ namespace ft
 				// return (initialize_node(node, parent, value));
 			}
 			allocator_type	__alloc;
+			// typedef Compare	less_func;
 	};
 }
 

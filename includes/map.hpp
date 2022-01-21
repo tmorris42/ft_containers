@@ -88,10 +88,10 @@ namespace ft
 				value_type v(k, m);
 				pair<iterator, bool> ret;
 				ret = this->insert(v);//.first->value.second;
-				std::cout << ret.first->value.first << std::endl;
-				std::cout << ret.first->value.second << std::endl;
+				std::cout << ret.first->first << std::endl;
+				std::cout << ret.first->second << std::endl;
 				// if (ret.second)
-				return (ret.first->value.second);
+				return (ret.first->second);
 			}
 
 			iterator begin()
@@ -107,7 +107,16 @@ namespace ft
 		private:
 			allocator_type						__alloc;
 			key_compare							__comp;
-			ft::RB_Tree< value_type >		c;
+
+			template <class PairType>
+			struct pair_compare
+			{
+				bool operator() (const PairType & x, const PairType & y) const
+				{
+					return (x.first < y.first);
+				}
+			};
+			ft::RB_Tree< value_type, pair_compare< value_type >	>	c;
 	};
 } 
 #endif
