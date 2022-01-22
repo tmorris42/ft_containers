@@ -182,6 +182,27 @@ int test_map_erase_by_iterator()
 	it = (++m.begin());
 	m.erase(it);
 	ASSERT_EQUAL(m.size(), (unsigned long)2);
+	ASSERT_EQUAL(m.begin()->first, 'a');
+	ASSERT_EQUAL((++m.begin())->first, 'c');
+
+	return (0);
+}
+
+int test_map_erase_by_key()
+{
+	FT::map<char, int> m;
+	FT::map<char, int>::iterator it;
+
+	m['a'] = 1;
+	m['b'] = 2;
+	m['c'] = 3;
+
+	ASSERT_EQUAL(m.size(), (unsigned long)3);
+	it = (++m.begin());
+	m.erase('c');
+	ASSERT_EQUAL(m.size(), (unsigned long)2);
+	ASSERT_EQUAL(m.begin()->first, 'a');
+	ASSERT_EQUAL((++m.begin())->first, 'b');
 	return (0);
 }
 
@@ -198,4 +219,5 @@ void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_find);
 	ADD_TEST(testlist, test_map_count);
 	ADD_TEST(testlist, test_map_erase_by_iterator);
+	ADD_TEST(testlist, test_map_erase_by_key);
 }

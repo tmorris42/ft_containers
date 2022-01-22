@@ -143,7 +143,8 @@ namespace ft
 			}
 			size_type erase(const key_type & k)
 			{
-				iterator it = this->c.search(k);
+				value_type	p(k, mapped_type());
+				iterator it = this->c.search(p);
 				if (!it)
 					return (0);
 				this->erase(it);
