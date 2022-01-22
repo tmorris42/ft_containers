@@ -135,15 +135,14 @@ namespace ft
 			allocator_type						__alloc;
 			key_compare							__comp;
 
-			template <class PairType>
-			struct pair_compare
+			struct value_comp
 			{
-				bool operator() (const PairType & x, const PairType & y) const
+				bool operator() (const value_type & x, const value_type & y) const
 				{
-					return (Compare()(x.first, y.first));
+					return (key_compare()(x.first, y.first));
 				}
 			};
-			ft::RB_Tree< value_type, pair_compare< value_type >	>	c;
+			ft::RB_Tree< value_type, value_comp >	c;
 	};
 } 
 #endif
