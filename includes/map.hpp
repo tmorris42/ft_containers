@@ -25,7 +25,14 @@ namespace ft
 			typedef T									mapped_type;
 			typedef pair< const key_type, mapped_type >	value_type;
 			typedef Compare								key_compare;
-			// typedef ???									value_compare;
+			// typedef map::value_compare					value_compare;
+			struct value_compare
+			{
+				bool operator() (const value_type & x, const value_type & y) const
+				{
+					return (key_compare()(x.first, y.first));
+				}
+			};
 
 			typedef Allocator			allocator_type;
 			typedef std::ptrdiff_t		difference_type;	// should be iterator_trais<iterator>::difference_type (usually equiv. ptrdiff_t)
@@ -130,19 +137,49 @@ namespace ft
 				return (0);
 			}
 
+			void erase(iterator position)
+			{
+				this->c.delete_node(this->c.root, *position); // Not optimized, should start from iterator position, not root
+			}
+			size_type erase(const key_type & k)
+			{
+				iterator it = this->c.search(k);
+				if (!it)
+					return (0);
+				this->erase(it);
+				return (1);
+			}
+			// void erase(iterator first, iterator last)
+			// {
+				
+			// }
+			void swap()
+			{
+
+			}
+			void	clear()
+			{
+
+			}
+
+			// lower_bound;
+			// upper_bound;
+			// equal_range;
+
+			key_compare key_comp() const
+			{
+				return (key_compare());
+			}
+			value_compare value_comp() const
+			{
+				return (value_compare());
+			}
+
 
 		private:
 			allocator_type						__alloc;
 			key_compare							__comp;
-
-			struct value_comp
-			{
-				bool operator() (const value_type & x, const value_type & y) const
-				{
-					return (key_compare()(x.first, y.first));
-				}
-			};
-			ft::RB_Tree< value_type, value_comp >	c;
+			ft::RB_Tree< value_type, value_compare >	c;
 	};
 } 
 #endif

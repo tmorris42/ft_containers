@@ -52,7 +52,9 @@ namespace ft
 		}
 
 		value_type	&	operator*() { return (this->data->value); }
+		const value_type	&	operator*() const { return (this->data->value); }
 		value_type	*	operator->() { return (&(this->operator*())); }
+		const value_type	*	operator->() const { return (&(this->operator*())); }
 
 		RBIterator & operator++()
 		{
@@ -273,26 +275,65 @@ namespace ft
 			}
 			void	swap_nodes(node_type *node1, node_type *node2)
 			{
-				node_type *tmp;
+				node_type *tmp_parent;
+				node_type *tmp_left;
+				node_type *tmp_right;
 				node_type **tmp_addr;
 
-				tmp_addr = this->get_reference(node1);  //CHECK HERE FOR BLANKING ROOT
-				*tmp_addr = node2;
-				tmp_addr = this->get_reference(node2); //CHECK HERE FOR BLANKING ROOT
-				*tmp_addr = node1;
-				tmp_addr = NULL;
+				// tmp_addr = this->get_reference_safe(node1);  //CHECK HERE FOR BLANKING ROOT
+				// if (tmp_addr)
+				// 	*tmp_addr = node2;
+				// tmp_addr = this->get_reference_safe(node2); //CHECK HERE FOR BLANKING ROOT
+				// if (tmp_addr)
+				// 	*tmp_addr = node1;
+				// tmp_addr = NULL;
 				
-				tmp = node1->parent;
-				node1->parent = node2->parent;
-				node2->parent = tmp;
+				tmp_parent = node1->parent;
+				tmp_left = node1->left;
+				tmp_right = node1->right;
 
-				tmp = node1->left;
-				node1->left = node2->parent;
-				node2->left = tmp;
+				if (node2->parent == node1)
+					node1->parent = node2;
+				else
+					node1->parent = node2->parent;
+				if (node2->left == node1)
+					node1->left = node2;
+				else
+					node1->left = node2->left;
+				if (node2->right == node1)
+					node1->right = node2;
+				else
+					node1->right = node2->right;
 
-				tmp = node1->right;
-				node1->right = node2->parent;
-				node2->right = tmp;
+				if (tmp_parent == node2)
+					node2->parent = node1;
+				else
+					node2->parent = tmp_parent;
+				if (tmp_left == node2)
+					node2->left = node1;
+				else
+					node2->left = tmp_left;
+				if (tmp_right == node2)
+					node2->right = node1;
+				else
+					node2->right = tmp_right;
+
+				if (this->root == node1)
+					this->root = node2;
+				else if (this->root == node2)
+					this->root = node1;
+				if (node1->parent)
+				{
+					tmp_addr = this->get_reference_safe(node1);
+					if (tmp_addr)
+						*tmp_addr = node1;
+				}
+				if (node2->parent)
+				{
+					tmp_addr = this->get_reference_safe(node2);
+					if (tmp_addr)
+						*tmp_addr = node2;
+				}
 			}
 			void		replace_node(node_type *oldNode, node_type * newNode)
 			{
@@ -536,13 +577,26 @@ namespace ft
 					return(&(node->parent->left));
 				return (NULL);
 			}
+
+			node_type **get_reference_safe(node_type *node)
+			{
+				if (!node->parent && this->root == node)
+					return (&this->root);
+				if (!node->parent)
+					return (NULL);
+				if (node->parent->right == node)
+					return (&node->parent->right);
+				if (node->parent->left == node)
+					return (&node->parent->left);
+				return (NULL);
+			}
 			void	delete_node(node_type *node, value_type const & value)
 			{
 				if (node == NULL)
 					return ;
-				if (value < node->value)
+				if (this->values_less_than(value, node->value))
 					this->delete_node(node->left, value);
-				else if (value > node->value)
+				else if (values_less_than(node->value, value))
 					this->delete_node(node->right, value);
 				else //value == node->value
 				{
@@ -566,9 +620,10 @@ namespace ft
 					}
 					else
 					{
-						node_type *replacement = this->max(node->left);
-						node->value = replacement->value;
-						this->delete_node(node->left, replacement->value);
+						this->swap_nodes(node, this->max(node->left));
+						// node_type *replacement = this->max(node->left);
+						// node->value = replacement->value;
+						this->delete_node(node, value);
 					}				
 				}
 				return ;
