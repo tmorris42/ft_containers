@@ -123,6 +123,13 @@ namespace ft
 				return const_iterator();
 			}
 
+			size_type count(const key_type & k) const
+			{
+				if (!k)
+					return (0);
+				return (0);
+			}
+
 
 		private:
 			allocator_type						__alloc;

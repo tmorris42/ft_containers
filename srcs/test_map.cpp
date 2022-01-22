@@ -156,6 +156,19 @@ int test_map_find()
 	return (0);
 }
 
+int test_map_count()
+{
+	FT::map<char, int> m;
+
+	m['a'] = 10;
+	m['k'] = 20;
+
+	ASSERT_EQUALQ((m.count('a')), (unsigned long)1);
+	ASSERT_EQUALQ((m.count('b')), (unsigned long)0);
+	ASSERT_EQUALQ((m.count('k')), (unsigned long)1);
+	return (0);
+}
+
 void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_map_void_constructor);
@@ -167,4 +180,5 @@ void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_insert_duplicate);
 	ADD_TEST(testlist, test_map_reverse_iterator);
 	ADD_TEST(testlist, test_map_find);
+	ADD_TEST(testlist, test_map_count);
 }
