@@ -109,6 +109,20 @@ namespace ft
 				return (reverse_iterator(this->begin()));
 			}
 
+			iterator find(const key_type & k)
+			{
+				if (!k)
+					return iterator();
+				return iterator();
+			}
+
+			const_iterator find(const key_type & k) const
+			{
+				if (!k)
+					return const_iterator();
+				return const_iterator();
+			}
+
 
 		private:
 			allocator_type						__alloc;

@@ -143,6 +143,19 @@ int test_map_reverse_iterator()
 	return (0);
 }
 
+int test_map_find()
+{
+	FT::map<char, int> m;
+
+	m['a'] = 10;
+	m['k'] = 20;
+
+	ASSERT_EQUALQ((m.find('a')), m.begin());
+	ASSERT_EQUALQ((m.find('b')), m.end());
+	ASSERT_EQUALQ((m.find('k')), (++m.begin()));
+	return (0);
+}
+
 void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_map_void_constructor);
@@ -153,4 +166,5 @@ void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_brackets_read);
 	ADD_TEST(testlist, test_map_insert_duplicate);
 	ADD_TEST(testlist, test_map_reverse_iterator);
+	ADD_TEST(testlist, test_map_find);
 }
