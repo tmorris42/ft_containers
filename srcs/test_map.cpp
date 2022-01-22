@@ -50,12 +50,14 @@ int test_map_brackets_write()
 	FT::map<char, int>::iterator ite = m.end();
 	while (it != ite)
 	{
-		ASSERT_EQUAL(it->value.second, count);
+		ASSERT_EQUAL(it->second, count);
 		count += 10;
 		++it;
 	}
 	ASSERT_EQUAL(m.size(), (unsigned int)3);
-	ASSERT_EQUAL((m.begin())->value.second, 10);
+	ASSERT_EQUAL((m.begin())->second, 10);
+	ASSERT_EQUAL((++m.begin())->second, 20);
+	ASSERT_EQUAL((--m.end())->second, 30);
 	return (0);
 }
 
@@ -72,6 +74,24 @@ int test_map_brackets_read()
 	return (0);
 }
 
+int test_map_insert_duplicate()
+{
+	FT::map<char, int> m;
+
+	FT::pair<const char, int>	p1('a', 10);
+	FT::pair<const char, int>	p2('a', 20);
+	
+	ASSERT_EQUAL(m.size(), (unsigned int)0);
+	m.insert(p1);
+	ASSERT_EQUAL(m.size(), (unsigned int)1);
+	m.insert(p1);
+	ASSERT_EQUAL(m.size(), (unsigned int)1);
+	m.insert(p2);
+	ASSERT_EQUAL(m.size(), (unsigned int)1);
+	ASSERT_EQUAL(m.begin()->second, 10);
+	return (0);
+}
+
 void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_map_void_constructor);
@@ -79,4 +99,5 @@ void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_size);
 	ADD_TEST(testlist, test_map_brackets_write);
 	ADD_TEST(testlist, test_map_brackets_read);
+	ADD_TEST(testlist, test_map_insert_duplicate);
 }

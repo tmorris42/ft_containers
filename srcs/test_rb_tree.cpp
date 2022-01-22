@@ -38,7 +38,7 @@ int	test_rb_tree_void_constructor()
 {
 	ft::RB_Tree<int> rb;
 
-	ASSERT_EQUAL(rb.search(5), (ft::Node<int>*)NULL);
+	ASSERT_EQUALQ(rb.search(5), (ft::Node<int>*)NULL);
 	return (0);
 }
 
@@ -49,10 +49,10 @@ int test_rb_tree_insert()
 	rb.insert(6);
 	rb.insert(5);
 	rb.insert(7);
-	ASSERT_EQUAL(rb.search(5)->value, 5);
-	ASSERT_EQUAL(rb.search(6)->value, 6);
-	ASSERT_EQUAL(rb.search(7)->value, 7);
-	ASSERT_EQUAL(rb.search(8), (ft::Node<int>*)NULL);
+	ASSERT_EQUAL(*rb.search(5), 5);
+	ASSERT_EQUAL(*rb.search(6), 6);
+	ASSERT_EQUAL(*rb.search(7), 7);
+	ASSERT_EQUALQ(rb.search(8), (ft::Node<int>*)NULL);
 	// printBT(&rb);
 	return (0);
 }
@@ -67,9 +67,9 @@ int test_rb_tree_delete()
 	rb.insert(10);
 	rb.insert(9);
 	rb.insert(4);
-	ASSERT_EQUAL(rb.search(7)->value, 7);
+	ASSERT_EQUAL(*rb.search(7), 7);
 	rb.delete_node(rb.root, 7);
-	ASSERT_EQUAL(rb.search(7), (ft::Node<int>*)NULL);
+	ASSERT_EQUALQ(rb.search(7), (ft::Node<int>*)NULL);
 	rb.delete_tree(rb.root);
 	return (0);
 }
@@ -139,7 +139,7 @@ int test_rb_ascending_insert()
 	ASSERT_EQUAL(rb.root->right->color, RB_RED);
 	ASSERT_EQUAL(rb.root->right->value, 8);
 	rb.insert(10);
-	printBT(&rb);
+	// printBT(&rb);
 	ASSERT_EQUAL(rb.root->color, RB_BLACK);
 	ASSERT_EQUAL(rb.root->value, 8);
 	ASSERT_EQUAL(rb.root->left->color, RB_RED);
@@ -225,9 +225,9 @@ int test_rb_begin()
 	rb.insert(6);
 	rb.insert(4);
 	it = rb.begin();
-	ASSERT_EQUAL((it++)->value, 4);
-	ASSERT_EQUAL(it->value, 5);
-	ASSERT_EQUAL((++it)->value, 6);
+	ASSERT_EQUAL(*(it++), 4);
+	ASSERT_EQUAL(*it, 5);
+	ASSERT_EQUAL(*(++it), 6);
 	return (0);
 }
 
@@ -246,7 +246,7 @@ int test_rb_end()
 	count = 4;
 	while (it != ite)
 	{
-		ASSERT_EQUAL(it->value, count);
+		ASSERT_EQUAL(*it, count);
 		++count;
 		++it;
 	}
@@ -263,13 +263,13 @@ int test_rb_dec()
 	rb.insert(6);
 	rb.insert(4);
 	it = rb.begin();
-	ASSERT_EQUAL(it->value, 4);
+	ASSERT_EQUAL(*it, 4);
 	++it;
-	ASSERT_EQUAL(it->value, 5);
+	ASSERT_EQUAL(*it, 5);
 	--it;
-	ASSERT_EQUAL(it->value, 4);
+	ASSERT_EQUAL(*it, 4);
 	--it;
-	ASSERT_EQUAL(it->value, 4);
+	ASSERT_EQUAL(*it, 4);
 	return (0);
 }
 
@@ -283,13 +283,13 @@ int test_rb_inc()
 	rb.insert(6);
 	rb.insert(4);
 	it = rb.begin();
-	ASSERT_EQUAL(it->value, 4);
+	ASSERT_EQUAL(*it, 4);
 	++it;
-	ASSERT_EQUAL(it->value, 5);
+	ASSERT_EQUAL(*it, 5);
 	++it;
-	ASSERT_EQUAL(it->value, 6);
+	ASSERT_EQUAL(*it, 6);
 	++it;
-	ASSERT_EQUAL(it->value, 6);
+	ASSERT_EQUAL(*it, 6);
 	return (0);
 }
 
