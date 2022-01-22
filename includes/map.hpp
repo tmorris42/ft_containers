@@ -132,10 +132,12 @@ namespace ft
 
 			size_type count(const key_type & k) const
 			{
-				const_iterator it(this->find(k));
-				if (!it)
-					return (0);
-				return (1);
+				value_type	p(k, mapped_type());
+				const_iterator it(this->c.search(p));
+				// const_iterator it(this->c.search(p));
+				if (it->first == k)
+					return (1);
+				return (0);
 			}
 
 			void erase(iterator position)

@@ -16,6 +16,7 @@ namespace ft
 		typedef ft::biderectional_iterator_tag	iterator_category;
 		typedef NodeType		node_type;
 		typedef typename node_type::value_type	value_type;
+		typedef typename node_type::const_value_type	const_value_type;
 		typedef std::ptrdiff_t	difference_type;
 		typedef NodeType *	node_pointer;
 		typedef typename NodeType::value_type *	pointer;
@@ -51,10 +52,22 @@ namespace ft
 			return (!(*this == other));
 		}
 
-		value_type	&	operator*() { return (this->data->value); }
-		const value_type	&	operator*() const { return (this->data->value); }
-		value_type	*	operator->() { return (&(this->operator*())); }
-		const value_type	*	operator->() const { return (&(this->operator*())); }
+		value_type	&operator*()
+		{
+			return (this->data->value);
+		}
+		const_value_type	&operator*() const
+		{
+			return (this->data->value);
+		}
+		value_type	*	operator->()
+		{
+			return (&(this->operator*()));
+		}
+		const_value_type	*operator->() const
+		{
+			return (&(this->operator*()));
+		}
 
 		RBIterator & operator++()
 		{
@@ -70,7 +83,10 @@ namespace ft
 				this->data = this->data->min(this->data->right);
 			}
 			else
+			{
 				this->data = this->getNextGreaterParent();
+
+			}
 			return (*this);			
 		}
 		RBIterator operator++(int) {
@@ -186,6 +202,7 @@ namespace ft
 	{
 		typedef Node	node_type;
 		typedef ValueType	value_type;
+		typedef const ValueType	const_value_type;
 
 		ValueType	value;
 		Node		*left;
@@ -251,11 +268,13 @@ namespace ft
 	{
 		public:
 			typedef Node<ValueType> node_type;
+			typedef Node<ValueType> const_node_type;
 			typedef ValueType		value_type;
+			typedef const ValueType		const_value_type;
 			typedef Allocator		allocator_type;
 
 			typedef RBIterator<node_type>					iterator;		// should be custom LRAI
-			typedef RBIterator<const node_type>				const_iterator;
+			typedef RBIterator<const_node_type >	const_iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			node_type	*root;
@@ -279,7 +298,7 @@ namespace ft
 					return (recursive_search(current_node->left, value));
 				return (recursive_search(current_node->right, value));
 			}
-			node_type const *recursive_search(node_type *current_node, value_type const & value) const
+			const_node_type *recursive_search(node_type *current_node, value_type const & value) const
 			{
 				if (!current_node)
 					return (NULL);
@@ -302,7 +321,7 @@ namespace ft
 			}
 			const_iterator search(value_type const & value) const
 			{
-				node_type const *node = recursive_search(this->root, value);
+				const_node_type *node = recursive_search(this->root, value);
 				if (!node)
 					return (this->end());
 				return (const_iterator(node));
@@ -559,11 +578,19 @@ namespace ft
 				return (this->getSibling(node->parent));
 			}
 
-			node_type	*max(node_type *node) const
+			node_type	*max(node_type *node)
 			{
 				return (node->max());
 			}
-			node_type	*max() const
+			node_type	*max()
+			{
+				return (this->max(this->root));
+			}
+			const_node_type	*max(node_type *node) const
+			{
+				return (node->max());
+			}
+			const_node_type	*max() const
 			{
 				return (this->max(this->root));
 			}
@@ -571,7 +598,7 @@ namespace ft
 			{
 				return (node->min());
 			}
-			const node_type	*min(node_type *node) const
+			const_node_type	*min(node_type *node) const
 			{
 				return (node->min());
 			}
@@ -579,7 +606,7 @@ namespace ft
 			{
 				return (this->min(this->root));
 			}
-			const node_type	*min() const
+			const_node_type	*min() const
 			{
 				return (this->min(this->root));
 			}
