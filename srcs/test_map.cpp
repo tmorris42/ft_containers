@@ -74,6 +74,33 @@ int test_map_brackets_read()
 	return (0);
 }
 
+int test_map_brackets_overwrite()
+{
+	FT::map<char, int> m;
+
+	m['a'] = 10;
+	m['c'] = 30;	
+	m['b'] = 20;
+	m['a'] = 40;
+	m['b'] = 50;
+	m['c'] = 60;	
+	int count = 40;
+
+	FT::map<char, int>::iterator it = m.begin();
+	FT::map<char, int>::iterator ite = m.end();
+	while (it != ite)
+	{
+		ASSERT_EQUAL(it->second, count);
+		count += 10;
+		++it;
+	}
+	ASSERT_EQUAL(m.size(), (unsigned int)3);
+	ASSERT_EQUAL((m.begin())->second, 40);
+	ASSERT_EQUAL((++m.begin())->second, 50);
+	ASSERT_EQUAL((--m.end())->second, 60);
+	return (0);
+}
+
 int test_map_insert_duplicate()
 {
 	FT::map<char, int> m;
@@ -98,6 +125,7 @@ void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_empty);
 	ADD_TEST(testlist, test_map_size);
 	ADD_TEST(testlist, test_map_brackets_write);
+	ADD_TEST(testlist, test_map_brackets_overwrite);
 	ADD_TEST(testlist, test_map_brackets_read);
 	ADD_TEST(testlist, test_map_insert_duplicate);
 }
