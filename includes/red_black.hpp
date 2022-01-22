@@ -216,7 +216,7 @@ namespace ft
 
 		node_type	*max(node_type *node)
 		{
-			if (node == NULL)
+			if (!node)
 				return (NULL);
 			if (node->right)
 				return (this->max(node->right));
@@ -228,7 +228,7 @@ namespace ft
 		}
 		node_type	*min(node_type *node)
 		{
-			if (node == NULL)
+			if (!node)
 				return (NULL);
 			if (node->left)
 				return (this->min(node->left));
@@ -624,7 +624,7 @@ namespace ft
 			}
 			const_iterator	end() const
 			{
-				const_iterator it(this->max() + 1);
+				const_iterator it(this->max());
 				++it;
 				return (it);
 			}
@@ -667,7 +667,7 @@ namespace ft
 			}
 			void	delete_node(node_type *node, value_type const & value)
 			{
-				if (node == NULL)
+				if (!node)
 					return ;
 				if (this->values_less_than(value, node->value))
 					this->delete_node(node->left, value);

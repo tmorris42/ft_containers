@@ -172,6 +172,8 @@ int test_map_count()
 	ASSERT_EQUALQ((m.count('a')), (unsigned long)1);
 	ASSERT_EQUALQ((m.count('b')), (unsigned long)0);
 	ASSERT_EQUALQ((m.count('k')), (unsigned long)1);
+	m.erase('k');
+	ASSERT_EQUALQ((m.count('k')), (unsigned long)0);
 	return (0);
 }
 
