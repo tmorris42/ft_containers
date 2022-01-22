@@ -17,10 +17,11 @@ namespace ft
 		typedef NodeType		node_type;
 		typedef typename node_type::value_type	value_type;
 		typedef std::ptrdiff_t	difference_type;
-		typedef NodeType *	pointer;
-		typedef NodeType &	reference;
+		typedef NodeType *	node_pointer;
+		typedef typename NodeType::value_type *	pointer;
+		typedef typename NodeType::value_type &	reference;
 
-		RBIterator(pointer ptr = 0)
+		RBIterator(node_pointer ptr = 0)
 		: data(ptr), past_the_end(false), before_the_start(false)
 		{}
 		RBIterator(RBIterator const & src)
@@ -102,16 +103,50 @@ namespace ft
 			return (this->before_the_start || this->past_the_end || (!this->data));
 		}
 
+		RBIterator & operator+=(difference_type const & n )
+		{
+			difference_type i = 0;
+			while (i < n)
+			{
+				this->operator++();
+				++i;
+			}
+			return (*this);
+		}
+		RBIterator & operator-=(difference_type const & n )
+		{
+			difference_type i = 0;
+			while (i < n)
+			{
+				this->operator--();
+				++i;
+			}
+			return (*this);
+		}
+		RBIterator operator+(difference_type const & n ) const
+		{
+			RBIterator ret = *this;
+			ret += n;
+			return (ret);
+		}
+		RBIterator operator-(difference_type const & n ) const
+		{
+			RBIterator ret = *this;
+			ret -= n;
+			return (ret);
+		}
+
+
 		private:
-			pointer	data;
+			node_pointer	data;
 			bool 	past_the_end;
 			bool	before_the_start;
 
-			pointer getNextGreaterParent()
+			node_pointer getNextGreaterParent()
 			{
 				if (!this->data)
 					return (NULL);
-				pointer current = this->data;
+				node_pointer current = this->data;
 				value_type	target = current->value;
 				while (current && current->value <= target)
 				{
@@ -124,11 +159,11 @@ namespace ft
 				}
 				return (current);
 			}
-			pointer getNextLesserParent()
+			node_pointer getNextLesserParent()
 			{
 				if (!this->data)
 					return (NULL);
-				pointer current = this->data;
+				node_pointer current = this->data;
 				value_type	target = current->value;
 				while (current && current->value >= target)
 				{

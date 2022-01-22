@@ -100,6 +100,15 @@ namespace ft
 				return (this->c.end());
 			}
 
+			reverse_iterator rbegin()
+			{
+				return (reverse_iterator(this->end()));
+			}
+			reverse_iterator rend()
+			{
+				return (reverse_iterator(this->begin()));
+			}
+
 
 		private:
 			allocator_type						__alloc;

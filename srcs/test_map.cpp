@@ -119,6 +119,30 @@ int test_map_insert_duplicate()
 	return (0);
 }
 
+int test_map_reverse_iterator()
+{
+	FT::map<char, int> m;
+
+	m['a'] = 10;
+	m['c'] = 30;	
+	m['b'] = 20;
+	int count = 30;
+
+	FT::map<char, int>::reverse_iterator rit = m.rbegin();
+	FT::map<char, int>::reverse_iterator rite = m.rend();
+	while (rit != rite)
+	{
+		ASSERT_EQUAL(rit->second, count);
+		count -= 10;
+		++rit;
+	}
+	ASSERT_EQUAL(m.size(), (unsigned int)3);
+	ASSERT_EQUAL((m.begin())->second, 10);
+	ASSERT_EQUAL((++m.begin())->second, 20);
+	ASSERT_EQUAL((--m.end())->second, 30);
+	return (0);
+}
+
 void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_map_void_constructor);
@@ -128,4 +152,5 @@ void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_brackets_overwrite);
 	ADD_TEST(testlist, test_map_brackets_read);
 	ADD_TEST(testlist, test_map_insert_duplicate);
+	ADD_TEST(testlist, test_map_reverse_iterator);
 }
