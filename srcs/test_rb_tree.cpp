@@ -52,7 +52,7 @@ int test_rb_tree_insert()
 	ASSERT_EQUAL(*rb.search(5), 5);
 	ASSERT_EQUAL(*rb.search(6), 6);
 	ASSERT_EQUAL(*rb.search(7), 7);
-	ASSERT_EQUALQ(rb.search(8), (ft::Node<int>*)NULL);
+	ASSERT_EQUALQ(rb.search(8), rb.end());
 	// printBT(&rb);
 	return (0);
 }
@@ -69,7 +69,7 @@ int test_rb_tree_delete()
 	rb.insert(4);
 	ASSERT_EQUAL(*rb.search(7), 7);
 	rb.delete_node(rb.root, 7);
-	ASSERT_EQUALQ(rb.search(7), (ft::Node<int>*)NULL);
+	ASSERT_EQUALQ(rb.search(7), rb.end());
 	rb.delete_tree(rb.root);
 	return (0);
 }
