@@ -137,9 +137,9 @@ int test_map_reverse_iterator()
 		++rit;
 	}
 	ASSERT_EQUAL(m.size(), (unsigned int)3);
-	ASSERT_EQUAL((m.begin())->second, 10);
-	ASSERT_EQUAL((++m.begin())->second, 20);
-	ASSERT_EQUAL((--m.end())->second, 30);
+	ASSERT_EQUAL((m.rbegin())->second, 30);
+	ASSERT_EQUAL((++m.rbegin())->second, 20);
+	ASSERT_EQUAL((--m.rend())->second, 10);
 	return (0);
 }
 
