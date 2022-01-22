@@ -146,10 +146,16 @@ int test_map_reverse_iterator()
 int test_map_find()
 {
 	FT::map<char, int> m;
+	FT::map<char, int>::iterator it;
+	char	tmp_c;
 
 	m['a'] = 10;
 	m['k'] = 20;
 
+	it = m.find('a');
+	tmp_c = it->first;
+	ASSERT_EQUAL(tmp_c, 'a');
+	ASSERT_EQUAL((m.find('k'))->first, 'k');
 	ASSERT_EQUALQ((m.find('a')), m.begin());
 	ASSERT_EQUALQ((m.find('b')), m.end());
 	ASSERT_EQUALQ((m.find('k')), (++m.begin()));

@@ -44,7 +44,7 @@ namespace ft
 			typedef typename allocator_type::const_reference	const_reference;
 
 			typedef typename RB_Tree< value_type >::iterator			iterator;		// should be a bidirectional iterator
-			typedef typename RB_Tree< const value_type >::iterator	const_iterator;
+			typedef typename RB_Tree< value_type >::const_iterator	const_iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
@@ -118,23 +118,24 @@ namespace ft
 
 			iterator find(const key_type & k)
 			{
-				if (!k)
-					return iterator();
-				return iterator();
+				value_type	p(k, mapped_type());
+				iterator it = this->c.search(p);
+				return (it);
 			}
 
 			const_iterator find(const key_type & k) const
 			{
-				if (!k)
-					return const_iterator();
-				return const_iterator();
+				value_type	p(k, mapped_type());
+				// const_iterator it(this->c.search(p));
+				return (this->c.search(p));
 			}
 
 			size_type count(const key_type & k) const
 			{
-				if (!k)
+				const_iterator it(this->find(k));
+				if (!it)
 					return (0);
-				return (0);
+				return (1);
 			}
 
 			void erase(iterator position)

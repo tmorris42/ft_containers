@@ -21,7 +21,7 @@ namespace ft
 		typedef typename NodeType::value_type *	pointer;
 		typedef typename NodeType::value_type &	reference;
 
-		RBIterator(node_pointer ptr = 0)
+		RBIterator(node_pointer const ptr = 0)
 		: data(ptr), past_the_end(false), before_the_start(false)
 		{}
 		RBIterator(RBIterator const & src)
@@ -221,6 +221,18 @@ namespace ft
 		{
 			return (this->min(this));
 		}
+		const node_type	*min(node_type *node) const
+		{
+			if (node == NULL)
+				return (NULL);
+			if (node->left)
+				return (this->min(node->left));
+			return (node);
+		}
+		const node_type	*min() const
+		{
+			return (this->min(this));
+		}
 
 	};
 
@@ -267,11 +279,33 @@ namespace ft
 					return (recursive_search(current_node->left, value));
 				return (recursive_search(current_node->right, value));
 			}
+			node_type const *recursive_search(node_type *current_node, value_type const & value) const
+			{
+				if (!current_node)
+					return (NULL);
+				if (this->values_equal(current_node->value, value))
+					return (current_node);
+				if (this->values_less_than(value, current_node->value))
+					return (recursive_search(current_node->left, value));
+				return (recursive_search(current_node->right, value));
+			}
 			iterator search(value_type const & value)
 			{
+				node_type *node;
 				iterator it;
-				it = iterator(recursive_search(this->root, value));
+				node = recursive_search(this->root, value);
+				if (!node)
+					it = this->end();
+				else
+					it = iterator(node);
 				return (it);
+			}
+			const_iterator search(value_type const & value) const
+			{
+				node_type const *node = recursive_search(this->root, value);
+				if (!node)
+					return (this->end());
+				return (const_iterator(node));
 			}
 			void	swap_nodes(node_type *node1, node_type *node2)
 			{
@@ -525,11 +559,11 @@ namespace ft
 				return (this->getSibling(node->parent));
 			}
 
-			node_type	*max(node_type *node)
+			node_type	*max(node_type *node) const
 			{
 				return (node->max());
 			}
-			node_type	*max()
+			node_type	*max() const
 			{
 				return (this->max(this->root));
 			}
@@ -537,7 +571,15 @@ namespace ft
 			{
 				return (node->min());
 			}
+			const node_type	*min(node_type *node) const
+			{
+				return (node->min());
+			}
 			node_type	*min()
+			{
+				return (this->min(this->root));
+			}
+			const node_type	*min() const
 			{
 				return (this->min(this->root));
 			}
@@ -550,6 +592,12 @@ namespace ft
 			iterator	end()
 			{
 				iterator it(this->max());
+				++it;
+				return (it);
+			}
+			const_iterator	end() const
+			{
+				const_iterator it(this->max() + 1);
 				++it;
 				return (it);
 			}
