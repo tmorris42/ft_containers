@@ -139,7 +139,7 @@ int test_rb_ascending_insert()
 	ASSERT_EQUAL(rb.root->right->color, RB_RED);
 	ASSERT_EQUAL(rb.root->right->value, 8);
 	rb.insert(10);
-	printBT(&rb);
+	// printBT(&rb);
 	ASSERT_EQUAL(rb.root->color, RB_BLACK);
 	ASSERT_EQUAL(rb.root->value, 8);
 	ASSERT_EQUAL(rb.root->left->color, RB_RED);

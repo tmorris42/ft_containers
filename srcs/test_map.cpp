@@ -56,6 +56,8 @@ int test_map_brackets_write()
 	}
 	ASSERT_EQUAL(m.size(), (unsigned int)3);
 	ASSERT_EQUAL((m.begin())->second, 10);
+	ASSERT_EQUAL((++m.begin())->second, 20);
+	ASSERT_EQUAL((--m.end())->second, 30);
 	return (0);
 }
 
@@ -86,7 +88,7 @@ int test_map_insert_duplicate()
 	ASSERT_EQUAL(m.size(), (unsigned int)1);
 	m.insert(p2);
 	ASSERT_EQUAL(m.size(), (unsigned int)1);
-	ASSERT_EQUAL(m.begin()->second, 20);
+	ASSERT_EQUAL(m.begin()->second, 10);
 	return (0);
 }
 

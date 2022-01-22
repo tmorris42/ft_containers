@@ -224,9 +224,9 @@ namespace ft
 			{
 				if (!current_node)
 					return (NULL);
-				if (current_node->value == value)
+				if (this->values_equal(current_node->value, value))
 					return (current_node);
-				if (value < current_node->value)
+				if (this->values_less_than(value, current_node->value))
 					return (recursive_search(current_node->left, value));
 				return (recursive_search(current_node->right, value));
 			}
@@ -287,7 +287,6 @@ namespace ft
 				{
 					if (values_equal(current_node->value, value))
 					{
-						std::cout << "REPLACING A NODE!" << std::endl;
 						this->replace_node(current_node, new_node);
 						break ;
 					}
@@ -492,14 +491,15 @@ namespace ft
 
 			node_type **get_reference(node_type *node)
 			{
-				node_type **node_addr;
-				if (!node || !node->parent)
+				if (!node)
+					return (NULL);
+				if (!node->parent && this->root == node)
 					return (&this->root);
-				if (node->parent->value < node->value)
-					node_addr = &(node->parent->right);
-				else
-					node_addr = &(node->parent->left);
-				return (node_addr);
+				if (node->parent->right == node)
+					return(&(node->parent->right));
+				else if (node->parent->left == node)
+					return(&(node->parent->left));
+				return (NULL);
 			}
 			void	delete_node(node_type *node, value_type const & value)
 			{

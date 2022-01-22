@@ -87,10 +87,7 @@ namespace ft
 				mapped_type m;
 				value_type v(k, m);
 				pair<iterator, bool> ret;
-				ret = this->insert(v);//.first->value.second;
-				std::cout << ret.first->first << std::endl;
-				std::cout << ret.first->second << std::endl;
-				// if (ret.second)
+				ret = this->insert(v);
 				return (ret.first->second);
 			}
 
@@ -113,7 +110,7 @@ namespace ft
 			{
 				bool operator() (const PairType & x, const PairType & y) const
 				{
-					return (x.first < y.first);
+					return (Compare()(x.first, y.first));
 				}
 			};
 			ft::RB_Tree< value_type, pair_compare< value_type >	>	c;
