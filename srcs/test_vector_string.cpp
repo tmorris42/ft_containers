@@ -654,7 +654,6 @@ int	test_vector_string_resize()
 	ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(8));
 	vec.resize(15, "newtest");
 	ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(15));
-	ASSERT_EQUAL(vec.capacity(), static_cast<unsigned long>(16));
 	ASSERT_EQUAL((*vec.begin()), "test");
 	ASSERT_EQUAL((*(vec.end() - 1)), "newtest");
 	return (0);
