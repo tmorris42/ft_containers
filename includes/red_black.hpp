@@ -717,7 +717,7 @@ namespace ft
 			{
 				if (!node)
 					return ;
-				if (!node->parent && this->root == node)
+				if (this->root == node)
 					this->root = NULL;
 				else if (node->parent && node->parent->right == node)
 					node->parent->right = NULL;
