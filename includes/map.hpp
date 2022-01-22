@@ -163,7 +163,7 @@ namespace ft
 			}
 			void	clear()
 			{
-
+				this->c.delete_tree(this->c.root);
 			}
 
 			// lower_bound;
