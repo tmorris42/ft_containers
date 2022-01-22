@@ -60,7 +60,7 @@ int launch_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, Test2 *test)
 		{
 			exit(func());
 		}
-		catch (std::exception)
+		catch (std::exception & e)
 		{
 			exit(-1);
 		}
