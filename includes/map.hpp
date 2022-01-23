@@ -190,7 +190,22 @@ namespace ft
 					++it;
 				return (it);
 			}
-			// upper_bound;
+			iterator upper_bound(const key_type & k)
+			{
+				iterator	it = this->begin();
+				iterator	ite = this->end();
+				while (it != ite && !this->key_comp()(k, it->first))
+					++it;
+				return (it);
+			}
+			const_iterator upper_bound(const key_type & k) const
+			{
+				const_iterator	it = this->begin();
+				const_iterator	ite = this->end();
+				while (it != ite && !this->key_comp()(k, it->first))
+					++it;
+				return (it);
+			}
 			// equal_range;
 
 			key_compare key_comp() const
