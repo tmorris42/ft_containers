@@ -9,18 +9,21 @@
 
 namespace ft
 {
-	template <class NodeType>
+	template <class NodeType, class Compare>
 	class RBIterator
 	{
 		public:
 		typedef ft::biderectional_iterator_tag	iterator_category;
 		typedef NodeType		node_type;
 		typedef typename node_type::value_type	value_type;
+		typedef typename node_type::const_value_type	const_value_type;
 		typedef std::ptrdiff_t	difference_type;
-		typedef NodeType *	pointer;
-		typedef NodeType &	reference;
+		typedef std::size_t	size_type;
+		typedef NodeType *	node_pointer;
+		typedef typename NodeType::value_type *	pointer;
+		typedef typename NodeType::value_type &	reference;
 
-		RBIterator(pointer ptr = 0)
+		RBIterator(node_pointer const ptr = 0)
 		: data(ptr), past_the_end(false), before_the_start(false)
 		{}
 		RBIterator(RBIterator const & src)
@@ -50,8 +53,22 @@ namespace ft
 			return (!(*this == other));
 		}
 
-		value_type	&	operator*() { return (this->data->value); }
-		value_type	*	operator->() { return (&(this->operator*())); }
+		value_type	&operator*()
+		{
+			return (this->data->value);
+		}
+		const_value_type	&operator*() const
+		{
+			return (this->data->value);
+		}
+		value_type	*	operator->()
+		{
+			return (&(this->operator*()));
+		}
+		const_value_type	*operator->() const
+		{
+			return (&(this->operator*()));
+		}
 
 		RBIterator & operator++()
 		{
@@ -67,7 +84,10 @@ namespace ft
 				this->data = this->data->min(this->data->right);
 			}
 			else
+			{
 				this->data = this->getNextGreaterParent();
+
+			}
 			return (*this);			
 		}
 		RBIterator operator++(int) {
@@ -102,18 +122,60 @@ namespace ft
 			return (this->before_the_start || this->past_the_end || (!this->data));
 		}
 
+		RBIterator & operator+=(difference_type const & n )
+		{
+			difference_type i = 0;
+			while (i < n)
+			{
+				this->operator++();
+				++i;
+			}
+			return (*this);
+		}
+		RBIterator & operator-=(difference_type const & n )
+		{
+			difference_type i = 0;
+			while (i < n)
+			{
+				this->operator--();
+				++i;
+			}
+			return (*this);
+		}
+		RBIterator operator+(difference_type const & n ) const
+		{
+			RBIterator ret = *this;
+			ret += n;
+			return (ret);
+		}
+		RBIterator operator-(difference_type const & n ) const
+		{
+			RBIterator ret = *this;
+			ret -= n;
+			return (ret);
+		}
+
+		bool	values_equal(value_type const & value1, value_type const & value2) const
+		{
+			return (!Compare()(value1, value2) && !Compare()(value2, value1));
+		}
+		bool	values_less_than(value_type const & value1, value_type const & value2) const
+		{
+			return (Compare()(value1, value2));
+		}
+
 		private:
-			pointer	data;
+			node_pointer	data;
 			bool 	past_the_end;
 			bool	before_the_start;
 
-			pointer getNextGreaterParent()
+			node_pointer getNextGreaterParent()
 			{
 				if (!this->data)
 					return (NULL);
-				pointer current = this->data;
+				node_pointer current = this->data;
 				value_type	target = current->value;
-				while (current && current->value <= target)
+				while (current && !this->values_less_than(target, current->value))
 				{
 					current = current->parent;
 				}
@@ -124,13 +186,13 @@ namespace ft
 				}
 				return (current);
 			}
-			pointer getNextLesserParent()
+			node_pointer getNextLesserParent()
 			{
 				if (!this->data)
 					return (NULL);
-				pointer current = this->data;
+				node_pointer current = this->data;
 				value_type	target = current->value;
-				while (current && current->value >= target)
+				while (current && !this->values_less_than(current->value, target))
 				{
 					current = current->parent;
 				}
@@ -149,6 +211,7 @@ namespace ft
 	{
 		typedef Node	node_type;
 		typedef ValueType	value_type;
+		typedef const ValueType	const_value_type;
 
 		ValueType	value;
 		Node		*left;
@@ -162,7 +225,7 @@ namespace ft
 
 		node_type	*max(node_type *node)
 		{
-			if (node == NULL)
+			if (!node)
 				return (NULL);
 			if (node->right)
 				return (this->max(node->right));
@@ -174,7 +237,7 @@ namespace ft
 		}
 		node_type	*min(node_type *node)
 		{
-			if (node == NULL)
+			if (!node)
 				return (NULL);
 			if (node->left)
 				return (this->min(node->left));
@@ -184,6 +247,19 @@ namespace ft
 		{
 			return (this->min(this));
 		}
+		const node_type	*min(node_type *node) const
+		{
+			if (node == NULL)
+				return (NULL);
+			if (node->left)
+				return (this->min(node->left));
+			return (node);
+		}
+		const node_type	*min() const
+		{
+			return (this->min(this));
+		}
+
 
 	};
 
@@ -202,11 +278,13 @@ namespace ft
 	{
 		public:
 			typedef Node<ValueType> node_type;
+			typedef Node<ValueType> const_node_type;
 			typedef ValueType		value_type;
+			typedef const ValueType		const_value_type;
 			typedef Allocator		allocator_type;
 
-			typedef RBIterator<node_type>					iterator;		// should be custom LRAI
-			typedef RBIterator<const node_type>				const_iterator;
+			typedef RBIterator<node_type, Compare>			iterator;		// should be custom LRAI
+			typedef RBIterator<const_node_type, Compare >	const_iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			node_type	*root;
@@ -230,34 +308,95 @@ namespace ft
 					return (recursive_search(current_node->left, value));
 				return (recursive_search(current_node->right, value));
 			}
+			const_node_type *recursive_search(node_type *current_node, value_type const & value) const
+			{
+				if (!current_node)
+					return (NULL);
+				if (this->values_equal(current_node->value, value))
+					return (current_node);
+				if (this->values_less_than(value, current_node->value))
+					return (recursive_search(current_node->left, value));
+				return (recursive_search(current_node->right, value));
+			}
 			iterator search(value_type const & value)
 			{
+				node_type *node;
 				iterator it;
-				it = iterator(recursive_search(this->root, value));
+				node = recursive_search(this->root, value);
+				if (!node)
+					it = this->end();
+				else
+					it = iterator(node);
 				return (it);
+			}
+			const_iterator search(value_type const & value) const
+			{
+				const_node_type *node = recursive_search(this->root, value);
+				if (!node)
+					return (this->end());
+				return (const_iterator(node));
 			}
 			void	swap_nodes(node_type *node1, node_type *node2)
 			{
-				node_type *tmp;
+				node_type *tmp_parent;
+				node_type *tmp_left;
+				node_type *tmp_right;
 				node_type **tmp_addr;
 
-				tmp_addr = this->get_reference(node1);  //CHECK HERE FOR BLANKING ROOT
-				*tmp_addr = node2;
-				tmp_addr = this->get_reference(node2); //CHECK HERE FOR BLANKING ROOT
-				*tmp_addr = node1;
-				tmp_addr = NULL;
+				// tmp_addr = this->get_reference_safe(node1);  //CHECK HERE FOR BLANKING ROOT
+				// if (tmp_addr)
+				// 	*tmp_addr = node2;
+				// tmp_addr = this->get_reference_safe(node2); //CHECK HERE FOR BLANKING ROOT
+				// if (tmp_addr)
+				// 	*tmp_addr = node1;
+				// tmp_addr = NULL;
 				
-				tmp = node1->parent;
-				node1->parent = node2->parent;
-				node2->parent = tmp;
+				tmp_parent = node1->parent;
+				tmp_left = node1->left;
+				tmp_right = node1->right;
 
-				tmp = node1->left;
-				node1->left = node2->parent;
-				node2->left = tmp;
+				if (node2->parent == node1)
+					node1->parent = node2;
+				else
+					node1->parent = node2->parent;
+				if (node2->left == node1)
+					node1->left = node2;
+				else
+					node1->left = node2->left;
+				if (node2->right == node1)
+					node1->right = node2;
+				else
+					node1->right = node2->right;
 
-				tmp = node1->right;
-				node1->right = node2->parent;
-				node2->right = tmp;
+				if (tmp_parent == node2)
+					node2->parent = node1;
+				else
+					node2->parent = tmp_parent;
+				if (tmp_left == node2)
+					node2->left = node1;
+				else
+					node2->left = tmp_left;
+				if (tmp_right == node2)
+					node2->right = node1;
+				else
+					node2->right = tmp_right;
+
+				if (this->root == node1)
+					this->root = node2;
+				else if (this->root == node2)
+					this->root = node1;
+				if (node1->parent)
+				{
+					tmp_addr = this->get_reference_safe(node1);
+					if (tmp_addr)
+						*tmp_addr = node1;
+				}
+				if (node2->parent)
+				{
+					tmp_addr = this->get_reference_safe(node2);
+					if (tmp_addr)
+						*tmp_addr = node2;
+				}
 			}
 			void		replace_node(node_type *oldNode, node_type * newNode)
 			{
@@ -368,6 +507,14 @@ namespace ft
 				node1->color = node2->color;
 				node2->color = tmp;
 			}
+			void	swap(RB_Tree<ValueType, Compare, Allocator> & other)
+			{
+				node_type *tmp;
+				
+				tmp = this->root;
+				this->root = other.root;
+				other.root = tmp;
+			}
 			node_type *rotateLeft(node_type *node)
 			{
 				node_type *parent = this->getParent(node);
@@ -383,11 +530,20 @@ namespace ft
 
 				// Attach node to root or grandparent
 				if (!grandparent)
+				{
 					this->root = node;
+					node->parent = NULL;
+				}
 				else if (grandparent->left == parent)
+				{
 					grandparent->left = node;
+					node->parent = grandparent;
+				}
 				else
+				{
 					grandparent->right = node;
+					node->parent = grandparent;
+				}
 
 				// Reattach parent as child of node
 				parent->parent = node;
@@ -410,11 +566,18 @@ namespace ft
 
 				// Attach node to root or grandparent
 				if (!grandparent)
+				{
 					this->root = node;
-				else if (grandparent->right == parent)
-					grandparent->right = node;
+					node->parent = NULL;
+				}
 				else
-					grandparent->left = node;
+				{
+					if (grandparent->right == parent)
+						grandparent->right = node;
+					else
+						grandparent->left = node;
+					node->parent = grandparent;
+				}
 
 				// Reattach parent as child of node
 				parent->parent = node;
@@ -457,11 +620,27 @@ namespace ft
 			{
 				return (this->max(this->root));
 			}
+			const_node_type	*max(node_type *node) const
+			{
+				return (node->max());
+			}
+			const_node_type	*max() const
+			{
+				return (this->max(this->root));
+			}
 			node_type	*min(node_type *node)
 			{
 				return (node->min());
 			}
+			const_node_type	*min(node_type *node) const
+			{
+				return (node->min());
+			}
 			node_type	*min()
+			{
+				return (this->min(this->root));
+			}
+			const_node_type	*min() const
 			{
 				return (this->min(this->root));
 			}
@@ -474,6 +653,17 @@ namespace ft
 			iterator	end()
 			{
 				iterator it(this->max());
+				++it;
+				return (it);
+			}
+			const_iterator	begin() const
+			{
+				iterator it(this->min());
+				return (it);
+			}
+			const_iterator	end() const
+			{
+				const_iterator it(this->max());
 				++it;
 				return (it);
 			}
@@ -501,13 +691,26 @@ namespace ft
 					return(&(node->parent->left));
 				return (NULL);
 			}
+
+			node_type **get_reference_safe(node_type *node)
+			{
+				if (!node->parent && this->root == node)
+					return (&this->root);
+				if (!node->parent)
+					return (NULL);
+				if (node->parent->right == node)
+					return (&node->parent->right);
+				if (node->parent->left == node)
+					return (&node->parent->left);
+				return (NULL);
+			}
 			void	delete_node(node_type *node, value_type const & value)
 			{
-				if (node == NULL)
+				if (!node)
 					return ;
-				if (value < node->value)
+				if (this->values_less_than(value, node->value))
 					this->delete_node(node->left, value);
-				else if (value > node->value)
+				else if (values_less_than(node->value, value))
 					this->delete_node(node->right, value);
 				else //value == node->value
 				{
@@ -531,9 +734,10 @@ namespace ft
 					}
 					else
 					{
-						node_type *replacement = this->max(node->left);
-						node->value = replacement->value;
-						this->delete_node(node->left, replacement->value);
+						this->swap_nodes(node, this->max(node->left));
+						// node_type *replacement = this->max(node->left);
+						// node->value = replacement->value;
+						this->delete_node(node, value);
 					}				
 				}
 				return ;
@@ -552,7 +756,7 @@ namespace ft
 			{
 				if (!node)
 					return ;
-				if (!node->parent && this->root == node)
+				if (this->root == node)
 					this->root = NULL;
 				else if (node->parent && node->parent->right == node)
 					node->parent->right = NULL;
