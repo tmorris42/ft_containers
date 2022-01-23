@@ -1,7 +1,14 @@
+# VS Code data
 .vscode/
 
+# Dependencies
+*.d
+
+# Output Files
 *.o
 *.out
 *.log
-*.d
 objs/
+
+# Testers
+containers_test
