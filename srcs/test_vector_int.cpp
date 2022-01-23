@@ -1,4 +1,5 @@
 #include "tests.hpp"
+#include <list>
 
 int	test_vector_int_void_constructor()
 {
@@ -7,7 +8,6 @@ int	test_vector_int_void_constructor()
 	ASSERT_EQUAL(Vec.size(), (unsigned long)0);
 	ASSERT_EQUAL(Vec.empty(), true);
 	ASSERT_EQUAL(Vec.capacity(), (unsigned long)0);
-return (0);
 return (0);
 }
 
@@ -23,7 +23,6 @@ int	test_vector_int_count_value_constructor()
 	ASSERT_EQUAL(Vec[2], 42);
 	ASSERT_EQUAL(Vec[3], 42);
 	ASSERT_EQUAL(Vec[4], 42);
-return (0);
 return (0);
 }
 
@@ -41,7 +40,6 @@ int	test_vector_int_copy_constructor()
 	ASSERT_EQUAL(Vec[3], 42);
 	ASSERT_EQUAL(Vec[4], 42);
 return (0);
-return (0);
 }
 
 int	test_vector_int_iter_constructor()
@@ -58,7 +56,6 @@ int	test_vector_int_iter_constructor()
 	ASSERT_EQUAL(Vec[3], 42);
 	ASSERT_EQUAL(Vec[4], 42);
 return (0);
-return (0);
 }
 
 int	test_vector_int_push_back()
@@ -68,7 +65,6 @@ int	test_vector_int_push_back()
 	Vec.push_back(5);
 	ASSERT_EQUAL(Vec.size(), static_cast<unsigned int>(1));
 	ASSERT_EQUAL(Vec.front(), 5);
-return (0);
 return (0);
 }
 
@@ -82,7 +78,6 @@ int	test_vector_int_push_back_twice()
 	ASSERT_EQUAL(Vec.size(), static_cast<unsigned int>(2));
 	ASSERT_EQUAL(Vec.front(), 5);
 	ASSERT_EQUAL(Vec.back(), 6);
-return (0);
 return (0);
 }
 
@@ -99,7 +94,6 @@ int	test_vector_int_push_back_thrice()
 	ASSERT_EQUAL(Vec.front(), 5);
 	ASSERT_EQUAL(Vec.back(), 7);
 return (0);
-return (0);
 }
 
 int	test_vector_int_push_back_x4()
@@ -112,7 +106,6 @@ int	test_vector_int_push_back_x4()
 	ASSERT_EQUAL(Vec.size(), static_cast<unsigned int>(4));
 	ASSERT_EQUAL(Vec.front(), 5);
 	ASSERT_EQUAL(Vec.back(), 8);
-return (0);
 return (0);
 }
 
@@ -127,7 +120,6 @@ int	test_vector_int_push_back_x5()
 	ASSERT_EQUAL(Vec.size(), static_cast<unsigned int>(5));
 	ASSERT_EQUAL(Vec.front(), 5);
 	ASSERT_EQUAL(Vec.back(), 9);
-return (0);
 return (0);
 }
 
@@ -153,7 +145,6 @@ int	test_vector_int_push_back_x15()
 	ASSERT_EQUAL(Vec.front(), 5);
 	ASSERT_EQUAL(Vec.back(), 42);
 return (0);
-return (0);
 }
 
 int	test_vector_int_empty()
@@ -164,7 +155,6 @@ int	test_vector_int_empty()
 	ASSERT_EQUAL(Vec.empty(), false);
 	// Vec.pop_back()
 	// ASSERT_EQUAL(Vec.empty(), true);
-return (0);
 return (0);
 }
 
@@ -184,7 +174,6 @@ int	test_vector_int_iterator_forward()
 		++it;
 	}
 return (0);
-return (0);
 }
 
 int	test_vector_int_at()
@@ -202,7 +191,6 @@ int	test_vector_int_at()
 	ASSERT_ERROR(Vec.at(9))
 	ASSERT_ERROR(Vec.at(-1))
 return (0);
-return (0);
 }
 
 int	test_vector_int_operater_bracket()
@@ -219,7 +207,6 @@ int	test_vector_int_operater_bracket()
 	ASSERT_EQUAL(cref, 4);
 	ASSERT_NO_ERROR(Vec[9])
 	ASSERT_NO_ERROR(Vec[-1])
-return (0);
 return (0);
 }
 
@@ -607,7 +594,6 @@ int	test_vector_int_insert_iter()
 	ASSERT_EQUAL(*(vec2.end() - 1), *(Vec.end() - 1));
 	// ASSERT_EQUALQ(vec2, Vec); // == not implemented yet
 return (0);
-return (0);
 }
 
 int	test_vector_int_clear()
@@ -619,7 +605,6 @@ int	test_vector_int_clear()
 	vec.clear();
 	ASSERT_EQUAL(vec.capacity(), original_cap);
 	ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(0));
-return (0);
 return (0);
 }
 
@@ -640,7 +625,6 @@ int	test_vector_int_assign()
 	ASSERT_EQUAL(vec[2], 15);
 
 return (0);
-return (0);
 }
 
 int	test_vector_int_erase_one()
@@ -652,7 +636,6 @@ int	test_vector_int_erase_one()
 	vec.erase(vec.begin()+2);
 	ASSERT_EQUAL(vec.capacity(), original_cap);
 	ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(4));
-return (0);
 return (0);
 }
 
@@ -684,7 +667,6 @@ int	test_vector_int_erase_range()
 	ASSERT_EQUAL(vec.at(5), 10);
 	ret = vec.erase(vec.begin()+2, vec.end());
 	ASSERT_EQUAL(*ret, *vec.end());
-return (0);
 return (0);
 }
 
@@ -725,7 +707,6 @@ int	test_vector_int_pop_back()
 	ASSERT_EQUAL(count, 8);
 	ASSERT_EQUAL(vec.capacity(), original_cap);
 	ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(8));
-return (0);
 return (0);
 }
 
@@ -781,7 +762,6 @@ int	test_vector_int_resize()
 	ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(15));
 	
 return (0);
-return (0);
 }
 
 int	test_vector_int_swap()
@@ -796,7 +776,6 @@ int	test_vector_int_swap()
 	ASSERT_EQUAL(v1.at(3), 200);
 	ASSERT_EQUAL(v2.at(2), 100);
 	ASSERT_EQUAL(*it, 100);
-return (0);
 return (0);
 }
 
@@ -813,7 +792,6 @@ int	test_vector_int_swap_overload()
 	ASSERT_EQUAL(v2.at(2), 100);
 	ASSERT_EQUAL(*it, 100);
 return (0);
-return (0);
 }
 
 int	test_vector_int_comparisons()
@@ -828,8 +806,32 @@ int	test_vector_int_comparisons()
 	ASSERT_EQUAL(b < a, false);
 	ASSERT_EQUAL(b <= a, false);
 	
-return (0);
-return (0);
+	return (0);
+}
+
+int	test_vector_int_bidirectional_it()
+{
+	std::list<int> lst;
+	std::list<int>::iterator lst_it;
+
+	for (int i = 1; i < 5; ++i)
+		lst.push_back(i * 3);
+
+	FT::vector<int> vct(lst.begin(), lst.end());
+	ASSERT_EQUAL(vct.size(), (unsigned long)4);
+
+	lst_it = lst.begin();
+	for (int i = 1; lst_it != lst.end(); ++i)
+	{
+		*lst_it++ = i * 5;
+	}
+	vct.assign(lst.begin(), lst.end());
+	ASSERT_EQUAL(vct.size(), (unsigned long)4);
+
+	vct.insert(vct.end(), lst.rbegin(), lst.rend());
+	ASSERT_EQUAL(vct.size(), (unsigned long)8);
+	
+	return (0);
 }
 
 void	add_test_vector_int_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
@@ -869,4 +871,5 @@ void	add_test_vector_int_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_vector_int_swap);
 	ADD_TEST(testlist, test_vector_int_swap_overload);
 	ADD_TEST(testlist, test_vector_int_comparisons);
+	ADD_TEST(testlist, test_vector_int_bidirectional_it);
 }
