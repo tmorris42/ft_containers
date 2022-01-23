@@ -35,18 +35,18 @@ namespace ft
 			};
 
 			typedef Allocator			allocator_type;
-			typedef std::ptrdiff_t		difference_type;	// should be iterator_trais<iterator>::difference_type (usually equiv. ptrdiff_t)
-			typedef std::size_t			size_type;			// An unsigned integral type that can represent any non-negative value of difference_type (Usually size_t)
-
 			typedef typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer		const_pointer;
 			typedef	typename allocator_type::reference			reference;
 			typedef typename allocator_type::const_reference	const_reference;
 
-			typedef typename RB_Tree< value_type, value_compare >::iterator			iterator;		// should be a bidirectional iterator
+			typedef typename RB_Tree< value_type, value_compare >::iterator			iterator;
 			typedef typename RB_Tree< value_type, value_compare >::const_iterator	const_iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+
+			typedef typename iterator_traits<iterator>::difference_type		difference_type;
+			typedef typename iterator::size_type							size_type;
 
 			explicit map(const key_compare &comp = key_compare(),
 						 const allocator_type &alloc = allocator_type())
@@ -99,7 +99,11 @@ namespace ft
 				ret.first = node;
 				return (ret);
 			}
-			iterator insert(iterator position, const value_type & val);
+			iterator insert(iterator position, const value_type & val)
+			{
+				++position; // Just to use parameter position
+				this->insert(val); // Not optimized for position
+			}
 			
 			template <class InputIterator>
 			void	insert(InputIterator first, InputIterator last)

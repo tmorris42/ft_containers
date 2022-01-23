@@ -18,6 +18,7 @@ namespace ft
 		typedef typename node_type::value_type	value_type;
 		typedef typename node_type::const_value_type	const_value_type;
 		typedef std::ptrdiff_t	difference_type;
+		typedef std::size_t	size_type;
 		typedef NodeType *	node_pointer;
 		typedef typename NodeType::value_type *	pointer;
 		typedef typename NodeType::value_type &	reference;
