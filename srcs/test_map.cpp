@@ -214,6 +214,27 @@ int test_map_erase_by_key()
 	return (0);
 }
 
+int test_map_erase_by_range()
+{
+	FT::map<char, int> m;
+	FT::map<char, int>::iterator it;
+
+	m['a'] = 1;
+	m['b'] = 2;
+	m['c'] = 3;
+	m['d'] = 4;
+	m['e'] = 5;
+
+	ASSERT_EQUAL(m.size(), (unsigned long)5);
+	it = (++m.begin());
+	m.erase(++it, m.end());
+	ASSERT_EQUAL(m.size(), (unsigned long)2);
+	ASSERT_EQUAL(m.begin()->first, 'a');
+	ASSERT_EQUAL((++m.begin())->first, 'b');
+
+	return (0);
+}
+
 int test_map_clear()
 {
 	FT::map<char, int> m;
@@ -373,6 +394,7 @@ void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_count);
 	ADD_TEST(testlist, test_map_erase_by_iterator);
 	ADD_TEST(testlist, test_map_erase_by_key);
+	ADD_TEST(testlist, test_map_erase_by_range);
 	ADD_TEST(testlist, test_map_clear);
 	ADD_TEST(testlist, test_map_four_values);
 	ADD_TEST(testlist, test_map_four_values_descending);

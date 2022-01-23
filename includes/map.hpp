@@ -60,7 +60,7 @@ namespace ft
 			// map (const map& x);
 			~map()
 			{
-				this->c.~RB_Tree();
+				this->clear();
 			}
 			bool	empty()
 			{
@@ -161,10 +161,18 @@ namespace ft
 				this->erase(it);
 				return (1);
 			}
-			// void erase(iterator first, iterator last)
-			// {
-				
-			// }
+			void erase(iterator first, iterator last)
+			{
+				iterator next;
+				iterator ite = this->end();
+
+				while (first != ite && first != last)
+				{
+					next = first + 1;
+					this->erase(first);
+					first = next;
+				}
+			}
 			void swap(map<Key, T, Compare, Allocator> & other)
 			{
 				this->c.swap(other.c);
