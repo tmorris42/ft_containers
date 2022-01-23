@@ -844,7 +844,7 @@ void	add_test_vector_int_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_vector_int_push_back_x15);
 
 	ADD_TEST(testlist, test_vector_int_iterator_forward);
-	// ADD_TEST(testlist, test_vector_int_at); // Causes differences in allocations due to stringstream use in vector::at()
+	ADD_TEST(testlist, test_vector_int_at); // Causes differences in allocations due to stringstream use in vector::at()
 	ADD_TEST(testlist, test_vector_int_operater_bracket);
 	ADD_TEST(testlist, test_vector_int_capacity);
 	ADD_TEST(testlist, test_vector_int_capacity_cppref);
@@ -857,7 +857,7 @@ void	add_test_vector_int_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_vector_int_insert);
 
 	ADD_TEST(testlist, test_vector_int_insert_count); // Allocates different amount of memory than REAL
-	ADD_TEST(testlist, test_vector_int_insert_count_allocation_amount); // Allocates different amount of memory than REAL
+	// ADD_TEST(testlist, test_vector_int_insert_count_allocation_amount); // Allocates different amount of memory than REAL
 	ADD_TEST(testlist, test_vector_int_insert_iter);
 
 	ADD_TEST(testlist, test_vector_int_clear);
