@@ -655,6 +655,11 @@ namespace ft
 				++it;
 				return (it);
 			}
+			const_iterator	begin() const
+			{
+				iterator it(this->min());
+				return (it);
+			}
 			const_iterator	end() const
 			{
 				const_iterator it(this->max());

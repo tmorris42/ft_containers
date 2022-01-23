@@ -8,6 +8,53 @@ int	test_map_void_constructor()
 	return (0);
 }
 
+int test_map_copy_constructor()
+{
+	FT::map<int, int> m;
+
+	m[5] = 1;
+	m[6] = 2;
+	m[3] = 4;
+	FT::map<int, int> m2(m);
+	ASSERT_EQUAL(m2.size(), (unsigned long)3);
+	ASSERT_EQUAL(m2.empty(), false);
+	FT::map<int, int>::iterator it1 = m.begin();
+	FT::map<int, int>::iterator ite1 = m.end();
+	FT::map<int, int>::iterator it2 = m2.begin();
+	FT::map<int, int>::iterator ite2 = m2.end();
+	while (it1 != ite1 && it2 != ite2)
+	{
+		ASSERT_EQUALQ(*it1, *it2);
+		++it1;
+		++it2;
+	}
+	return (0);
+}
+
+int test_map_iterator_constructor()
+{
+	FT::map<int, int> m;
+
+	m[5] = 1;
+	m[6] = 2;
+	m[3] = 4;
+
+	FT::map<int, int>::iterator it1 = m.begin();
+	FT::map<int, int>::iterator ite1 = m.end();
+	FT::map<int, int> m2(it1, ite1);
+	ASSERT_EQUAL(m2.size(), (unsigned long)3);
+	ASSERT_EQUAL(m2.empty(), false);
+	FT::map<int, int>::iterator it2 = m2.begin();
+	FT::map<int, int>::iterator ite2 = m2.end();
+	while (it1 != ite1 && it2 != ite2)
+	{
+		ASSERT_EQUALQ(*it1, *it2);
+		++it1;
+		++it2;
+	}
+	return (0);
+}
+
 int test_map_empty()
 {
 	FT::map<char, int> m;
@@ -383,6 +430,8 @@ int test_map_equal_range()
 void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_map_void_constructor);
+	ADD_TEST(testlist, test_map_copy_constructor);
+	ADD_TEST(testlist, test_map_iterator_constructor);
 	ADD_TEST(testlist, test_map_empty);
 	ADD_TEST(testlist, test_map_size);
 	ADD_TEST(testlist, test_map_brackets_write);
@@ -402,5 +451,4 @@ void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_lower_bound);
 	ADD_TEST(testlist, test_map_upper_bound);
 	ADD_TEST(testlist, test_map_equal_range);
-	
 }

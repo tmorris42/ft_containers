@@ -53,11 +53,18 @@ namespace ft
 				:  __alloc(alloc), __comp(comp), c()
 			{
 			}
-			// template <class InputIterator>
-  			// map (InputIterator first, InputIterator last,
-			// 		const key_compare& comp = key_compare(),
-			// 		const allocator_type& alloc = allocator_type());
-			// map (const map& x);
+			template <class InputIterator>
+  			map (InputIterator first, InputIterator last,
+					const key_compare& comp = key_compare(),
+					const allocator_type& alloc = allocator_type())
+				:  __alloc(alloc), __comp(comp), c()
+			{
+				this->insert(first, last);
+			}
+			map (const map & src) : __alloc(src.__alloc), __comp(src.__comp), c()
+			{
+				this->insert(src.begin(), src.end());
+			}
 			~map()
 			{
 				this->clear();
@@ -95,7 +102,14 @@ namespace ft
 			iterator insert(iterator position, const value_type & val);
 			
 			template <class InputIterator>
-			void	insert(InputIterator first, InputIterator last);
+			void	insert(InputIterator first, InputIterator last)
+			{
+				while (first != last)
+				{
+					this->insert(*first);
+					++first;
+				}
+			}
 
 			mapped_type & operator[](const key_type & k)
 			{
@@ -111,6 +125,14 @@ namespace ft
 				return (this->c.begin());
 			}
 			iterator end()
+			{
+				return (this->c.end());
+			}
+			const_iterator begin() const
+			{
+				return (this->c.begin());
+			}
+			const_iterator end() const
 			{
 				return (this->c.end());
 			}
