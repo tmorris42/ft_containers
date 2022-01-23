@@ -20,6 +20,6 @@ jobs:
     - name: make fclean
       run: make fclean
     - name: make gpp
-      run: make all DEBUG_OVERRIDE=1
+      run: make all CC_OVERRIDE=g++
     - name: make test again
       run: make test
