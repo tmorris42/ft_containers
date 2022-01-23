@@ -305,6 +305,60 @@ int test_map_lower_bound()
 	return (0);
 }
 
+
+int test_map_upper_bound()
+{
+	FT::map<char, int> m1;
+
+	m1['b'] = 1;
+	m1['c'] = 2;
+	m1['e'] = 4;
+
+	ASSERT_EQUAL(m1.upper_bound('a')->second, 1);
+	ASSERT_EQUAL(m1.upper_bound('b')->second, 2);
+	ASSERT_EQUAL(m1.upper_bound('c')->second, 4);
+	ASSERT_EQUAL(m1.upper_bound('d')->second, 4);
+	ASSERT_EQUALQ(m1.upper_bound('e'), m1.end());
+	ASSERT_EQUALQ(m1.upper_bound('f'), m1.end());
+
+	return (0);
+}
+
+int test_map_equal_range()
+{
+	typedef FT::map<char, int>::iterator iterator;
+	FT::map<char, int> m1;
+	FT::pair<iterator, iterator> p;
+
+	m1['b'] = 1;
+	m1['c'] = 2;
+	m1['e'] = 4;
+
+	ASSERT_EQUAL(m1.equal_range('a').first->first, 'b');
+	ASSERT_EQUAL(m1.equal_range('a').second->first, 'b');
+	ASSERT_EQUAL(m1.equal_range('a').first->second, 1);
+	ASSERT_EQUAL(m1.equal_range('a').second->second, 1);
+	ASSERT_EQUAL(m1.equal_range('b').first->first, 'b');
+	ASSERT_EQUAL(m1.equal_range('b').second->first, 'c');	
+	ASSERT_EQUAL(m1.equal_range('b').first->second, 1);
+	ASSERT_EQUAL(m1.equal_range('b').second->second, 2);
+	ASSERT_EQUAL(m1.equal_range('c').first->first, 'c');
+	ASSERT_EQUAL(m1.equal_range('c').second->first, 'e');
+	ASSERT_EQUAL(m1.equal_range('c').first->second, 2);
+	ASSERT_EQUAL(m1.equal_range('c').second->second, 4);
+	ASSERT_EQUAL(m1.equal_range('d').first->first, 'e');
+	ASSERT_EQUAL(m1.equal_range('d').second->first, 'e');
+	ASSERT_EQUAL(m1.equal_range('d').first->second, 4);
+	ASSERT_EQUAL(m1.equal_range('d').second->second, 4);
+	ASSERT_EQUAL(m1.equal_range('e').first->first, 'e');
+	ASSERT_EQUAL(m1.equal_range('e').first->second, 4);
+	ASSERT_EQUALQ(m1.equal_range('e').second, m1.end());
+	ASSERT_EQUALQ(m1.equal_range('f').first, m1.end());
+	ASSERT_EQUALQ(m1.equal_range('f').second, m1.end());
+
+	return (0);
+}
+
 void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_map_void_constructor);
@@ -324,5 +378,7 @@ void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_four_values_descending);
 	ADD_TEST(testlist, test_map_swap);
 	ADD_TEST(testlist, test_map_lower_bound);
+	ADD_TEST(testlist, test_map_upper_bound);
+	ADD_TEST(testlist, test_map_equal_range);
 	
 }
