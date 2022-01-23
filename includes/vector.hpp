@@ -55,12 +55,7 @@ namespace ft
 					const allocator_type & alloc = allocator_type(),
 					typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)  : __start(0), __capacity(0), __size(0), __alloc(alloc)
 			{
-				this->reserve(last - first);
-				// this->insert(this->begin(), first, last);
-				for ( ; first != last; ++first)
-				{
-					this->push_back(*first);
-				}
+				this->insert(this->begin(), first, last);
 			}
 
 			vector( const vector & other ) : __start(0), __capacity(0), __size(0),  __alloc(other.get_allocator())
@@ -95,7 +90,6 @@ namespace ft
 						typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)
 			{
 				this->clear();
-				this->reserve(last - first);
 				this->insert(this->begin(), first, last);
 			}
 
@@ -229,17 +223,11 @@ namespace ft
 					size_type	new_capacity = 2 * this->__capacity;
 					if (this->__capacity == 0)
 						new_capacity = 1;
-					this->reserve(new_capacity);
-					this->__copy_space(this->__start + diff + 1, this->__start + diff, this->size() - diff);
-					this->get_allocator().construct(this->__start + diff, value);
-					++this->__size;
+					this->reserve(new_capacity);	
 				}
-				else
-				{
-					this->__copy_space(this->__start + diff + 1, this->__start + diff, this->size() - diff);
-					this->get_allocator().construct(this->__start + diff, value);
-					++this->__size;
-				}
+				this->__copy_space(this->__start + diff + 1, this->__start + diff, this->size() - diff);
+				this->get_allocator().construct(this->__start + diff, value);
+				++this->__size;
 				return (this->__start + diff);
 			}
 
@@ -271,11 +259,17 @@ namespace ft
 			void insert( iterator pos, InputIt first, InputIt last,
 				typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)
 			{
-				while (first != last)
+				InputIt it = first;
+				difference_type	len = 0;
+
+				while (it != last)
 				{
-					this->insert(pos, *(last - 1));
-					--last;
+					++len;
+					++it;
 				}
+				this->reserve(len);
+				while (first != last)
+					this->insert(pos, *(--last));
 			}
 
 			iterator	erase(iterator pos)

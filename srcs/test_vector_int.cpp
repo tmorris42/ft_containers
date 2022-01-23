@@ -820,6 +820,11 @@ int	test_vector_int_bidirectional_it()
 	FT::vector<int> vct(lst.begin(), lst.end());
 	ASSERT_EQUAL(vct.size(), (unsigned long)4);
 
+	for (int i = 0; i < 4; ++i)
+	{
+		ASSERT_EQUAL(vct[i], (i + 1) * 3);
+	}
+
 	lst_it = lst.begin();
 	for (int i = 1; lst_it != lst.end(); ++i)
 	{
@@ -827,9 +832,21 @@ int	test_vector_int_bidirectional_it()
 	}
 	vct.assign(lst.begin(), lst.end());
 	ASSERT_EQUAL(vct.size(), (unsigned long)4);
+	for (int i = 0; i < 4; ++i)
+	{
+		ASSERT_EQUAL(vct[i], (i + 1) * 5);
+	}
 
 	vct.insert(vct.end(), lst.rbegin(), lst.rend());
 	ASSERT_EQUAL(vct.size(), (unsigned long)8);
+	for (int i = 0; i < 4; ++i)
+	{
+		ASSERT_EQUAL(vct[i], (i + 1) * 5);
+	}
+	for (int i = 4; i < 8; ++i)
+	{
+		ASSERT_EQUAL(vct[i], 20 - (5 * (i - 4)));
+	}
 	
 	return (0);
 }
