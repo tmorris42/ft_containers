@@ -287,6 +287,24 @@ int test_map_four_values_descending()
 	return (0);
 }
 
+int test_map_lower_bound()
+{
+	FT::map<char, int> m1;
+
+	m1['b'] = 1;
+	m1['c'] = 2;
+	m1['e'] = 4;
+
+	ASSERT_EQUAL(m1.lower_bound('a')->second, 1);
+	ASSERT_EQUAL(m1.lower_bound('b')->second, 1);
+	ASSERT_EQUAL(m1.lower_bound('c')->second, 2);
+	ASSERT_EQUAL(m1.lower_bound('d')->second, 4);
+	ASSERT_EQUAL(m1.lower_bound('e')->second, 4);
+	ASSERT_EQUALQ(m1.lower_bound('f'), m1.end());
+
+	return (0);
+}
+
 void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_map_void_constructor);
@@ -305,4 +323,6 @@ void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_four_values);
 	ADD_TEST(testlist, test_map_four_values_descending);
 	ADD_TEST(testlist, test_map_swap);
+	ADD_TEST(testlist, test_map_lower_bound);
+	
 }
