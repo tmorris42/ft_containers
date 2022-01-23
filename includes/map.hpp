@@ -92,6 +92,10 @@ namespace ft
 				ret.first = node;
 				return (ret);
 			}
+			iterator insert(iterator position, const value_type & val);
+			
+			template <class InputIterator>
+			void	insert(InputIterator first, InputIterator last);
 
 			mapped_type & operator[](const key_type & k)
 			{
@@ -170,7 +174,14 @@ namespace ft
 				this->c.delete_tree(this->c.root);
 			}
 
-			// lower_bound;
+			iterator lower_bound(const key_type & k)
+			{
+				return (this->find(k));
+			}
+			const_iterator lower_bound(const key_type & k) const
+			{
+				return (this->find(k));
+			}
 			// upper_bound;
 			// equal_range;
 
