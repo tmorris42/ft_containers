@@ -206,7 +206,20 @@ namespace ft
 					++it;
 				return (it);
 			}
-			// equal_range;
+			ft::pair<iterator, iterator>	equal_range(const key_type & k)
+			{
+				ft::pair<iterator, iterator>	p;
+				p.first = this->lower_bound(k);
+				p.second = this->upper_bound(k);
+				return (p);
+			}
+			ft::pair<const_iterator, const_iterator>	equal_range(const key_type & k) const
+			{
+				ft::pair<const_iterator, const_iterator>	p;
+				p.first = this->lower_bound(k);
+				p.second = this->upper_bound(k);
+				return (p);
+			}
 
 			key_compare key_comp() const
 			{
