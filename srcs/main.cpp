@@ -20,7 +20,7 @@ int	main(int argc, char **argv)
 	add_test_stack_suite(&tests);
 
 	#ifndef FT_REAL_VERSION
-	add_test_rb_tree_suite(&tests);
+	// add_test_rb_tree_suite(&tests);
 	#endif
 
 	add_test_map_suite(&tests);

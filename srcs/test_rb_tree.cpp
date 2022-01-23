@@ -8,7 +8,7 @@ std::ostream & 	operator<<(std::ostream & os, FT::pair<T1, T2> p)
 	return (os);
 }
 
-template <class T>
+template <class T, class Compare>
 void printBT(const std::string& prefix, const ft::Node<T>* node, bool isLeft)
 {
     if(node)
@@ -24,14 +24,14 @@ void printBT(const std::string& prefix, const ft::Node<T>* node, bool isLeft)
         std::cout << node->value << std::endl;
 
         // enter the next tree level - left and right branch
-        printBT( prefix + (isLeft ? "│   " : "    "), node->left, true);
-        printBT( prefix + (isLeft ? "│   " : "    "), node->right, false);
+        printBT<T, Compare>( prefix + (isLeft ? "│   " : "    "), node->left, true);
+        printBT<T, Compare>( prefix + (isLeft ? "│   " : "    "), node->right, false);
     }
 }
-template <class T>
-void printBT(const ft::RB_Tree<T>* tree)
+template <class T, class Compare>
+void printBT(const ft::RB_Tree<T, Compare>* tree)
 {
-    printBT("", tree->root, false);    
+    printBT<T, Compare>("", tree->root, false);    
 }
 
 int	test_rb_tree_void_constructor()
@@ -52,7 +52,7 @@ int test_rb_tree_insert()
 	ASSERT_EQUAL(*rb.search(5), 5);
 	ASSERT_EQUAL(*rb.search(6), 6);
 	ASSERT_EQUAL(*rb.search(7), 7);
-	ASSERT_EQUALQ(rb.search(8), (ft::Node<int>*)NULL);
+	ASSERT_EQUALQ(rb.search(8), rb.end());
 	// printBT(&rb);
 	return (0);
 }
@@ -69,7 +69,7 @@ int test_rb_tree_delete()
 	rb.insert(4);
 	ASSERT_EQUAL(*rb.search(7), 7);
 	rb.delete_node(rb.root, 7);
-	ASSERT_EQUALQ(rb.search(7), (ft::Node<int>*)NULL);
+	ASSERT_EQUALQ(rb.search(7), rb.end());
 	rb.delete_tree(rb.root);
 	return (0);
 }
@@ -321,6 +321,19 @@ int	test_rb_size_low_high_med()
 	return (0);
 }
 
+int test_rb_four_chars()
+{
+	ft::RB_Tree<char> rb;
+
+	rb.insert('d');
+	rb.insert('e');
+	rb.insert('f');
+	rb.insert('g');
+	printBT(&rb);
+	rb.delete_tree(rb.root);
+	return (0);
+}
+
 int test_rb_playground()
 {
 	ft::RB_Tree<int> rb;
@@ -358,6 +371,7 @@ void	add_test_rb_tree_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_rb_inc);
 	ADD_TEST(testlist, test_rb_size);
 	ADD_TEST(testlist, test_rb_size_low_high_med);
+	ADD_TEST(testlist, test_rb_four_chars);
 
 	
 
