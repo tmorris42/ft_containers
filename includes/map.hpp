@@ -43,8 +43,8 @@ namespace ft
 			typedef	typename allocator_type::reference			reference;
 			typedef typename allocator_type::const_reference	const_reference;
 
-			typedef typename RB_Tree< value_type >::iterator			iterator;		// should be a bidirectional iterator
-			typedef typename RB_Tree< value_type >::const_iterator	const_iterator;
+			typedef typename RB_Tree< value_type, value_compare >::iterator			iterator;		// should be a bidirectional iterator
+			typedef typename RB_Tree< value_type, value_compare >::const_iterator	const_iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
@@ -58,6 +58,10 @@ namespace ft
 			// 		const key_compare& comp = key_compare(),
 			// 		const allocator_type& alloc = allocator_type());
 			// map (const map& x);
+			~map()
+			{
+				this->c.~RB_Tree();
+			}
 			bool	empty()
 			{
 				return (this->size() == 0);
@@ -157,9 +161,9 @@ namespace ft
 			// {
 				
 			// }
-			void swap()
+			void swap(map<Key, T, Compare, Allocator> & other)
 			{
-
+				this->c.swap(other.c);
 			}
 			void	clear()
 			{
@@ -183,7 +187,8 @@ namespace ft
 		private:
 			allocator_type						__alloc;
 			key_compare							__comp;
-			ft::RB_Tree< value_type, value_compare >	c;
+			typedef ft::RB_Tree< value_type, value_compare >	_RB_tree_type;
+			_RB_tree_type	c;
 	};
 } 
 #endif

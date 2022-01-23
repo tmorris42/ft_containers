@@ -217,7 +217,6 @@ int test_map_erase_by_key()
 int test_map_clear()
 {
 	FT::map<char, int> m;
-	FT::map<char, int>::iterator it;
 
 	m['a'] = 1;
 	m['b'] = 2;
@@ -226,6 +225,65 @@ int test_map_clear()
 	ASSERT_EQUAL(m.size(), (unsigned long)3);
 	m.clear();
 	ASSERT_EQUAL(m.size(), (unsigned long)0);
+	return (0);
+}
+
+int test_map_swap()
+{
+	FT::map<char, int> m1;
+	FT::map<char, int> m2;
+
+	m1['a'] = 1;
+	m1['b'] = 2;
+	m1['c'] = 3;
+	m2['d'] = 11;
+	m2['e'] = 12;
+	m2['f'] = 13;
+	m2['g'] = 14;
+
+	m1.size();
+	ASSERT_EQUAL(m1.size(), (unsigned long)3);
+	ASSERT_EQUAL(m2.size(), (unsigned long)4);
+	m1.swap(m2);
+	ASSERT_EQUAL(m1.size(), (unsigned long)4);
+	ASSERT_EQUAL(m2.size(), (unsigned long)3);
+	ASSERT_EQUAL(m2.begin()->first, 'a');
+	ASSERT_EQUAL(m2.begin()->second, 1);
+	ASSERT_EQUAL(m1.begin()->first, 'd');
+	ASSERT_EQUAL(m1.begin()->second, 11);
+
+	return (0);
+}
+
+int test_map_four_values()
+{
+	FT::map<char, int> m1;
+
+	m1['a'] = 1;
+	m1['b'] = 2;
+	m1['c'] = 3;
+	m1['d'] = 11;
+
+
+	m1.size();
+	ASSERT_EQUAL(m1.size(), (unsigned long)4);
+
+	return (0);
+}
+
+int test_map_four_values_descending()
+{
+	FT::map<char, int> m1;
+
+	m1['d'] = 5;
+	m1['c'] = 4;
+	m1['b'] = 3;
+	m1['a'] = 2;
+
+
+	m1.size();
+	ASSERT_EQUAL(m1.size(), (unsigned long)4);
+
 	return (0);
 }
 
@@ -244,4 +302,7 @@ void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_erase_by_iterator);
 	ADD_TEST(testlist, test_map_erase_by_key);
 	ADD_TEST(testlist, test_map_clear);
+	ADD_TEST(testlist, test_map_four_values);
+	ADD_TEST(testlist, test_map_four_values_descending);
+	ADD_TEST(testlist, test_map_swap);
 }

@@ -9,7 +9,7 @@
 
 namespace ft
 {
-	template <class NodeType>
+	template <class NodeType, class Compare>
 	class RBIterator
 	{
 		public:
@@ -154,6 +154,14 @@ namespace ft
 			return (ret);
 		}
 
+		bool	values_equal(value_type const & value1, value_type const & value2) const
+		{
+			return (!Compare()(value1, value2) && !Compare()(value2, value1));
+		}
+		bool	values_less_than(value_type const & value1, value_type const & value2) const
+		{
+			return (Compare()(value1, value2));
+		}
 
 		private:
 			node_pointer	data;
@@ -166,7 +174,7 @@ namespace ft
 					return (NULL);
 				node_pointer current = this->data;
 				value_type	target = current->value;
-				while (current && current->value <= target)
+				while (current && !this->values_less_than(target, current->value))
 				{
 					current = current->parent;
 				}
@@ -183,7 +191,7 @@ namespace ft
 					return (NULL);
 				node_pointer current = this->data;
 				value_type	target = current->value;
-				while (current && current->value >= target)
+				while (current && !this->values_less_than(current->value, target))
 				{
 					current = current->parent;
 				}
@@ -251,6 +259,7 @@ namespace ft
 			return (this->min(this));
 		}
 
+
 	};
 
 	template <class ValueType>
@@ -273,8 +282,8 @@ namespace ft
 			typedef const ValueType		const_value_type;
 			typedef Allocator		allocator_type;
 
-			typedef RBIterator<node_type>					iterator;		// should be custom LRAI
-			typedef RBIterator<const_node_type >	const_iterator;
+			typedef RBIterator<node_type, Compare>			iterator;		// should be custom LRAI
+			typedef RBIterator<const_node_type, Compare >	const_iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			node_type	*root;
@@ -497,6 +506,14 @@ namespace ft
 				node1->color = node2->color;
 				node2->color = tmp;
 			}
+			void	swap(RB_Tree<ValueType, Compare, Allocator> & other)
+			{
+				node_type *tmp;
+				
+				tmp = this->root;
+				this->root = other.root;
+				other.root = tmp;
+			}
 			node_type *rotateLeft(node_type *node)
 			{
 				node_type *parent = this->getParent(node);
@@ -512,11 +529,20 @@ namespace ft
 
 				// Attach node to root or grandparent
 				if (!grandparent)
+				{
 					this->root = node;
+					node->parent = NULL;
+				}
 				else if (grandparent->left == parent)
+				{
 					grandparent->left = node;
+					node->parent = grandparent;
+				}
 				else
+				{
 					grandparent->right = node;
+					node->parent = grandparent;
+				}
 
 				// Reattach parent as child of node
 				parent->parent = node;
@@ -539,11 +565,18 @@ namespace ft
 
 				// Attach node to root or grandparent
 				if (!grandparent)
+				{
 					this->root = node;
-				else if (grandparent->right == parent)
-					grandparent->right = node;
+					node->parent = NULL;
+				}
 				else
-					grandparent->left = node;
+				{
+					if (grandparent->right == parent)
+						grandparent->right = node;
+					else
+						grandparent->left = node;
+					node->parent = grandparent;
+				}
 
 				// Reattach parent as child of node
 				parent->parent = node;
