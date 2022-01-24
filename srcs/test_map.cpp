@@ -528,8 +528,8 @@ int test_map_overload()
 
 int		test_map_mli_copy_construct(void)
 {
-	#define T1 int
-	#define T2 int
+	typedef int T1;
+	typedef int T2;
 
 	typedef FT::pair<const T1, T2> T3;
 	std::list<T3> lst;
@@ -565,6 +565,65 @@ int		test_map_mli_copy_construct(void)
 	return (0);
 }
 
+void	ft_find(int const &k, FT::map<int, std::string> mp)
+{
+	FT::map<int, std::string>::iterator ret = mp.find(k);
+	FT::map<int, std::string>::iterator ite = mp.end();
+
+	if (ret != ite)
+	{
+		std::cout << "first: " << ret->first << std::endl;
+		std::cout << "second: " << ret->second << std::endl;
+	}
+	else
+		std::cout << "map::find(" << k << ") returned end()" << std::endl;
+}
+
+static void	ft_count(int const &k, FT::map<int, std::string> mp)
+{
+	std::cout << "map::count(" << k << ")\treturned [" << mp.count(k) << "]" << std::endl;
+}
+
+int		test_map_mli_find_count()
+{
+	typedef int T1;
+	typedef std::string T2;
+
+	FT::map<T1, T2> mp;
+	// FT::map<T1, T2>::iterator it = mp.end();
+	mp[42] = "fgzgxfn";
+	mp[25] = "funny";
+	mp[80] = "hey";
+	mp[12] = "no";
+	mp[27] = "bee";
+	mp[90] = "8";
+	print_map(mp);
+
+	std::cout << "\t-- FIND --" << std::endl;
+	ft_find(12, mp);
+	ft_find(3, mp);
+	ft_find(35, mp);
+	ft_find(90, mp);
+	ft_find(100, mp);
+
+	std::cout << "\t-- COUNT --" << std::endl;
+	ft_count(-3, mp);
+	ft_count(12, mp);
+	ft_count(3, mp);
+	ft_count(35, mp);
+	ft_count(90, mp);
+	ft_count(100, mp);
+
+	mp.find(27)->second = "newly inserted mapped_value";
+
+	print_map(mp);
+
+	FT::map<T1, T2> const c_map(mp.begin(), mp.end());
+	std::cout << "const map.find(" << 42 << ")->second: [" << c_map.find(42)->second << "]" << std::endl;
+	std::cout << "const map.count(" << 80 << "): [" << c_map.count(80) << "]" << std::endl;
+	return (0);
+}
+
 void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_map_void_constructor);
@@ -593,4 +652,5 @@ void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_insert_and_erase_random_order);
 	ADD_TEST(testlist, test_map_int_insert_med_low_high);
 	ADD_TEST(testlist, test_map_mli_copy_construct);
+	ADD_TEST(testlist, test_map_mli_find_count);
 }
