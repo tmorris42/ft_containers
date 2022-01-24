@@ -75,7 +75,7 @@ namespace ft
 			{
 				this->clear();
 			}
-			bool	empty()
+			bool	empty() const
 			{
 				return (this->size() == 0);
 			}
