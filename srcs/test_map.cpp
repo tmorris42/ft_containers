@@ -1,10 +1,28 @@
 #include "tests.hpp"
 
+template<class T1, class T2>
+static void print_map(FT::map<T1, T2> m)
+{
+	typedef typename FT::map<T1, T2>	map_type;
+	typedef typename map_type::iterator			iterator;
+	if (!VERBOSE)
+		return ;
+	std::cout << "size: " << m.size() << std::endl;
+	// std::cout << "max_size: " << m.max_size() << std::endl; Not handled the same as std
+
+	iterator ite = m.end();
+	for (iterator it = m.begin(); it != ite; ++it)
+	{
+		std::cout << "-- m[" << it->first << "] = " << it->second << std::endl;
+	}
+}
+
 int	test_map_void_constructor()
 {
 	FT::map<int, int> m;
 
 	ASSERT_EQUAL(m.empty(), true);
+	print_map(m);
 	return (0);
 }
 
@@ -28,6 +46,8 @@ int test_map_copy_constructor()
 		++it1;
 		++it2;
 	}
+	print_map(m);
+	print_map(m2);
 	return (0);
 }
 
@@ -52,6 +72,7 @@ int test_map_iterator_constructor()
 		++it1;
 		++it2;
 	}
+	print_map(m);
 	return (0);
 }
 
@@ -66,6 +87,7 @@ int test_map_empty()
 	m.insert( p1 );
 	m.insert( p2 );
 	ASSERT_EQUAL(m.empty(), false);
+	print_map(m);
 	return (0);
 }
 
@@ -81,6 +103,7 @@ int test_map_size()
 	ASSERT_EQUAL(m.size(), (unsigned int)1);
 	m.insert(p2);
 	ASSERT_EQUAL(m.size(), (unsigned int)2);
+	print_map(m);
 	return (0);
 }
 
@@ -105,6 +128,7 @@ int test_map_brackets_write()
 	ASSERT_EQUAL((m.begin())->second, 10);
 	ASSERT_EQUAL((++m.begin())->second, 20);
 	ASSERT_EQUAL((--m.end())->second, 30);
+	print_map(m);
 	return (0);
 }
 
@@ -118,6 +142,7 @@ int test_map_brackets_read()
 	ASSERT_EQUAL(m['a'], 10);
 	ASSERT_EQUAL(m['b'], 20);
 	ASSERT_EQUAL(m['c'], 30);
+	print_map(m);
 	return (0);
 }
 
@@ -145,6 +170,7 @@ int test_map_brackets_overwrite()
 	ASSERT_EQUAL((m.begin())->second, 40);
 	ASSERT_EQUAL((++m.begin())->second, 50);
 	ASSERT_EQUAL((--m.end())->second, 60);
+	print_map(m);
 	return (0);
 }
 
@@ -163,6 +189,7 @@ int test_map_insert_duplicate()
 	m.insert(p2);
 	ASSERT_EQUAL(m.size(), (unsigned int)1);
 	ASSERT_EQUAL(m.begin()->second, 10);
+	print_map(m);
 	return (0);
 }
 
@@ -187,6 +214,7 @@ int test_map_reverse_iterator()
 	ASSERT_EQUAL((m.rbegin())->second, 30);
 	ASSERT_EQUAL((++m.rbegin())->second, 20);
 	ASSERT_EQUAL((--m.rend())->second, 10);
+	print_map(m);
 	return (0);
 }
 
@@ -206,6 +234,7 @@ int test_map_find()
 	ASSERT_EQUALQ((m.find('a')), m.begin());
 	ASSERT_EQUALQ((m.find('b')), m.end());
 	ASSERT_EQUALQ((m.find('k')), (++m.begin()));
+	print_map(m);
 	return (0);
 }
 
@@ -221,6 +250,7 @@ int test_map_count()
 	ASSERT_EQUALQ((m.count('k')), (unsigned long)1);
 	m.erase('k');
 	ASSERT_EQUALQ((m.count('k')), (unsigned long)0);
+	print_map(m);
 	return (0);
 }
 
@@ -239,7 +269,7 @@ int test_map_erase_by_iterator()
 	ASSERT_EQUAL(m.size(), (unsigned long)2);
 	ASSERT_EQUAL(m.begin()->first, 'a');
 	ASSERT_EQUAL((++m.begin())->first, 'c');
-
+	print_map(m);
 	return (0);
 }
 
@@ -258,6 +288,7 @@ int test_map_erase_by_key()
 	ASSERT_EQUAL(m.size(), (unsigned long)2);
 	ASSERT_EQUAL(m.begin()->first, 'a');
 	ASSERT_EQUAL((++m.begin())->first, 'b');
+	print_map(m);
 	return (0);
 }
 
@@ -278,7 +309,7 @@ int test_map_erase_by_range()
 	ASSERT_EQUAL(m.size(), (unsigned long)2);
 	ASSERT_EQUAL(m.begin()->first, 'a');
 	ASSERT_EQUAL((++m.begin())->first, 'b');
-
+	print_map(m);
 	return (0);
 }
 
@@ -293,6 +324,7 @@ int test_map_clear()
 	ASSERT_EQUAL(m.size(), (unsigned long)3);
 	m.clear();
 	ASSERT_EQUAL(m.size(), (unsigned long)0);
+	print_map(m);
 	return (0);
 }
 
@@ -319,7 +351,8 @@ int test_map_swap()
 	ASSERT_EQUAL(m2.begin()->second, 1);
 	ASSERT_EQUAL(m1.begin()->first, 'd');
 	ASSERT_EQUAL(m1.begin()->second, 11);
-
+	print_map(m1);
+	print_map(m2);
 	return (0);
 }
 
@@ -335,7 +368,7 @@ int test_map_four_values()
 
 	m1.size();
 	ASSERT_EQUAL(m1.size(), (unsigned long)4);
-
+	print_map(m1);
 	return (0);
 }
 
@@ -351,7 +384,7 @@ int test_map_four_values_descending()
 
 	m1.size();
 	ASSERT_EQUAL(m1.size(), (unsigned long)4);
-
+	print_map(m1);
 	return (0);
 }
 
@@ -369,7 +402,7 @@ int test_map_lower_bound()
 	ASSERT_EQUAL(m1.lower_bound('d')->second, 4);
 	ASSERT_EQUAL(m1.lower_bound('e')->second, 4);
 	ASSERT_EQUALQ(m1.lower_bound('f'), m1.end());
-
+	print_map(m1);
 	return (0);
 }
 
@@ -388,7 +421,7 @@ int test_map_upper_bound()
 	ASSERT_EQUAL(m1.upper_bound('d')->second, 4);
 	ASSERT_EQUALQ(m1.upper_bound('e'), m1.end());
 	ASSERT_EQUALQ(m1.upper_bound('f'), m1.end());
-
+	print_map(m1);
 	return (0);
 }
 
@@ -423,7 +456,7 @@ int test_map_equal_range()
 	ASSERT_EQUALQ(m1.equal_range('e').second, m1.end());
 	ASSERT_EQUALQ(m1.equal_range('f').first, m1.end());
 	ASSERT_EQUALQ(m1.equal_range('f').second, m1.end());
-
+	print_map(m1);
 	return (0);
 }
 
