@@ -1,7 +1,7 @@
 #include "tests.hpp"
 #include <list>
 
-static void print_vector(FT::vector<int> v)
+static void print_vector(FT::vector<int> & v)
 {
 	if (!VERBOSE)
 		return;
@@ -177,6 +177,7 @@ int test_vector_int_empty()
 	ASSERT_EQUAL(Vec.empty(), true);
 	Vec.push_back(1);
 	ASSERT_EQUAL(Vec.empty(), false);
+	print_vector(Vec);
 	Vec.pop_back();
 	ASSERT_EQUAL(Vec.empty(), true);
 	print_vector(Vec);
@@ -403,90 +404,13 @@ int test_vector_int_insert_count()
 	Vec.push_back(8);
 	Vec.push_back(9);
 	Vec.insert(Vec.begin() + 2, (std::size_t)10, 42);
-	ASSERT_EQUAL(Vec.size(), static_cast<unsigned int>(15));
-	ASSERT_EQUAL(Vec.capacity(), static_cast<unsigned int>(15));
-	ASSERT_EQUAL(Vec.front(), 5);
-	ASSERT_EQUAL(Vec.back(), 9);
-	ASSERT_EQUAL(Vec[0], 5);
-	ASSERT_EQUAL(Vec[1], 6);
-	ASSERT_EQUAL(Vec[2], 42);
-	ASSERT_EQUAL(Vec[3], 42);
-	ASSERT_EQUAL(Vec[4], 42);
-	ASSERT_EQUAL(Vec[5], 42);
-	ASSERT_EQUAL(Vec[6], 42);
-	ASSERT_EQUAL(Vec[7], 42);
-	ASSERT_EQUAL(Vec[8], 42);
-	ASSERT_EQUAL(Vec[9], 42);
-	ASSERT_EQUAL(Vec[10], 42);
-	ASSERT_EQUAL(Vec[11], 42);
-	ASSERT_EQUAL(Vec[12], 7);
-	ASSERT_EQUAL(Vec[13], 8);
-	ASSERT_EQUAL(Vec[14], 9);
+	print_vector(Vec);
 	Vec.insert(Vec.begin(), (std::size_t)10, 500);
 	ASSERT_EQUAL(Vec.size(), static_cast<unsigned int>(25));
 	ASSERT_EQUAL(Vec.capacity(), static_cast<unsigned int>(30));
-	ASSERT_EQUAL(Vec[0], 500);
-	ASSERT_EQUAL(Vec[1], 500);
-	ASSERT_EQUAL(Vec[2], 500);
-	ASSERT_EQUAL(Vec[3], 500);
-	ASSERT_EQUAL(Vec[4], 500);
-	ASSERT_EQUAL(Vec[5], 500);
-	ASSERT_EQUAL(Vec[6], 500);
-	ASSERT_EQUAL(Vec[7], 500);
-	ASSERT_EQUAL(Vec[8], 500);
-	ASSERT_EQUAL(Vec[9], 500);
-	ASSERT_EQUAL(Vec[10], 5);
-	ASSERT_EQUAL(Vec[11], 6);
-	ASSERT_EQUAL(Vec[12], 42);
-	ASSERT_EQUAL(Vec[13], 42);
-	ASSERT_EQUAL(Vec[14], 42);
-	ASSERT_EQUAL(Vec[15], 42);
-	ASSERT_EQUAL(Vec[16], 42);
-	ASSERT_EQUAL(Vec[17], 42);
-	ASSERT_EQUAL(Vec[18], 42);
-	ASSERT_EQUAL(Vec[19], 42);
-	ASSERT_EQUAL(Vec[20], 42);
-	ASSERT_EQUAL(Vec[21], 42);
-	ASSERT_EQUAL(Vec[22], 7);
-	ASSERT_EQUAL(Vec[23], 8);
-	ASSERT_EQUAL(Vec[24], 9);
+	print_vector(Vec);
 	Vec.insert(Vec.end(), (std::size_t)10, 1000);
 	ASSERT_EQUAL(Vec.size(), static_cast<unsigned int>(35));
-	ASSERT_EQUAL(Vec[0], 500);
-	ASSERT_EQUAL(Vec[1], 500);
-	ASSERT_EQUAL(Vec[2], 500);
-	ASSERT_EQUAL(Vec[3], 500);
-	ASSERT_EQUAL(Vec[4], 500);
-	ASSERT_EQUAL(Vec[5], 500);
-	ASSERT_EQUAL(Vec[6], 500);
-	ASSERT_EQUAL(Vec[7], 500);
-	ASSERT_EQUAL(Vec[8], 500);
-	ASSERT_EQUAL(Vec[9], 500);
-	ASSERT_EQUAL(Vec[10], 5);
-	ASSERT_EQUAL(Vec[11], 6);
-	ASSERT_EQUAL(Vec[12], 42);
-	ASSERT_EQUAL(Vec[13], 42);
-	ASSERT_EQUAL(Vec[14], 42);
-	ASSERT_EQUAL(Vec[15], 42);
-	ASSERT_EQUAL(Vec[16], 42);
-	ASSERT_EQUAL(Vec[17], 42);
-	ASSERT_EQUAL(Vec[18], 42);
-	ASSERT_EQUAL(Vec[19], 42);
-	ASSERT_EQUAL(Vec[20], 42);
-	ASSERT_EQUAL(Vec[21], 42);
-	ASSERT_EQUAL(Vec[22], 7);
-	ASSERT_EQUAL(Vec[23], 8);
-	ASSERT_EQUAL(Vec[24], 9);
-	ASSERT_EQUAL(Vec[25], 1000);
-	ASSERT_EQUAL(Vec[26], 1000);
-	ASSERT_EQUAL(Vec[27], 1000);
-	ASSERT_EQUAL(Vec[28], 1000);
-	ASSERT_EQUAL(Vec[29], 1000);
-	ASSERT_EQUAL(Vec[30], 1000);
-	ASSERT_EQUAL(Vec[31], 1000);
-	ASSERT_EQUAL(Vec[32], 1000);
-	ASSERT_EQUAL(Vec[33], 1000);
-	ASSERT_EQUAL(Vec[34], 1000);
 	print_vector(Vec);
 	return (0);
 }
