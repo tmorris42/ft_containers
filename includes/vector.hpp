@@ -264,7 +264,7 @@ namespace ft
 
 				for (InputIt it = first; it != last; ++it)
 					++len;
-				this->reserve(len);
+				this->reserve(this->size() + len);
 				this->__copy_space(this->__start + diff + len, this->__start + diff, this->size() - diff);
 				while (first != last)
 				{

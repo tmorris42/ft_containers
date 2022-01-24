@@ -811,6 +811,7 @@ int	test_vector_int_comparisons()
 
 int	test_vector_int_bidirectional_it()
 {
+	// Based on mli's containers_test : bidirectional_it
 	std::list<int> lst;
 	std::list<int>::iterator lst_it;
 
@@ -847,6 +848,7 @@ int	test_vector_int_bidirectional_it()
 	{
 		ASSERT_EQUAL(vct[i], 20 - (5 * (i - 4)));
 	}
+	ASSERT_EQUAL(vct.capacity(), (unsigned long)8);
 	
 	return (0);
 }
