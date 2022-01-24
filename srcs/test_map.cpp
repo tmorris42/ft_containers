@@ -8,7 +8,7 @@ static void print_map(FT::map<T1, T2> m)
 	if (!VERBOSE)
 		return;
 	std::cout << "size: " << m.size() << std::endl;
-	// std::cout << "max_size: " << m.max_size() << std::endl; Not handled the same as std
+	std::cout << "max_size: " << m.max_size() << std::endl;
 
 	iterator ite = m.end();
 	for (iterator it = m.begin(); it != ite; ++it)

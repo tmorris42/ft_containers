@@ -782,6 +782,11 @@ namespace ft
 				return (size_subtree(this->root));
 			}
 
+			size_t max_size() const
+			{
+				return (this->__alloc.max_size());
+			}
+
 		private:
 			node_type	*initialize_node(node_type *node, node_type *parent, value_type const & value)
 			{

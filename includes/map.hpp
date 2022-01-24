@@ -81,7 +81,7 @@ namespace ft
 
 			size_type	max_size() const
 			{
-				return (this->__alloc.max_size());
+				return (this->c.max_size());
 			}
 
 			ft::pair<iterator, bool>	insert (value_type & val)
