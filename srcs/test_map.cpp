@@ -1,12 +1,12 @@
 #include "tests.hpp"
 
-template<class T1, class T2>
+template <class T1, class T2>
 static void print_map(FT::map<T1, T2> m)
 {
-	typedef typename FT::map<T1, T2>	map_type;
-	typedef typename map_type::iterator			iterator;
+	typedef typename FT::map<T1, T2> map_type;
+	typedef typename map_type::iterator iterator;
 	if (!VERBOSE)
-		return ;
+		return;
 	std::cout << "size: " << m.size() << std::endl;
 	// std::cout << "max_size: " << m.max_size() << std::endl; Not handled the same as std
 
@@ -17,7 +17,7 @@ static void print_map(FT::map<T1, T2> m)
 	}
 }
 
-int	test_map_void_constructor()
+int test_map_void_constructor()
 {
 	FT::map<int, int> m;
 
@@ -80,12 +80,12 @@ int test_map_empty()
 {
 	FT::map<char, int> m;
 
-	FT::pair<const char, int>	p1; //('a', 10);
-	FT::pair<const char, int>	p2('b', 20);
+	FT::pair<const char, int> p1; //('a', 10);
+	FT::pair<const char, int> p2('b', 20);
 
 	ASSERT_EQUAL(m.empty(), true);
-	m.insert( p1 );
-	m.insert( p2 );
+	m.insert(p1);
+	m.insert(p2);
 	ASSERT_EQUAL(m.empty(), false);
 	print_map(m);
 	return (0);
@@ -95,9 +95,9 @@ int test_map_size()
 {
 	FT::map<char, int> m;
 
-	FT::pair<const char, int>	p1('a', 10);
-	FT::pair<const char, int>	p2('b', 20);
-	
+	FT::pair<const char, int> p1('a', 10);
+	FT::pair<const char, int> p2('b', 20);
+
 	ASSERT_EQUAL(m.size(), (unsigned int)0);
 	m.insert(p1);
 	ASSERT_EQUAL(m.size(), (unsigned int)1);
@@ -112,7 +112,7 @@ int test_map_brackets_write()
 	FT::map<char, int> m;
 
 	m['a'] = 10;
-	m['c'] = 30;	
+	m['c'] = 30;
 	m['b'] = 20;
 	int count = 10;
 
@@ -137,7 +137,7 @@ int test_map_brackets_read()
 	FT::map<char, int> m;
 
 	m['a'] = 10;
-	m['c'] = 30;	
+	m['c'] = 30;
 	m['b'] = 20;
 	ASSERT_EQUAL(m['a'], 10);
 	ASSERT_EQUAL(m['b'], 20);
@@ -151,11 +151,11 @@ int test_map_brackets_overwrite()
 	FT::map<char, int> m;
 
 	m['a'] = 10;
-	m['c'] = 30;	
+	m['c'] = 30;
 	m['b'] = 20;
 	m['a'] = 40;
 	m['b'] = 50;
-	m['c'] = 60;	
+	m['c'] = 60;
 	int count = 40;
 
 	FT::map<char, int>::iterator it = m.begin();
@@ -178,9 +178,9 @@ int test_map_insert_duplicate()
 {
 	FT::map<char, int> m;
 
-	FT::pair<const char, int>	p1('a', 10);
-	FT::pair<const char, int>	p2('a', 20);
-	
+	FT::pair<const char, int> p1('a', 10);
+	FT::pair<const char, int> p2('a', 20);
+
 	ASSERT_EQUAL(m.size(), (unsigned int)0);
 	m.insert(p1);
 	ASSERT_EQUAL(m.size(), (unsigned int)1);
@@ -198,7 +198,7 @@ int test_map_reverse_iterator()
 	FT::map<char, int> m;
 
 	m['a'] = 10;
-	m['c'] = 30;	
+	m['c'] = 30;
 	m['b'] = 20;
 	int count = 30;
 
@@ -222,7 +222,7 @@ int test_map_find()
 {
 	FT::map<char, int> m;
 	FT::map<char, int>::iterator it;
-	char	tmp_c;
+	char tmp_c;
 
 	m['a'] = 10;
 	m['k'] = 20;
@@ -365,7 +365,6 @@ int test_map_four_values()
 	m1['c'] = 3;
 	m1['d'] = 11;
 
-
 	m1.size();
 	ASSERT_EQUAL(m1.size(), (unsigned long)4);
 	print_map(m1);
@@ -380,7 +379,6 @@ int test_map_four_values_descending()
 	m1['c'] = 4;
 	m1['b'] = 3;
 	m1['a'] = 2;
-
 
 	m1.size();
 	ASSERT_EQUAL(m1.size(), (unsigned long)4);
@@ -405,7 +403,6 @@ int test_map_lower_bound()
 	print_map(m1);
 	return (0);
 }
-
 
 int test_map_upper_bound()
 {
@@ -440,7 +437,7 @@ int test_map_equal_range()
 	ASSERT_EQUAL(m1.equal_range('a').first->second, 1);
 	ASSERT_EQUAL(m1.equal_range('a').second->second, 1);
 	ASSERT_EQUAL(m1.equal_range('b').first->first, 'b');
-	ASSERT_EQUAL(m1.equal_range('b').second->first, 'c');	
+	ASSERT_EQUAL(m1.equal_range('b').second->first, 'c');
 	ASSERT_EQUAL(m1.equal_range('b').first->second, 1);
 	ASSERT_EQUAL(m1.equal_range('b').second->second, 2);
 	ASSERT_EQUAL(m1.equal_range('c').first->first, 'c');
@@ -460,7 +457,7 @@ int test_map_equal_range()
 	return (0);
 }
 
-void	add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
+void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_map_void_constructor);
 	ADD_TEST(testlist, test_map_copy_constructor);
