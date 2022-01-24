@@ -254,22 +254,25 @@ namespace ft
 					++this->__size;
 				}
 			}
-			
-			template< class InputIt >
-			void insert( iterator pos, InputIt first, InputIt last,
-				typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)
-			{
-				InputIt it = first;
-				difference_type	len = 0;
 
-				while (it != last)
-				{
+			template <class InputIt>
+			void insert(iterator pos, InputIt first, InputIt last,
+						typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type * = NULL)
+			{
+				difference_type diff = pos - this->begin();
+				difference_type len = 0;
+
+				for (InputIt it = first; it != last; ++it)
 					++len;
-					++it;
-				}
 				this->reserve(len);
+				this->__copy_space(this->__start + diff + len, this->__start + diff, this->size() - diff);
 				while (first != last)
-					this->insert(pos, *(--last));
+				{
+					this->get_allocator().construct(this->__start + diff, *first);
+					++diff;
+					++first;
+					++this->__size;
+				}
 			}
 
 			iterator	erase(iterator pos)
