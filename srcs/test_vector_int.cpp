@@ -1,7 +1,8 @@
 #include "tests.hpp"
 #include <list>
 
-static void print_vector(FT::vector<int> & v)
+template <class T>
+static void print_vector(FT::vector<T> const & v)
 {
 	if (!VERBOSE)
 		return;
@@ -10,8 +11,8 @@ static void print_vector(FT::vector<int> & v)
 	// std::cout << "capacity: " << v.capacity() << std::endl;  // Differences in memory allocated still exist
 	std::cout << "max_size: " << v.max_size() << std::endl;
 
-	FT::vector<int>::iterator ite = v.end();
-	for (FT::vector<int>::iterator it = v.begin(); it != ite; ++it)
+	typename FT::vector<T>::const_iterator ite = v.end();
+	for (typename FT::vector<T>::const_iterator it = v.begin(); it != ite; ++it)
 	{
 		std::cout << "-- " << *it << std::endl;
 	}
@@ -779,9 +780,8 @@ int test_vector_int_comparisons()
 	return (0);
 }
 
-int test_vector_int_bidirectional_it()
+int test_vector_int_mli_bidirectional_it()
 {
-	// Based on mli's containers_test : bidirectional_it
 	std::list<int> lst;
 	std::list<int>::iterator lst_it;
 
@@ -823,9 +823,8 @@ int test_vector_int_bidirectional_it()
 	return (0);
 }
 
-int test_vector_int_rite2()
+int test_vector_int_mli_rite2()
 {
-	// Based on mli's containers_test : rite2
 	const int size = 5;
 	FT::vector<int> vct(size);
 	FT::vector<int>::reverse_iterator it = vct.rbegin();
@@ -854,6 +853,46 @@ int test_vector_int_rite2()
 	ASSERT_EQUAL(vct.max_size(), (unsigned long)2305843009213693951);
 
 	print_vector(vct);
+	return (0);
+}
+
+template <class T>
+static void	checkErase(FT::vector<T> const &vct,
+					typename FT::vector<T>::const_iterator const &it)
+{
+	static int i = 0;
+	std::cout << "[" << i++ << "] " << "erase: " << it - vct.begin() << std::endl;
+	print_vector<T>(vct);
+}
+
+int		test_vector_int_mli_erase(void)
+{
+	FT::vector<std::string> vct(10);
+
+	for (unsigned long int i = 0; i < vct.size(); ++i)
+		vct[i] = std::string((vct.size() - i), i + 65);
+	print_vector(vct);
+
+	checkErase(vct, vct.erase(vct.begin() + 2));
+
+	checkErase(vct, vct.erase(vct.begin()));
+	checkErase(vct, vct.erase(vct.end() - 1));
+
+	checkErase(vct, vct.erase(vct.begin(), vct.begin() + 3));
+	checkErase(vct, vct.erase(vct.end() - 3, vct.end() - 1));
+
+	vct.push_back("Hello");
+	vct.push_back("Hi there");
+	print_vector(vct);
+	checkErase(vct, vct.erase(vct.end() - 3, vct.end()));
+
+	vct.push_back("ONE");
+	vct.push_back("TWO");
+	vct.push_back("THREE");
+	vct.push_back("FOUR");
+	print_vector(vct);
+	checkErase(vct, vct.erase(vct.begin(), vct.end()));
+
 	return (0);
 }
 
@@ -895,6 +934,7 @@ void add_test_vector_int_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_vector_int_swap_overload);
 	ADD_TEST(testlist, test_vector_int_comparisons);
 
-	ADD_TEST(testlist, test_vector_int_bidirectional_it);
-	ADD_TEST(testlist, test_vector_int_rite2);
+	ADD_TEST(testlist, test_vector_int_mli_bidirectional_it);
+	ADD_TEST(testlist, test_vector_int_mli_rite2);
+	ADD_TEST(testlist, test_vector_int_mli_erase);
 }
