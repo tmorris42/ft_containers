@@ -90,7 +90,7 @@ namespace ft
 				return (this->c.max_size());
 			}
 
-			ft::pair<iterator, bool>	insert (value_type & val)
+			ft::pair<iterator, bool>	insert (const value_type & val)
 			{
 				iterator	node;
 				ft::pair<iterator, bool>	ret;
@@ -108,7 +108,7 @@ namespace ft
 			iterator insert(iterator position, const value_type & val)
 			{
 				++position; // Just to use parameter position
-				this->insert(val); // Not optimized for position
+				return (this->insert(val).first); // Not optimized for position
 			}
 			
 			template <class InputIterator>
