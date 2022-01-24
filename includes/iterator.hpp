@@ -54,11 +54,16 @@ namespace ft
 
 			reverse_iterator() : current() {}
 			explicit reverse_iterator(iterator_type x) : current(x) {}
-			template <class U> reverse_iterator( const reverse_iterator<U> & other) : current(other.base()) {}
-			template< class U > reverse_iterator& operator=( const reverse_iterator<U>& other ) {
-				if (this == &other)
+			template <class U>
+			reverse_iterator(const reverse_iterator<U> &other) : current(other.base())
+			{
+			}
+			template <class U>
+			reverse_iterator &operator=(reverse_iterator<U> const &other)
+			{
+				if (*this == other)
 					return (*this);
-				this->current = other->current;
+				this->current = &(*(other - 1));
 				return (*this);
 			}
 
