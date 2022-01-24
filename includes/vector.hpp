@@ -316,6 +316,7 @@ namespace ft
 
 		iterator erase(iterator first, iterator last)
 		{
+			iterator ret = first;
 			difference_type N = last - first;
 			while (first + N != this->end())
 			{
@@ -328,7 +329,7 @@ namespace ft
 				++first;
 			}
 			this->__size -= N;
-			return (last);
+			return (ret);
 		}
 
 		void push_back(T element)
