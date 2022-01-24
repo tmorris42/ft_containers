@@ -1,5 +1,16 @@
 #include "tests.hpp"
 
+
+template <class T, class C>
+static void	print_stack(FT::stack<T, C> & s)
+{
+	if (!VERBOSE)
+		return ;
+	std::cout << "size: " << s.size() << std::endl;
+	std::cout << "empty: " << s.empty() << std::endl;
+	std::cout << "top: " << s.top() << std::endl;
+}
+
 int	test_stack_basic()
 {
 	FT::stack< int, FT::vector<int> > s;
@@ -54,8 +65,35 @@ int	test_stack_basic_cmp()
 	return (0);
 }
 
+int             test_stack_default_copy(void)
+{
+	typedef FT::vector<int> container_type_used;
+	typedef FT::stack<int, container_type_used> stack_type;
+	typedef stack_type::container_type container_type;
+	container_type  ctnr;
+	ctnr.push_back(21);
+	ctnr.push_back(42);
+	ctnr.push_back(1337);
+	ctnr.push_back(19);
+	ctnr.push_back(0);
+	ctnr.push_back(183792);
+
+	stack_type             stck(ctnr);
+	print_stack(stck);
+	stck.push(1);
+	stck.push(2);
+	stck.push(3);
+	stck.push(4);
+	stck.push(5);
+	stck.push(6);
+	print_stack(stck);
+
+	return (0);
+}
+
 void	add_test_stack_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_stack_basic);
 	ADD_TEST(testlist, test_stack_basic_cmp);
+	ADD_TEST(testlist, test_stack_default_copy);
 }
