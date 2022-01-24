@@ -457,6 +457,53 @@ int test_map_equal_range()
 	return (0);
 }
 
+int test_map_insert_random_order()
+{
+	FT::map<unsigned long, unsigned long> m;
+	unsigned long amt_to_test = 100;
+
+	unsigned long nums[] = {771,169,802,719,238,821,698,190,385,606,572,554,776,463,723,808,806,515,302,851,460,363,49,670,592,390,283,531,240,12,277,350,207,383,789,15,512,68,354,398,987,907,767,243,108,502,134,482,837,667,946,783,715,391,150,712,996,952,324,462,936,820,329,487,845,186,871,275,189,838,722,95,779,214,762,472,725,935,295,51,196,394,418,479,728,435,826,841,882,61,591,852,636,801,994,970,299,835,933,938};
+
+	for (unsigned long i = 0; i < amt_to_test; ++i)
+		m[nums[i]] = i;
+	print_map(m);
+	for (unsigned long i = 0; i < amt_to_test; ++i)
+	{
+		m.erase(nums[i]);
+		print_map(m);
+	}
+	return (0);
+}
+
+int test_map_int_insert_med_low_high()
+{
+	FT::map<unsigned long, unsigned long> m;
+	m[771] = 1;
+	m[169] = 2;
+	m[802] = 3;
+	
+	print_map(m);
+	m.erase(771);
+	print_map(m);
+	m.erase(169);
+	print_map(m);
+	m.erase(802);
+	print_map(m);
+
+	return (0);
+}
+
+int test_map_overload()
+{
+	FT::map<unsigned long, unsigned long> m;
+
+	for (unsigned long i = 500; i > 0; --i)
+		m[i] = i;
+
+	print_map(m);
+	return (0);
+}
+
 void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_map_void_constructor);
@@ -481,4 +528,6 @@ void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_lower_bound);
 	ADD_TEST(testlist, test_map_upper_bound);
 	ADD_TEST(testlist, test_map_equal_range);
+	ADD_TEST(testlist, test_map_insert_random_order);
+	ADD_TEST(testlist, test_map_int_insert_med_low_high);
 }

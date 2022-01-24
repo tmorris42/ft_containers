@@ -338,35 +338,28 @@ namespace ft
 			}
 			void	swap_nodes(node_type *node1, node_type *node2)
 			{
-				node_type *tmp_parent;
-				node_type *tmp_left;
-				node_type *tmp_right;
-				node_type **tmp_addr;
-
-				// tmp_addr = this->get_reference_safe(node1);  //CHECK HERE FOR BLANKING ROOT
-				// if (tmp_addr)
-				// 	*tmp_addr = node2;
-				// tmp_addr = this->get_reference_safe(node2); //CHECK HERE FOR BLANKING ROOT
-				// if (tmp_addr)
-				// 	*tmp_addr = node1;
-				// tmp_addr = NULL;
+				node_type *tmp_parent = node1->parent;
+				node_type *tmp_left = node1->left;
+				node_type *tmp_right = node1->right;
 				
-				tmp_parent = node1->parent;
-				tmp_left = node1->left;
-				tmp_right = node1->right;
-
 				if (node2->parent == node1)
 					node1->parent = node2;
 				else
 					node1->parent = node2->parent;
+
 				if (node2->left == node1)
 					node1->left = node2;
 				else
 					node1->left = node2->left;
+				if (node1->left)
+					node1->left->parent = node1;
+
 				if (node2->right == node1)
 					node1->right = node2;
 				else
 					node1->right = node2->right;
+				if (node1->right)
+					node1->right->parent = node1;
 
 				if (tmp_parent == node2)
 					node2->parent = node1;
@@ -376,26 +369,33 @@ namespace ft
 					node2->left = node1;
 				else
 					node2->left = tmp_left;
+				if (node2->left)
+					node2->left->parent = node2;
 				if (tmp_right == node2)
 					node2->right = node1;
 				else
 					node2->right = tmp_right;
+				if (node2->right)
+					node2->right->parent = node2;
 
 				if (this->root == node1)
 					this->root = node2;
 				else if (this->root == node2)
 					this->root = node1;
+				
 				if (node1->parent)
 				{
-					tmp_addr = this->get_reference_safe(node1);
-					if (tmp_addr)
-						*tmp_addr = node1;
+					if (node1->parent->right == node2)
+						node1->parent->right = node1;
+					else if (node1->parent->left == node2)
+						node1->parent->left = node1;
 				}
 				if (node2->parent)
 				{
-					tmp_addr = this->get_reference_safe(node2);
-					if (tmp_addr)
-						*tmp_addr = node2;
+					if (node2->parent->right == node1)
+						node2->parent->right = node2;
+					else if (node2->parent->left == node1)
+						node2->parent->left = node2;
 				}
 			}
 			void		replace_node(node_type *oldNode, node_type * newNode)
@@ -714,21 +714,24 @@ namespace ft
 					this->delete_node(node->right, value);
 				else //value == node->value
 				{
-					node_type **node_addr = this->get_reference(node);
+					node_type **node_addr = this->get_reference_safe(node);
 					if (!node->left && !node->right)
 					{
-						*node_addr = NULL;
+						if (node_addr)
+							*node_addr = NULL;
 						this->destroy_node(node);
 					}
 					else if (!node->left)
 					{
-						*node_addr = node->right;
+						if (node_addr)
+							*node_addr = node->right;
 						node->right->parent = node->parent;
 						this->destroy_node(node);
 					}
 					else if (!node->right)
 					{
-						*node_addr = node->left;
+						if (node_addr)
+							*node_addr = node->left;
 						node->left->parent = node->parent;
 						this->destroy_node(node);
 					}
