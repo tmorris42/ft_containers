@@ -752,6 +752,15 @@ namespace ft
 					return ;
 				delete_tree(node->left);
 				delete_tree(node->right);
+				if (this->root == node)
+						this->root = NULL;
+				if (node->parent)
+				{
+					if (node->parent->right == node)
+						node->parent->right = NULL;
+					else if (node->parent->left == node)
+						node->parent->left = NULL;
+				}
 				destroy_node(node);
 			}
 
@@ -770,7 +779,8 @@ namespace ft
 
 			void	deallocate_node(node_type *node)
 			{
-				this->__alloc.deallocate(node, 1);
+				if (node)
+					this->__alloc.deallocate(node, 1);
 			}
 
 			size_t	size_subtree(node_type *node) const
