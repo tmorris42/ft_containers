@@ -1,4 +1,5 @@
 #include "tests.hpp"
+#include <list>
 
 template <class T1, class T2>
 static void print_map(FT::map<T1, T2> m)
@@ -525,6 +526,45 @@ int test_map_overload()
 	return (0);
 }
 
+int		test_map_mli_copy_construct(void)
+{
+	#define T1 int
+	#define T2 int
+
+	typedef FT::pair<const T1, T2> T3;
+	std::list<T3> lst;
+	unsigned int lst_size = 7;
+	for (unsigned int i = 0; i < lst_size; ++i)
+		lst.push_back(T3(lst_size - i, i));
+
+	FT::map<T1, T2> mp(lst.begin(), lst.end());
+	FT::map<T1, T2>::iterator it = mp.begin(), ite = mp.end();
+
+	FT::map<T1, T2> mp_range(it, --(--ite));
+	for (int i = 0; it != ite; ++it)
+		it->second = ++i * 5;
+
+	it = mp.begin(); ite = --(--mp.end());
+	FT::map<T1, T2> mp_copy(mp);
+	for (int i = 0; it != ite; ++it)
+		it->second = ++i * 7;
+
+	std::cout << "\t-- PART ONE --" << std::endl;
+	print_map(mp);
+	print_map(mp_range);
+	print_map(mp_copy);
+
+	mp = mp_copy;
+	mp_copy = mp_range;
+	mp_range.clear();
+
+	std::cout << "\t-- PART TWO --" << std::endl;
+	print_map(mp);
+	print_map(mp_range);
+	print_map(mp_copy);
+	return (0);
+}
+
 void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_map_void_constructor);
@@ -552,4 +592,5 @@ void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_insert_random_order);
 	ADD_TEST(testlist, test_map_insert_and_erase_random_order);
 	ADD_TEST(testlist, test_map_int_insert_med_low_high);
+	ADD_TEST(testlist, test_map_mli_copy_construct);
 }

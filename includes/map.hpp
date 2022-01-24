@@ -65,6 +65,12 @@ namespace ft
 			{
 				this->insert(src.begin(), src.end());
 			}
+			map & operator=(const map & other)
+			{
+				this->clear();
+				this->insert(other.begin(), other.end());
+				return (*this);
+			}
 			~map()
 			{
 				this->clear();
