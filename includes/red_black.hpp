@@ -25,7 +25,10 @@ namespace ft
 
 		RBIterator(node_pointer const ptr = 0)
 		: data(ptr), past_the_end(false), before_the_start(false)
-		{}
+		{
+			if (!ptr)
+				past_the_end = true;
+		}
 		RBIterator(RBIterator const & src)
 		: data(src.data), past_the_end(src.past_the_end), before_the_start(src.before_the_start)
 		{}
@@ -42,6 +45,8 @@ namespace ft
 
 		bool operator==(RBIterator const &other)
 		{
+			if ((this->past_the_end && other.past_the_end) || (this->before_the_start && other.before_the_start))
+				return (true);
 			if (this->past_the_end != other.past_the_end)
 				return (false);
 			if (this->before_the_start != other.before_the_start)
@@ -50,7 +55,7 @@ namespace ft
 		}
 		bool operator!=(RBIterator const &other)
 		{
-			return (!(*this == other));
+			return (!((*this) == other));
 		}
 
 		value_type	&operator*()
@@ -86,7 +91,6 @@ namespace ft
 			else
 			{
 				this->data = this->getNextGreaterParent();
-
 			}
 			return (*this);			
 		}
@@ -321,13 +325,10 @@ namespace ft
 			iterator search(value_type const & value)
 			{
 				node_type *node;
-				iterator it;
 				node = recursive_search(this->root, value);
 				if (!node)
-					it = this->end();
-				else
-					it = iterator(node);
-				return (it);
+					return (this->end());
+				return (iterator(node));
 			}
 			const_iterator search(value_type const & value) const
 			{
@@ -614,6 +615,8 @@ namespace ft
 
 			node_type	*max(node_type *node)
 			{
+				if (!node)
+					return (NULL);
 				return (node->max());
 			}
 			node_type	*max()
@@ -622,6 +625,8 @@ namespace ft
 			}
 			const_node_type	*max(node_type *node) const
 			{
+				if (!node)
+					return (NULL);
 				return (node->max());
 			}
 			const_node_type	*max() const
