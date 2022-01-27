@@ -549,7 +549,8 @@ int		test_map_mli_copy_construct(void)
 	for (int i = 0; it != ite; ++it)
 		it->second = ++i * 7;
 
-	std::cout << "\t-- PART ONE --" << std::endl;
+	if (VERBOSE)
+		std::cout << "\t-- PART ONE --" << std::endl;
 	print_map(mp);
 	print_map(mp_range);
 	print_map(mp_copy);
@@ -558,7 +559,8 @@ int		test_map_mli_copy_construct(void)
 	mp_copy = mp_range;
 	mp_range.clear();
 
-	std::cout << "\t-- PART TWO --" << std::endl;
+	if (VERBOSE)
+		std::cout << "\t-- PART TWO --" << std::endl;
 	print_map(mp);
 	print_map(mp_range);
 	print_map(mp_copy);
@@ -570,6 +572,8 @@ void	ft_find(int const &k, FT::map<int, std::string> mp)
 	FT::map<int, std::string>::iterator ret = mp.find(k);
 	FT::map<int, std::string>::iterator ite = mp.end();
 
+	if (!VERBOSE)
+		return;
 	if (ret != ite)
 	{
 		std::cout << "first: " << ret->first << std::endl;
@@ -581,7 +585,8 @@ void	ft_find(int const &k, FT::map<int, std::string> mp)
 
 static void	ft_count(int const &k, FT::map<int, std::string> mp)
 {
-	std::cout << "map::count(" << k << ")\treturned [" << mp.count(k) << "]" << std::endl;
+	if (VERBOSE)
+		std::cout << "map::count(" << k << ")\treturned [" << mp.count(k) << "]" << std::endl;
 }
 
 int		test_map_mli_find_count()
@@ -599,14 +604,16 @@ int		test_map_mli_find_count()
 	mp[90] = "8";
 	print_map(mp);
 
-	std::cout << "\t-- FIND --" << std::endl;
+	if (VERBOSE)
+		std::cout << "\t-- FIND --" << std::endl;
 	ft_find(12, mp);
 	ft_find(3, mp);
 	ft_find(35, mp);
 	ft_find(90, mp);
 	ft_find(100, mp);
 
-	std::cout << "\t-- COUNT --" << std::endl;
+	if (VERBOSE)
+		std::cout << "\t-- COUNT --" << std::endl;
 	ft_count(-3, mp);
 	ft_count(12, mp);
 	ft_count(3, mp);
@@ -619,8 +626,11 @@ int		test_map_mli_find_count()
 	print_map(mp);
 
 	FT::map<T1, T2> const c_map(mp.begin(), mp.end());
-	std::cout << "const map.find(" << 42 << ")->second: [" << c_map.find(42)->second << "]" << std::endl;
-	std::cout << "const map.count(" << 80 << "): [" << c_map.count(80) << "]" << std::endl;
+	if (VERBOSE)
+	{
+		std::cout << "const map.find(" << 42 << ")->second: [" << c_map.find(42)->second << "]" << std::endl;
+		std::cout << "const map.count(" << 80 << "): [" << c_map.count(80) << "]" << std::endl;
+	}
 	return (0);
 }
 

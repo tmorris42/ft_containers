@@ -861,7 +861,8 @@ static void	checkErase(FT::vector<T> const &vct,
 					typename FT::vector<T>::const_iterator const &it)
 {
 	static int i = 0;
-	std::cout << "[" << i++ << "] " << "erase: " << it - vct.begin() << std::endl;
+	if (VERBOSE)
+		std::cout << "[" << i++ << "] " << "erase: " << it - vct.begin() << std::endl;
 	print_vector<T>(vct);
 }
 
@@ -900,6 +901,8 @@ int		test_vector_string_mli_erase(void)
 template <typename Ite_1, typename Ite_2>
 static void ft_eq_ope(const Ite_1 &first, const Ite_2 &second, const bool redo = 1)
 {
+	if (!VERBOSE)
+		return;
 	std::cout << (first < second) << std::endl;
 	std::cout << (first <= second) << std::endl;
 	std::cout << (first > second) << std::endl;
@@ -928,10 +931,13 @@ int		test_vector_int_mli_rite_eq_ope(void)
 	it_mid = it_0 + 3;
 	cit_mid = it_0 + 3; cit_mid = cit_0 + 3; cit_mid = it_mid;
 
-	std::cout << std::boolalpha;
-	std::cout << ((it_0 + 3 == cit_0 + 3) && (cit_0 + 3 == it_mid)) << std::endl;
+	if (VERBOSE)
+	{
+		std::cout << std::boolalpha;
+		std::cout << ((it_0 + 3 == cit_0 + 3) && (cit_0 + 3 == it_mid)) << std::endl;
 
-	std::cout << "\t\tft_eq_ope:" << std::endl;
+		std::cout << "\t\tft_eq_ope:" << std::endl;
+	}
 	// regular it
 	ft_eq_ope(it_0 + 3, it_mid);
 	ft_eq_ope(it_0, it_1);
