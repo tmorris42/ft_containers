@@ -1,6 +1,43 @@
 #include "tests.hpp"
 #include <list>
 
+// --- Class foo from mli
+template <typename T>
+class foo {
+	public:
+		typedef T	value_type;
+
+		foo(void) : value(), _verbose(false) { };
+		foo(value_type src, const bool verbose = false) : value(src), _verbose(verbose) { };
+		foo(foo const &src, const bool verbose = false) : value(src.value), _verbose(verbose) { };
+		~foo(void) { if (this->_verbose && VERBOSE) std::cout << "~foo::foo()" << std::endl; };
+		void m(void) { if (VERBOSE) std::cout << "foo::m called [" << this->value << "]" << std::endl; };
+		void m(void) const { if (VERBOSE) std::cout << "foo::m const called [" << this->value << "]" << std::endl; };
+		foo &operator=(value_type src) { this->value = src; return *this; };
+		foo &operator=(foo const &src) {
+			if (VERBOSE && (this->_verbose || src._verbose))
+				std::cout << "foo::operator=(foo) CALLED" << std::endl;
+			this->value = src.value;
+			return *this;
+		};
+		value_type	getValue(void) const { return this->value; };
+		void		switchVerbose(void) { this->_verbose = !(this->_verbose); };
+
+		operator value_type(void) const {
+			return value_type(this->value);
+		}
+	private:
+		value_type	value;
+		bool		_verbose;
+};
+
+template <typename T>
+std::ostream	&operator<<(std::ostream &o, foo<T> const &bar) {
+	o << bar.getValue();
+	return o;
+}
+// --- End of class foo
+
 template <class T1, class T2>
 static void print_map(FT::map<T1, T2> m)
 {
@@ -634,6 +671,58 @@ int		test_map_mli_find_count()
 	return (0);
 }
 
+template <class T>
+static void printPair(T it)
+{
+	if (VERBOSE)
+		std::cout << it->first << " : " << it->second << std::endl;
+}
+
+int		test_map_mli_ite_arrow(void)
+{
+	typedef float T1;
+	typedef foo<int> T2;
+	typedef FT::pair<const T1, T2> T3;
+	std::list<T3> lst;
+	unsigned int lst_size = 5;
+	for (unsigned int i = 0; i < lst_size; ++i)
+		lst.push_back(T3(2.5 + i, i + 1));
+
+	FT::map<T1, T2> mp(lst.begin(), lst.end());
+	FT::map<T1, T2>::iterator it(mp.begin());
+	FT::map<T1, T2>::const_iterator ite(mp.begin());
+	print_map(mp);
+
+	printPair(++ite);
+	printPair(ite++);
+	printPair(ite++);
+	printPair(++ite);
+
+	it->second.m();
+	ite->second.m();
+
+	printPair(++it);
+	printPair(it++);
+	printPair(it++);
+	printPair(++it);
+
+	printPair(--ite);
+	printPair(ite--);
+	printPair(--ite);
+	printPair(ite--);
+
+	(*it).second.m();
+	(*ite).second.m();
+
+	printPair(--it);
+	printPair(it--);
+	printPair(it--);
+	printPair(--it);
+
+	return (0);
+}
+
+
 void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_map_void_constructor);
@@ -663,4 +752,5 @@ void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_int_insert_med_low_high);
 	ADD_TEST(testlist, test_map_mli_copy_construct);
 	ADD_TEST(testlist, test_map_mli_find_count);
+	ADD_TEST(testlist, test_map_mli_ite_arrow);
 }
