@@ -3,6 +3,7 @@
 
 # include <iostream>
 # include <sstream>
+# include <cstring>	//strcmp
 
 # include "UnitTest.hpp"
 # include "tests.hpp"
@@ -17,13 +18,14 @@
 #  include <utility>
 #  define FT std
 # else // Create using my version by default
-// #  "map.hpp"
+#  include "map.hpp"
 #  include "stack.hpp"
 #  include "vector.hpp"
 #  include "iterator.hpp"
 #  include "type_traits.hpp"
 #  include "algorithm.hpp"
 #  include "utility.hpp"
+#  include "red_black.hpp"
 #  define FT ft
 # endif
 

@@ -2,9 +2,9 @@ NAME = ft_containers.out
 REAL = real.out
 REAL_TOGGLE = -DFT_REAL_VERSION=1
 
-SRCS_DIR = srcs
-INCLUDE_DIR = includes
-OBJS_DIR = objs
+SRCS_DIR = srcs/
+INCLUDE_DIR = includes/
+OBJS_DIR = objs/
 
 SRCS = main.cpp UnitTest.cpp \
 			test_iterator.cpp \
@@ -13,18 +13,18 @@ SRCS = main.cpp UnitTest.cpp \
 			test_vector_struct.cpp \
 			test_vector_class.cpp \
 			test_stack.cpp \
+			test_rb_tree.cpp \
+			test_map.cpp \
 
 
-OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
-REAL_OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.real.o))
+OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.cpp=.o))
+REAL_OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.cpp=.real.o))
 INCLUDES = -I$(INCLUDE_DIR)
-
-#https://stackoverflow.com/questions/97338/gcc-dependency-generation-for-a-different-output-directory
-DEPS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.d))
+DEPS = $(OBJS:.o=.d)
 
 CC_OVERRIDE ?= clang++
 CC	:= $(CC_OVERRIDE)
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -MMD -Wall -Wextra -Werror
 MY_FLAGS = $(FLAGS) -std=c++98 -pedantic
 
 DEBUG_FLAGS ?= -g3
@@ -32,30 +32,27 @@ ifdef DEBUG_OVERRIDE
 FLAGS := $(FLAGS) $(DEBUG_FLAGS)
 endif
 
+$(NAME): $(OBJS) | $(OBJS_DIR)
+	$(CC) $(MY_FLAGS) $(OBJS) $(INCLUDES) -o $(NAME)
+
 all: $(NAME) $(REAL)
 
 $(OBJS_DIR):
 	@mkdir -p objs
 
-$(REAL): $(REAL_OBJS)
+$(REAL): $(REAL_OBJS) | $(OBJS_DIR)
 	$(CC) $(REAL_TOGGLE) $(FLAGS) $(REAL_OBJS) $(INCLUDES) -o $(REAL)
 
-$(NAME): $(OBJS)
-	$(CC) $(MY_FLAGS) $(OBJS) $(INCLUDES) -o $(NAME)
-
-$(OBJS_DIR)/%.real.o : $(SRCS_DIR)/%.cpp $(OBJS_DIR)/%.real.d | $(OBJS_DIR)
+$(OBJS_DIR)%.real.o : $(SRCS_DIR)%.cpp | $(OBJS_DIR)
 	$(CC) $(REAL_TOGGLE) -c $(FLAGS) $(INCLUDES) $< -o $@
 
-$(OBJS_DIR)/%.o : $(SRCS_DIR)/%.cpp $(OBJS_DIR)/%.d | $(OBJS_DIR)
-	$(CC) -c $(MY_FLAGS) $(INCLUDES) $< -o $@
+$(OBJS_DIR)%.o : $(SRCS_DIR)%.cpp | $(OBJS_DIR)
+	$(CC) $(MY_FLAGS) -c $(INCLUDES) $< -o $@
 
-$(OBJS_DIR)/%.d: $(SRCS_DIR)/%.cpp | $(OBJS_DIR)
-	$(CC) -MF"$@" -MG -MM -MP -MT"$@" -MT"$(<:.cpp=.o)" -c $(FLAGS) $(INCLUDES) $< > $@
+$(OBJS_DIR)%.real.d: $(SRCS_DIR)%.cpp | $(OBJS_DIR)
+	$(CC) $(FLAGS) -c $(INCLUDES) $< > $@
 
-$(OBJS_DIR)/%.real.d: $(SRCS_DIR)/%.cpp | $(OBJS_DIR)
-	$(CC) -MM -MD -MP $(REAL_TOGGLE) -c $(FLAGS) $(INCLUDES) $< > $@
-
-real: $(REAL)
+real: $(REAL) | $(OBJS_DIR)
 
 clean:
 	rm -rf $(OBJS_DIR)
@@ -64,7 +61,7 @@ clean:
 fclean: clean
 	rm -f $(NAME) $(REAL)
 
-re: fclean all
+re: fclean all | $(OBJS_DIR)
 
 test: all
 	@echo "Generating user logs"
@@ -76,6 +73,6 @@ test: all
 	@diff -s mine.log real.log
 	@diff -s mine.err.log real.err.log
 
-include $(DEPS)
+-include $(DEPS)
 
 .PHONY: all clean fclean re test

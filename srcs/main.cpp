@@ -19,6 +19,12 @@ int	main(int argc, char **argv)
 
 	add_test_stack_suite(&tests);
 
+	#ifndef FT_REAL_VERSION
+	// add_test_rb_tree_suite(&tests);
+	#endif
+
+	add_test_map_suite(&tests);
+
 	if (argc > 1)
 	{
 		int argNumber = 1;
@@ -27,18 +33,20 @@ int	main(int argc, char **argv)
 			std::stringstream intValue(argv[argNumber]);
 			int i;
 			intValue >> i;
-			if (i > 0)
+			if (i > 0 && (unsigned int)i <= tests.size())
 			{
-				RUN_TEST(tests, i);
+				RUN_TEST(tests, i - 1);
 				runAll = false;
 			}
 			else
 			{
-				if (!VERBOSE)
+				if (!VERBOSE && !std::strcmp(argv[argNumber], "-v"))
 				{
 					std::cout << "VERBOSE MODE" << std::endl;
 					VERBOSE = true;
 				}
+				else
+					std::cout << "ERROR: test #" << i << " not found." << std::endl;
 			}
 			++argNumber;
 		}

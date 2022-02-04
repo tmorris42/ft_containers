@@ -30,6 +30,14 @@ int	test_vector_vector_basic()
 		++it;
 	}
 	cvec2 = cvec1;
+	for (unsigned long i = 0; i < cvec1.size(); ++i)
+	{
+		for (unsigned long j = 0; j < cvec1[i].size(); ++j)
+		{
+			ASSERT_EQUAL(cvec1[i][j], cvec2[i][j]);	
+		}
+		ASSERT_EQUALQ(cvec1[i], cvec2[i]);
+	}
 	ASSERT_EQUALQ(cvec2, cvec1);
 	return (0);
 }

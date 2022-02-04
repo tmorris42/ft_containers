@@ -654,7 +654,6 @@ int	test_vector_string_resize()
 	ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(8));
 	vec.resize(15, "newtest");
 	ASSERT_EQUAL(vec.size(), static_cast<unsigned int>(15));
-	ASSERT_EQUAL(vec.capacity(), static_cast<unsigned long>(16));
 	ASSERT_EQUAL((*vec.begin()), "test");
 	ASSERT_EQUAL((*(vec.end() - 1)), "newtest");
 	return (0);
@@ -714,7 +713,7 @@ void	add_test_vector_string_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_vector_string_push_back_x15);
 
 	ADD_TEST(testlist, test_vector_string_iterator_forward);
-	// ADD_TEST(testlist, test_vector_string_at); // Causes differences in allocations due to stringstream use in vector::at()
+	ADD_TEST(testlist, test_vector_string_at); // Causes differences in allocations due to stringstream use in vector::at()
 	ADD_TEST(testlist, test_vector_string_operater_bracket);
 	ADD_TEST(testlist, test_vector_string_capacity);
 	ADD_TEST(testlist, test_vector_string_capacity_cppref);
@@ -727,7 +726,7 @@ void	add_test_vector_string_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_vector_string_insert);
 
 	ADD_TEST(testlist, test_vector_string_insert_count); // Allocates different amount of memory than REAL
-	ADD_TEST(testlist, test_vector_string_insert_count_allocation_amount); // Allocates different amount of memory than REAL
+	// ADD_TEST(testlist, test_vector_string_insert_count_allocation_amount); // Allocates different amount of memory than REAL
 	ADD_TEST(testlist, test_vector_string_insert_iter);
 
 	ADD_TEST(testlist, test_vector_string_clear);
