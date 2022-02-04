@@ -585,7 +585,10 @@ namespace ft
 			void	deallocate_node(node_type *node)
 			{
 				if (node)
+				{
+					this->__alloc.destroy(node);
 					this->__alloc.deallocate(node, 1);
+				}
 			}
 
 			size_t	size_subtree(node_type *node) const
