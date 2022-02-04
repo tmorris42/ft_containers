@@ -55,6 +55,6 @@ int test_vector_stress_basic()
 void	add_test_vector_class_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
 	ADD_TEST(testlist, test_vector_vector_basic);
-	// ADD_TEST(testlist, test_vector_stress_basic); // Takes a long time on MY version
+	ADD_TEST(testlist, test_vector_stress_basic);
 
 }
