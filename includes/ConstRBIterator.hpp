@@ -1,11 +1,12 @@
-#ifndef TREE_ITERATOR_HPP
-#define TREE_ITERATOR_HPP
+#ifndef CONST_TREE_ITERATOR_HPP
+#define CONST_TREE_ITERATOR_HPP
 
 #include "iterator.hpp"
+#include "RBIterator.hpp"
 namespace ft
 {
 	template <class ValueType, class NodeType, class Compare>
-	class RBIterator
+	class ConstRBIterator
 	{
 		public:
 		typedef ft::biderectional_iterator_tag	iterator_category;
@@ -14,22 +15,25 @@ namespace ft
 		typedef typename node_type::const_value_type	const_value_type;
 		typedef std::ptrdiff_t	difference_type;
 		typedef std::size_t	size_type;
-		typedef NodeType *	node_pointer;
+		typedef NodeType const *	node_pointer;
 		typedef typename NodeType::value_type *	pointer;
 		typedef typename NodeType::value_type &	reference;
+		typedef RBIterator<ValueType, NodeType, Compare> iterator;
+		typedef ConstRBIterator<ValueType, NodeType, Compare>	const_iterator;
 
-		template <class T, class U, class V> friend class ConstRBIterator; // ******* friend not allowed here?
-
-		RBIterator(node_pointer const ptr = 0)
+		ConstRBIterator(node_pointer const ptr = 0)
 		: data(ptr), past_the_end(false), before_the_start(false)
 		{
 			if (!ptr)
 				past_the_end = true;
 		}
-		RBIterator(RBIterator const & src)
+		ConstRBIterator(const_iterator const & src)
 		: data(src.data), past_the_end(src.past_the_end), before_the_start(src.before_the_start)
 		{}
-		RBIterator const & operator=(RBIterator const & src) {
+		ConstRBIterator(iterator const & src)
+		: data(src.data), past_the_end(src.past_the_end), before_the_start(src.before_the_start)
+		{}
+		ConstRBIterator const & operator=(ConstRBIterator const & src) {
 			if (this != &src)
 			{
 				this->data = src.data;
@@ -38,9 +42,18 @@ namespace ft
 			}
 			return (*this);
 		}
-		~RBIterator() {}
+		ConstRBIterator const & operator=(iterator const & src) {
+			if (this != &src)
+			{
+				this->data = src.data;
+				this->past_the_end = src.past_the_end;
+				this->before_the_start = src.before_the_start;
+			}
+			return (*this);
+		}
+		~ConstRBIterator() {}
 
-		bool operator==(RBIterator const &other)
+		bool operator==(ConstRBIterator const &other)
 		{
 			if ((this->past_the_end && other.past_the_end) || (this->before_the_start && other.before_the_start))
 				return (true);
@@ -50,29 +63,21 @@ namespace ft
 				return (false);
 			return (this->data == other.data);
 		}
-		bool operator!=(RBIterator const &other)
+		bool operator!=(ConstRBIterator const &other)
 		{
 			return (!((*this) == other));
 		}
 
-		value_type	&operator*()
-		{
-			return (this->data->value);
-		}
 		const_value_type	&operator*() const
 		{
 			return (this->data->value);
-		}
-		value_type	*	operator->()
-		{
-			return (&(this->operator*()));
 		}
 		const_value_type	*operator->() const
 		{
 			return (&(this->operator*()));
 		}
 
-		RBIterator & operator++()
+		ConstRBIterator & operator++()
 		{
 			if (this->past_the_end)
 				return (*this);
@@ -91,13 +96,13 @@ namespace ft
 			}
 			return (*this);			
 		}
-		RBIterator operator++(int) {
-			RBIterator temp;
+		ConstRBIterator operator++(int) {
+			ConstRBIterator temp;
 			temp = *this;
 			this->operator++();
 			return (temp);
 		}
-		RBIterator &	operator--() {
+		ConstRBIterator &	operator--() {
 			if (this->before_the_start)
 				return (*this);
 			if (this->past_the_end)
@@ -111,8 +116,8 @@ namespace ft
 				this->data = this->getNextLesserParent();
 			return (*this);
 		}
-		RBIterator operator--(int) {
-			RBIterator temp;
+		ConstRBIterator operator--(int) {
+			ConstRBIterator temp;
 			temp = *this;
 			this->operator--();
 			return (temp);
@@ -123,7 +128,7 @@ namespace ft
 			return (this->before_the_start || this->past_the_end || (!this->data));
 		}
 
-		RBIterator & operator+=(difference_type const & n )
+		ConstRBIterator & operator+=(difference_type const & n )
 		{
 			difference_type i = 0;
 			while (i < n)
@@ -133,7 +138,7 @@ namespace ft
 			}
 			return (*this);
 		}
-		RBIterator & operator-=(difference_type const & n )
+		ConstRBIterator & operator-=(difference_type const & n )
 		{
 			difference_type i = 0;
 			while (i < n)
@@ -143,15 +148,15 @@ namespace ft
 			}
 			return (*this);
 		}
-		RBIterator operator+(difference_type const & n ) const
+		ConstRBIterator operator+(difference_type const & n ) const
 		{
-			RBIterator ret = *this;
+			ConstRBIterator ret = *this;
 			ret += n;
 			return (ret);
 		}
-		RBIterator operator-(difference_type const & n ) const
+		ConstRBIterator operator-(difference_type const & n ) const
 		{
-			RBIterator ret = *this;
+			ConstRBIterator ret = *this;
 			ret -= n;
 			return (ret);
 		}

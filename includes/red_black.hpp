@@ -7,6 +7,7 @@
 #include <functional> // std::less
 #include <memory> // std::allocator
 #include "RBIterator.hpp"
+#include "ConstRBIterator.hpp"
 
 namespace ft
 {
@@ -16,6 +17,7 @@ namespace ft
 		typedef Node	node_type;
 		typedef ValueType	value_type;
 		typedef const ValueType	const_value_type;
+		typedef Node<const ValueType>	const_node_type;
 
 		ValueType	value;
 		Node		*left;
@@ -36,6 +38,18 @@ namespace ft
 			return (node);
 		}
 		node_type	*max()
+		{
+			return (this->max(this));
+		}
+		node_type	*max(node_type *node) const
+		{
+			if (!node)
+				return (NULL);
+			if (node->right)
+				return (this->max(node->right));
+			return (node);
+		}
+		node_type	*max() const
 		{
 			return (this->max(this));
 		}
@@ -88,7 +102,7 @@ namespace ft
 			typedef Allocator		allocator_type;
 
 			typedef RBIterator<value_type, node_type, Compare>			iterator;		// should be custom LRAI
-			typedef RBIterator<value_type, const_node_type, Compare >	const_iterator;
+			typedef ConstRBIterator<value_type, node_type, Compare >	const_iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			node_type	*root;
