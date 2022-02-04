@@ -5,6 +5,7 @@ REAL_TOGGLE = -DFT_REAL_VERSION=1
 SRCS_DIR = srcs/
 INCLUDE_DIR = includes/
 OBJS_DIR = objs/
+LOGS_DIR = logs/
 
 SRCS = main.cpp UnitTest.cpp \
 			test_iterator.cpp \
@@ -22,6 +23,8 @@ REAL_OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.cpp=.real.o))
 INCLUDES = -I$(INCLUDE_DIR)
 DEPS = $(OBJS:.o=.d)
 
+VALGRIND_LOG = $(addprefix $(LOGS_DIR), val.log)
+
 CC_OVERRIDE ?= clang++
 CC	:= $(CC_OVERRIDE)
 FLAGS = -MMD -Wall -Wextra -Werror
@@ -38,7 +41,10 @@ $(NAME): $(OBJS) | $(OBJS_DIR)
 all: $(NAME) $(REAL)
 
 $(OBJS_DIR):
-	@mkdir -p objs
+	@mkdir -p $(OBJS_DIR)
+
+$(LOGS_DIR):
+	@mkdir -p $(LOGS_DIR)
 
 $(REAL): $(REAL_OBJS) | $(OBJS_DIR)
 	$(CC) $(REAL_TOGGLE) $(FLAGS) $(REAL_OBJS) $(INCLUDES) -o $(REAL)
@@ -56,6 +62,7 @@ real: $(REAL) | $(OBJS_DIR)
 
 clean:
 	rm -rf $(OBJS_DIR)
+	rm -rf $(LOGS_DIR)
 	rm -rf mine.log mine.err.log real.log real.err.log
 
 fclean: clean
@@ -63,16 +70,25 @@ fclean: clean
 
 re: fclean all | $(OBJS_DIR)
 
-test: all
-	@echo "Generating user logs"
-	@./$(NAME) -v > mine.log 2>mine.err.log
-	@echo "Generating real logs"
-	@./$(REAL) -v > real.log 2>real.err.log
-	@echo "Comparing output"
-	@echo "-----------------"
-	@diff -s mine.log real.log
-	@diff -s mine.err.log real.err.log
+test: all | $(LOGS_DIR)
+	@echo 'Generating user logs'
+	@./$(NAME) -v > $(LOGS_DIR)mine.log 2>$(LOGS_DIR)mine.err.log
+	@echo 'Generating real logs'
+	@./$(REAL) -v > $(LOGS_DIR)real.log 2>$(LOGS_DIR)real.err.log
+	@echo 'Comparing output'
+	@echo '-----------------'
+	@diff -s $(LOGS_DIR)mine.log $(LOGS_DIR)real.log
+	@diff -s $(LOGS_DIR)mine.err.log $(LOGS_DIR)real.err.log
+
+leaks: $(NAME) | $(LOGS_DIR)
+	@echo 'Checking for leaks...'
+	@valgrind ./$(NAME) > $(VALGRIND_LOG) 2>&1
+	@(cat $(VALGRIND_LOG) | grep 'LEAK SUMMARY\|invalid' > /dev/null \
+		&& echo -n '\033[0;31m' && cat $(VALGRIND_LOG) | grep 'LEAK SUMMARY\|invalid' | wc -l | tr '\n' ' ' \
+		&& echo 'leak(s) found\033[0m' \
+		&& echo 'Check $(VALGRIND_LOG) for details') \
+		|| echo '\033[0;32mNo leaks found!\033[0m';
 
 -include $(DEPS)
 
-.PHONY: all clean fclean re test
+.PHONY: all clean fclean re test leaks
