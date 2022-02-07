@@ -31,7 +31,8 @@ void printBT(const std::string& prefix, const ft::Node<T>* node, bool isLeft)
 template <class T, class Compare>
 void printBT(const ft::RB_Tree<T, Compare>* tree)
 {
-    printBT<T, Compare>("", tree->stump.left, false);    
+	if (VERBOSE)
+    	printBT<T, Compare>("", &tree->stump, false);    
 }
 
 int	test_rb_tree_void_constructor()
@@ -269,7 +270,7 @@ int test_rb_dec()
 	--it;
 	ASSERT_EQUAL(*it, 4);
 	--it;
-	ASSERT_EQUAL(*it, 4);
+	ASSERT_EQUAL(*it, 0);
 	return (0);
 }
 
@@ -282,6 +283,7 @@ int test_rb_inc()
 	rb.insert(5);
 	rb.insert(6);
 	rb.insert(4);
+	printBT(&rb);
 	it = rb.begin();
 	ASSERT_EQUAL(*it, 4);
 	++it;
@@ -289,7 +291,9 @@ int test_rb_inc()
 	++it;
 	ASSERT_EQUAL(*it, 6);
 	++it;
-	ASSERT_EQUAL(*it, 6);
+	ASSERT_EQUAL(*it, 0);
+	++it;
+	ASSERT_EQUAL(*it, 4);
 	return (0);
 }
 

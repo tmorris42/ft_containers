@@ -68,7 +68,15 @@ namespace ft
 			return (this->min(this));
 		}
 
-
+		node_type *get_stump()
+		{
+			node_type *stump = this;
+			while (stump->parent)
+			{
+				stump = stump->parent;
+			}
+			return (stump);
+		}
 	};
 
 	template <class ValueType>
@@ -226,6 +234,7 @@ namespace ft
 				if (!this->stump.left)
 				{
 					this->stump.left = new_node;
+					new_node->parent = &this->stump;
 				}
 				while (current_node)
 				{
