@@ -27,6 +27,10 @@ namespace ft
 		: value(val), left(NULL), right(NULL), parent(NULL), color(RB_BLACK)
 		{}
 
+		Node()
+		: value(), left(NULL), right(NULL), parent(NULL), color(RB_BLACK)
+		{}
+
 		node_type	*max(node_type *node)
 		{
 			if (!node)
@@ -91,15 +95,15 @@ namespace ft
 			typedef RBIterator<value_type, const_node_type, Compare >	const_iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
-			node_type	*root;
+			node_type	stump;
 
-			RB_Tree() : root(NULL), __alloc(allocator_type())
+			RB_Tree() : stump(), __alloc(allocator_type())
 			{
 				return;
 			}
 			~RB_Tree()
 			{
-				this->delete_tree(this->root);
+				this->delete_tree(this->stump.left);
 			}
 
 			node_type *recursive_search(node_type *current_node, value_type const & value)
@@ -125,14 +129,14 @@ namespace ft
 			iterator search(value_type const & value)
 			{
 				node_type *node;
-				node = recursive_search(this->root, value);
+				node = recursive_search(this->stump.left, value);
 				if (!node)
 					return (this->end());
 				return (iterator(node));
 			}
 			const_iterator search(value_type const & value) const
 			{
-				const_node_type *node = recursive_search(this->root, value);
+				const_node_type *node = recursive_search(this->stump.left, value);
 				if (!node)
 					return (this->end());
 				return (const_iterator(node));
@@ -179,10 +183,10 @@ namespace ft
 				if (node2->right)
 					node2->right->parent = node2;
 
-				if (this->root == node1)
-					this->root = node2;
-				else if (this->root == node2)
-					this->root = node1;
+				if (this->stump.left == node1)
+					this->stump.left = node2;
+				else if (this->stump.left == node2)
+					this->stump.left = node1;
 				
 				if (node1->parent)
 				{
@@ -216,12 +220,12 @@ namespace ft
 
 			iterator insert(value_type const & value)
 			{
-				node_type	*current_node = this->root;
+				node_type	*current_node = this->stump.left;
 				node_type	*new_node = node_new(NULL, value);
 				iterator	it;
-				if (!this->root)
+				if (!this->stump.left)
 				{
-					this->root = new_node;
+					this->stump.left = new_node;
 				}
 				while (current_node)
 				{
@@ -263,7 +267,7 @@ namespace ft
 			{
 				if (!new_node)
 					return ;
-				if (new_node == this->root)
+				if (new_node == this->stump.left)
 					new_node->color = RB_BLACK;
 				else if (new_node->parent && new_node->parent->color == RB_RED)
 				{
@@ -294,7 +298,7 @@ namespace ft
 							this->rotateLeft(parent);
 						}
 						this->swap_color(parent, grandparent);
-						this->root->color = RB_BLACK;
+						this->stump.left->color = RB_BLACK;
 					}
 				}
 			}
@@ -312,9 +316,9 @@ namespace ft
 			{
 				node_type *tmp;
 				
-				tmp = this->root;
-				this->root = other.root;
-				other.root = tmp;
+				tmp = this->stump.left;
+				this->stump.left = other.stump.left;
+				other.stump.left = tmp;
 			}
 			node_type *rotateLeft(node_type *node)
 			{
@@ -332,7 +336,7 @@ namespace ft
 				// Attach node to root or grandparent
 				if (!grandparent)
 				{
-					this->root = node;
+					this->stump.left = node;
 					node->parent = NULL;
 				}
 				else if (grandparent->left == parent)
@@ -368,7 +372,7 @@ namespace ft
 				// Attach node to root or grandparent
 				if (!grandparent)
 				{
-					this->root = node;
+					this->stump.left = node;
 					node->parent = NULL;
 				}
 				else
@@ -421,7 +425,7 @@ namespace ft
 			}
 			node_type	*max()
 			{
-				return (this->max(this->root));
+				return (this->max(this->stump.left));
 			}
 			const_node_type	*max(node_type *node) const
 			{
@@ -431,7 +435,7 @@ namespace ft
 			}
 			const_node_type	*max() const
 			{
-				return (this->max(this->root));
+				return (this->max(this->stump.left));
 			}
 			node_type	*min(node_type *node)
 			{
@@ -443,11 +447,11 @@ namespace ft
 			}
 			node_type	*min()
 			{
-				return (this->min(this->root));
+				return (this->min(this->stump.left));
 			}
 			const_node_type	*min() const
 			{
-				return (this->min(this->root));
+				return (this->min(this->stump.left));
 			}
 
 			iterator	begin()
@@ -488,8 +492,8 @@ namespace ft
 			{
 				if (!node)
 					return (NULL);
-				if (!node->parent && this->root == node)
-					return (&this->root);
+				if (!node->parent && this->stump.left == node)
+					return (&this->stump.left);
 				if (node->parent->right == node)
 					return(&(node->parent->right));
 				else if (node->parent->left == node)
@@ -499,8 +503,8 @@ namespace ft
 
 			node_type **get_reference_safe(node_type *node)
 			{
-				if (!node->parent && this->root == node)
-					return (&this->root);
+				if (!node->parent && this->stump.left == node)
+					return (&this->stump.left);
 				if (!node->parent)
 					return (NULL);
 				if (node->parent->right == node)
@@ -557,8 +561,8 @@ namespace ft
 					return ;
 				delete_tree(node->left);
 				delete_tree(node->right);
-				if (this->root == node)
-						this->root = NULL;
+				if (this->stump.left == node)
+						this->stump.left = NULL;
 				if (node->parent)
 				{
 					if (node->parent->right == node)
@@ -573,8 +577,8 @@ namespace ft
 			{
 				if (!node)
 					return ;
-				if (this->root == node)
-					this->root = NULL;
+				if (this->stump.left == node)
+					this->stump.left = NULL;
 				else if (node->parent && node->parent->right == node)
 					node->parent->right = NULL;
 				else if (node->parent && node->parent->left == node)
@@ -600,7 +604,7 @@ namespace ft
 
 			size_t	size() const
 			{
-				return (size_subtree(this->root));
+				return (size_subtree(this->stump.left));
 			}
 
 			size_t max_size() const
