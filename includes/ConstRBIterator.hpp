@@ -22,23 +22,19 @@ namespace ft
 		typedef ConstRBIterator<ValueType, NodeType, Compare>	const_iterator;
 
 		ConstRBIterator(node_pointer const ptr = 0)
-		: data(ptr), past_the_end(false), before_the_start(false)
+		: data(ptr)
 		{
-			if (!ptr)
-				past_the_end = true;
 		}
 		ConstRBIterator(const_iterator const & src)
-		: data(src.data), past_the_end(src.past_the_end), before_the_start(src.before_the_start)
+		: data(src.data)
 		{}
 		ConstRBIterator(iterator const & src)
-		: data(src.data), past_the_end(src.past_the_end), before_the_start(src.before_the_start)
+		: data(src.data)
 		{}
 		ConstRBIterator const & operator=(ConstRBIterator const & src) {
 			if (this != &src)
 			{
 				this->data = src.data;
-				this->past_the_end = src.past_the_end;
-				this->before_the_start = src.before_the_start;
 			}
 			return (*this);
 		}
@@ -46,8 +42,6 @@ namespace ft
 			if (this != &src)
 			{
 				this->data = src.data;
-				this->past_the_end = src.past_the_end;
-				this->before_the_start = src.before_the_start;
 			}
 			return (*this);
 		}
@@ -55,12 +49,6 @@ namespace ft
 
 		bool operator==(ConstRBIterator const &other)
 		{
-			if ((this->past_the_end && other.past_the_end) || (this->before_the_start && other.before_the_start))
-				return (true);
-			if (this->past_the_end != other.past_the_end)
-				return (false);
-			if (this->before_the_start != other.before_the_start)
-				return (false);
 			return (this->data == other.data);
 		}
 		bool operator!=(ConstRBIterator const &other)
@@ -79,14 +67,11 @@ namespace ft
 
 		ConstRBIterator & operator++()
 		{
-			if (this->past_the_end)
-				return (*this);
-			if (this->before_the_start)
+			if (this->data && !this->data->parent)
 			{
-				this->before_the_start = false;
-				return (*this);
+				this->data = this->data->min(this->data);
 			}
-			if (this->data && this->data->right)
+			else if (this->data && this->data->right)
 			{
 				this->data = this->data->min(this->data->right);
 			}
@@ -94,7 +79,7 @@ namespace ft
 			{
 				this->data = this->getNextGreaterParent();
 			}
-			return (*this);			
+			return (*this);		
 		}
 		ConstRBIterator operator++(int) {
 			ConstRBIterator temp;
@@ -103,14 +88,11 @@ namespace ft
 			return (temp);
 		}
 		ConstRBIterator &	operator--() {
-			if (this->before_the_start)
-				return (*this);
-			if (this->past_the_end)
+			if (!this->data->parent)
 			{
-				this->past_the_end = false;
-				return (*this);
+				this->data = this->data->max(this->data->left);
 			}
-			if (this->data && this->data->left)
+			else if (this->data && this->data->left)
 				this->data = this->data->max(this->data->left);
 			else
 				this->data = this->getNextLesserParent();
@@ -125,7 +107,7 @@ namespace ft
 
 		bool operator!() const
 		{
-			return (this->before_the_start || this->past_the_end || (!this->data));
+			return (!this->data || !this->data->parent);
 		}
 
 		ConstRBIterator & operator+=(difference_type const & n )
@@ -172,8 +154,6 @@ namespace ft
 
 		private:
 			node_pointer	data;
-			bool 	past_the_end;
-			bool	before_the_start;
 
 			node_pointer getNextGreaterParent()
 			{
@@ -183,12 +163,9 @@ namespace ft
 				value_type	target = current->value;
 				while (current && !this->values_less_than(target, current->value))
 				{
+					if (!current->parent)
+						return (current);
 					current = current->parent;
-				}
-				if (!current)
-				{
-					this->past_the_end = true;
-					return (this->data);
 				}
 				return (current);
 			}
@@ -200,12 +177,9 @@ namespace ft
 				value_type	target = current->value;
 				while (current && !this->values_less_than(current->value, target))
 				{
+					if (!current->parent)
+						return (current);
 					current = current->parent;
-				}
-				if (!current)
-				{
-					this->before_the_start = true;
-					return (this->data);
 				}
 				return (current);
 			}

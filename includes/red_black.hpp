@@ -45,7 +45,7 @@ namespace ft
 		{
 			return (this->max(this));
 		}
-		node_type	*max(node_type *node) const
+		node_type const *max(node_type const *node) const
 		{
 			if (!node)
 				return (NULL);
@@ -69,7 +69,7 @@ namespace ft
 		{
 			return (this->min(this));
 		}
-		const node_type	*min(node_type *node) const
+		const node_type	*min(node_type const *node) const
 		{
 			if (node == NULL)
 				return (NULL);
