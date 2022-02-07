@@ -182,7 +182,7 @@ namespace ft
 
 			void erase(iterator position)
 			{
-				this->c.delete_node(this->c.root, *position); // Not optimized, should start from iterator position, not root
+				this->c.delete_node(this->c.stump.left, *position); // Not optimized, should start from iterator position, not root
 			}
 			size_type erase(const key_type & k)
 			{
@@ -211,7 +211,7 @@ namespace ft
 			}
 			void	clear()
 			{
-				this->c.delete_tree(this->c.root);
+				this->c.delete_tree(this->c.stump.left);
 			}
 
 			iterator lower_bound(const key_type & k)
