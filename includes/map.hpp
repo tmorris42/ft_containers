@@ -277,5 +277,58 @@ namespace ft
 			typedef ft::RB_Tree< value_type, value_compare >	_RB_tree_type;
 			_RB_tree_type	c;
 	};
+
+	// Relational Operator overloads for map
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator==( const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
+	{
+		typename map<Key, T, Compare, Alloc>::iterator it1 = lhs.begin();
+		typename map<Key, T, Compare, Alloc>::iterator it2 = rhs.begin();
+		typename map<Key, T, Compare, Alloc>::iterator ite1 = lhs.end();
+		typename map<Key, T, Compare, Alloc>::iterator ite2 = rhs.end();
+
+		if (lhs.size() != rhs.size())
+			return (false);
+		while (it1 != ite1 && it2 != ite2)
+		{
+			if (*it1 != *it2)
+				return (false);
+			++it1;
+			++it2;
+		}
+		if (it1 != ite1 || it2 != ite2)
+			return (false);
+		return (true);		
+	}
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator!=( const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
+	{
+		return (!(lhs == rhs));
+	}
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator<( const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
+	{
+		typename map<Key, T, Compare, Alloc>::iterator it1 = lhs.begin();
+		typename map<Key, T, Compare, Alloc>::iterator it2 = rhs.begin();
+		typename map<Key, T, Compare, Alloc>::iterator ite1 = lhs.end();
+		typename map<Key, T, Compare, Alloc>::iterator ite2 = rhs.end();
+
+		return (lexicographical_compare(it1, ite1, it2, ite2));	
+	}
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator<=( const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
+	{
+		return (!(rhs < lhs));
+	}
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator>( const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
+	{
+		return (rhs < lhs);
+	}
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator>=( const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
+	{
+		return (!(lhs < rhs));
+	}
 } 
 #endif
