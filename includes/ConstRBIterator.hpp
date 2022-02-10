@@ -6,7 +6,7 @@
 namespace ft
 {
 	template <class ValueType, class NodeType, class Compare>
-	class ConstRBIterator
+	class ConstRBIterator : public RBIterator<ValueType, NodeType, Compare>
 	{
 		public:
 		typedef ft::biderectional_iterator_tag	iterator_category;
@@ -29,8 +29,10 @@ namespace ft
 		: data(src.data)
 		{}
 		ConstRBIterator(iterator const & src)
-		: data(src.data)
-		{}
+		: RBIterator<value_type, NodeType, Compare>(src)
+		{
+			this->data = this->RBIterator<value_type, NodeType, Compare>::data;
+		}
 		ConstRBIterator const & operator=(ConstRBIterator const & src) {
 			if (this != &src)
 			{
@@ -41,7 +43,8 @@ namespace ft
 		ConstRBIterator const & operator=(iterator const & src) {
 			if (this != &src)
 			{
-				this->data = src.data;
+				this->RBIterator<value_type, NodeType, Compare> = src;
+				this->data = this->RBIterator<value_type, NodeType, Compare>::data;
 			}
 			return (*this);
 		}

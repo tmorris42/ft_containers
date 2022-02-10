@@ -18,8 +18,6 @@ namespace ft
 		typedef typename NodeType::value_type *	pointer;
 		typedef typename NodeType::value_type &	reference;
 
-		template <class T, class U, class V> friend class ConstRBIterator; // ******* friend not allowed here?
-
 		RBIterator(node_pointer const ptr = 0)
 		: data(ptr)
 		{
@@ -149,7 +147,7 @@ namespace ft
 			return (Compare()(value1, value2));
 		}
 
-		private:
+		protected:
 			node_pointer	data;
 
 			node_pointer getNextGreaterParent()
