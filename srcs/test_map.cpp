@@ -722,6 +722,58 @@ int		test_map_mli_ite_arrow(void)
 	return (0);
 }
 
+static void	ft_find(int const &k, FT::map<int, std::string> & mp, FT::map<int, std::string>::iterator & it)
+{
+	FT::map<int, std::string>::iterator ret = mp.find(k);
+
+	if (ret != it)
+		printPair(ret);
+	else
+	{
+		if (!VERBOSE)
+			return;
+		std::cout << "map::find(" << k << ") returned end()" << std::endl;
+	}
+}
+
+int		test_map_mli_find_count2(void)
+{
+	FT::map<int, std::string> mp;
+	FT::map<int, std::string>::iterator it = mp.end();
+
+	mp[42] = "fgzgxfn";
+	mp[25] = "funny";
+	mp[80] = "hey";
+	mp[12] = "no";
+	mp[27] = "bee";
+	mp[90] = "8";
+	print_map(mp);
+
+	std::cout << "\t-- FIND --" << std::endl;
+	ft_find(12, mp, it);
+	ft_find(3, mp, it);
+	ft_find(35, mp, it);
+	ft_find(90, mp, it);
+	ft_find(100, mp, it);
+
+	std::cout << "\t-- COUNT --" << std::endl;
+	ft_count(-3, mp);
+	ft_count(12, mp);
+	ft_count(3, mp);
+	ft_count(35, mp);
+	ft_count(90, mp);
+	ft_count(100, mp);
+
+	mp.find(27)->second = "newly inserted mapped_value";
+
+	print_map(mp);
+
+	FT::map<int, std::string> const c_map(mp.begin(), mp.end());
+	std::cout << "const map.find(" << 42 << ")->second: [" << c_map.find(42)->second << "]" << std::endl;
+	std::cout << "const map.count(" << 80 << "): [" << c_map.count(80) << "]" << std::endl;
+	return (0);
+}
+
 
 void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
@@ -753,4 +805,5 @@ void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_mli_copy_construct);
 	ADD_TEST(testlist, test_map_mli_find_count);
 	ADD_TEST(testlist, test_map_mli_ite_arrow);
+	ADD_TEST(testlist, test_map_mli_find_count2);
 }
