@@ -23,10 +23,16 @@ namespace ft
 		typedef const_value_type *	pointer;
 		typedef const_value_type &	reference;
 		typedef std::size_t	size_type;
+
+		typedef NodeType const *	const_node_pointer;
 		
 
 		ConstRBIterator(node_pointer const ptr = 0)
 		: RBIterator<value_type, NodeType, Compare>(ptr)
+		{
+		}
+		ConstRBIterator(const_node_pointer ptr)
+		: RBIterator<value_type, NodeType, Compare>(const_cast<node_pointer>(ptr))
 		{
 		}
 		ConstRBIterator(const_iterator const & src)

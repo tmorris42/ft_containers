@@ -17,6 +17,8 @@ namespace ft
 		typedef value_type *	pointer;
 		typedef value_type &	reference;
 
+		typedef NodeType const *	const_node_pointer;
+
 		RBIterator(node_pointer const ptr = 0)
 		: data(ptr)
 		{

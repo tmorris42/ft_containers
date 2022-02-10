@@ -17,7 +17,7 @@ namespace ft
 		typedef Node	node_type;
 		typedef ValueType	value_type;
 		typedef const ValueType	const_value_type;
-		typedef Node<const ValueType>	const_node_type;
+		// typedef const Node<ValueType>	const_node_type;
 
 		ValueType	value;
 		Node		*left;
@@ -108,7 +108,9 @@ namespace ft
 	{
 		public:
 			typedef Node<ValueType> node_type;
-			typedef Node<ValueType> const_node_type;
+			// typedef node_type const_node_type;
+			typedef const node_type const_node_type;
+			// typedef Node<ValueType> const_node_type;
 			typedef ValueType		value_type;
 			typedef const ValueType		const_value_type;
 			typedef Allocator		allocator_type;
@@ -138,7 +140,7 @@ namespace ft
 					return (recursive_search(current_node->left, value));
 				return (recursive_search(current_node->right, value));
 			}
-			const_node_type *recursive_search(node_type *current_node, value_type const & value) const
+			node_type *recursive_search(node_type *current_node, value_type const & value) const
 			{
 				if (!current_node)
 					return (NULL);
@@ -158,7 +160,7 @@ namespace ft
 			}
 			const_iterator search(value_type const & value) const
 			{
-				const_node_type *node = recursive_search(this->stump.left, value);
+				node_type *node = recursive_search(this->stump.left, value);
 				if (!node)
 					return (this->end());
 				return (const_iterator(node));
@@ -450,13 +452,13 @@ namespace ft
 			{
 				return (this->max(this->stump.left));
 			}
-			node_type	*max(node_type *node) const
+			const_node_type	*max(node_type *node) const
 			{
 				if (!node)
-					return (NULL);
+					return (&(this->stump));
 				return (node->max());
 			}
-			node_type	*max() const
+			const_node_type	*max() const
 			{
 				return (this->max(this->stump.left));
 			}
@@ -469,7 +471,7 @@ namespace ft
 			const_node_type	*min(node_type *node) const
 			{
 				if (!node)
-					return (NULL);
+					return ((&(this->stump)));
 				return (node->min());
 			}
 			node_type	*min()
@@ -494,7 +496,7 @@ namespace ft
 			}
 			const_iterator	begin() const
 			{
-				iterator it(this->min());
+				const_iterator it(this->min());
 				return (it);
 			}
 			const_iterator	end() const
