@@ -738,7 +738,7 @@ static void	ft_find(int const &k, FT::map<int, std::string> & mp, FT::map<int, s
 
 static void	ft_find(int const &k, FT::map<int, std::string> & mp, FT::map<int, std::string>::const_iterator & it)
 {
-	FT::map<int, std::string>::iterator ret = mp.find(k);
+	FT::map<int, std::string>::const_iterator ret = mp.find(k);
 
 	if (ret != it)
 		printPair(ret);

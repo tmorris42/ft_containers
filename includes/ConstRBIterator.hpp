@@ -6,7 +6,7 @@
 namespace ft
 {
 	template <class ValueType, class NodeType, class Compare>
-	class ConstRBIterator : public RBIterator<ValueType, NodeType, Compare>
+	class ConstRBIterator : private RBIterator<ValueType, NodeType, Compare>
 	{
 		public:
 
@@ -56,6 +56,15 @@ namespace ft
 			return (*this);
 		}
 		~ConstRBIterator() {}
+
+		virtual bool operator==(ConstRBIterator const &other)
+		{
+			return (this->data == other.data);
+		}
+		virtual bool operator!=(ConstRBIterator const &other)
+		{
+			return (!((*this) == other));
+		}
 
 		const_value_type	&operator*()
 		{

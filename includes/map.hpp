@@ -282,10 +282,10 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	bool operator==( const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
 	{
-		typename map<Key, T, Compare, Alloc>::iterator it1 = lhs.begin();
-		typename map<Key, T, Compare, Alloc>::iterator it2 = rhs.begin();
-		typename map<Key, T, Compare, Alloc>::iterator ite1 = lhs.end();
-		typename map<Key, T, Compare, Alloc>::iterator ite2 = rhs.end();
+		typename map<Key, T, Compare, Alloc>::const_iterator it1 = lhs.begin();
+		typename map<Key, T, Compare, Alloc>::const_iterator it2 = rhs.begin();
+		typename map<Key, T, Compare, Alloc>::const_iterator ite1 = lhs.end();
+		typename map<Key, T, Compare, Alloc>::const_iterator ite2 = rhs.end();
 
 		if (lhs.size() != rhs.size())
 			return (false);
@@ -308,10 +308,10 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	bool operator<( const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
 	{
-		typename map<Key, T, Compare, Alloc>::iterator it1 = lhs.begin();
-		typename map<Key, T, Compare, Alloc>::iterator it2 = rhs.begin();
-		typename map<Key, T, Compare, Alloc>::iterator ite1 = lhs.end();
-		typename map<Key, T, Compare, Alloc>::iterator ite2 = rhs.end();
+		typename map<Key, T, Compare, Alloc>::const_iterator it1 = lhs.begin();
+		typename map<Key, T, Compare, Alloc>::const_iterator it2 = rhs.begin();
+		typename map<Key, T, Compare, Alloc>::const_iterator ite1 = lhs.end();
+		typename map<Key, T, Compare, Alloc>::const_iterator ite2 = rhs.end();
 
 		return (lexicographical_compare(it1, ite1, it2, ite2));	
 	}
