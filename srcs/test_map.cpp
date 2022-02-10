@@ -747,6 +747,7 @@ int		test_map_mli_find_count2(void)
 	mp[12] = "no";
 	mp[27] = "bee";
 	mp[90] = "8";
+
 	print_map(mp);
 
 	std::cout << "\t-- FIND --" << std::endl;
@@ -771,6 +772,22 @@ int		test_map_mli_find_count2(void)
 	FT::map<int, std::string> const c_map(mp.begin(), mp.end());
 	std::cout << "const map.find(" << 42 << ")->second: [" << c_map.find(42)->second << "]" << std::endl;
 	std::cout << "const map.count(" << 80 << "): [" << c_map.count(80) << "]" << std::endl;
+	return (0);
+}
+
+int	test_map_empty_end()
+{
+	FT::map<int, std::string> mp;
+	FT::map<int, std::string>::iterator ite1 = mp.end();
+	FT::map<int, std::string>::iterator ite2 = mp.end();
+
+	ASSERT_EQUAL( mp.empty(), true );
+	ASSERT_EQUALQ( ite1, ite2 );
+	mp[0] = "hi";
+	ASSERT_EQUAL( mp.empty(), false );
+	ASSERT_EQUALQ( ite1, ite2 );
+	ite2 = mp.end();
+	ASSERT_EQUALQ( ite1, ite2 );
 	return (0);
 }
 
@@ -806,4 +823,6 @@ void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_mli_find_count);
 	ADD_TEST(testlist, test_map_mli_ite_arrow);
 	ADD_TEST(testlist, test_map_mli_find_count2);
+	ADD_TEST(testlist, test_map_empty_end);
+	
 }

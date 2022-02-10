@@ -443,29 +443,33 @@ namespace ft
 			node_type	*max(node_type *node)
 			{
 				if (!node)
-					return (NULL);
+					return (&(this->stump));
 				return (node->max());
 			}
 			node_type	*max()
 			{
 				return (this->max(this->stump.left));
 			}
-			const_node_type	*max(node_type *node) const
+			node_type	*max(node_type *node) const
 			{
 				if (!node)
 					return (NULL);
 				return (node->max());
 			}
-			const_node_type	*max() const
+			node_type	*max() const
 			{
 				return (this->max(this->stump.left));
 			}
 			node_type	*min(node_type *node)
 			{
+				if (!node)
+					return (&(this->stump));
 				return (node->min());
 			}
 			const_node_type	*min(node_type *node) const
 			{
+				if (!node)
+					return (NULL);
 				return (node->min());
 			}
 			node_type	*min()

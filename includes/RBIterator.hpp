@@ -32,30 +32,30 @@ namespace ft
 			}
 			return (*this);
 		}
-		~RBIterator() {}
+		virtual ~RBIterator() {}
 
-		bool operator==(RBIterator const &other)
+		virtual bool operator==(RBIterator const &other)
 		{
 			return (this->data == other.data);
 		}
-		bool operator!=(RBIterator const &other)
+		virtual bool operator!=(RBIterator const &other)
 		{
 			return (!((*this) == other));
 		}
 
-		value_type	&operator*()
+		virtual value_type	&operator*()
 		{
 			return (this->data->value);
 		}
-		const_value_type	&operator*() const
+		virtual const_value_type	&operator*() const
 		{
 			return (this->data->value);
 		}
-		value_type	*	operator->()
+		virtual value_type	*	operator->()
 		{
 			return (&(this->operator*()));
 		}
-		const_value_type	*operator->() const
+		virtual const_value_type	*operator->() const
 		{
 			return (&(this->operator*()));
 		}

@@ -39,7 +39,7 @@ int	test_rb_tree_void_constructor()
 {
 	ft::RB_Tree<int> rb;
 
-	ASSERT_EQUALQ(rb.search(5), (ft::Node<int>*)NULL);
+	ASSERT_EQUALQ(rb.search(5), rb.end());
 	return (0);
 }
 

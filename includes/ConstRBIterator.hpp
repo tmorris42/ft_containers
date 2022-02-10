@@ -15,24 +15,23 @@ namespace ft
 		typedef typename node_type::const_value_type	const_value_type;
 		typedef std::ptrdiff_t	difference_type;
 		typedef std::size_t	size_type;
-		typedef NodeType const *	node_pointer;
+		typedef NodeType *	node_pointer;
+		typedef NodeType const *	const_node_pointer;
 		typedef typename NodeType::value_type *	pointer;
 		typedef typename NodeType::value_type &	reference;
 		typedef RBIterator<ValueType, NodeType, Compare> iterator;
 		typedef ConstRBIterator<ValueType, NodeType, Compare>	const_iterator;
 
 		ConstRBIterator(node_pointer const ptr = 0)
-		: data(ptr)
+		: RBIterator<value_type, NodeType, Compare>(ptr)
 		{
 		}
 		ConstRBIterator(const_iterator const & src)
-		: data(src.data)
+		: RBIterator<value_type, NodeType, Compare>(src.data)
 		{}
 		ConstRBIterator(iterator const & src)
 		: RBIterator<value_type, NodeType, Compare>(src)
-		{
-			this->data = this->RBIterator<value_type, NodeType, Compare>::data;
-		}
+		{}
 		ConstRBIterator const & operator=(ConstRBIterator const & src) {
 			if (this != &src)
 			{
@@ -43,21 +42,11 @@ namespace ft
 		ConstRBIterator const & operator=(iterator const & src) {
 			if (this != &src)
 			{
-				this->RBIterator<value_type, NodeType, Compare> = src;
-				this->data = this->RBIterator<value_type, NodeType, Compare>::data;
+				this->data = src.data;
 			}
 			return (*this);
 		}
 		~ConstRBIterator() {}
-
-		bool operator==(ConstRBIterator const &other)
-		{
-			return (this->data == other.data);
-		}
-		bool operator!=(ConstRBIterator const &other)
-		{
-			return (!((*this) == other));
-		}
 
 		const_value_type	&operator*() const
 		{
@@ -108,12 +97,7 @@ namespace ft
 			return (temp);
 		}
 
-		bool operator!() const
-		{
-			return (!this->data || !this->data->parent);
-		}
-
-		ConstRBIterator & operator+=(difference_type const & n )
+			ConstRBIterator & operator+=(difference_type const & n )
 		{
 			difference_type i = 0;
 			while (i < n)
@@ -145,39 +129,6 @@ namespace ft
 			ret -= n;
 			return (ret);
 		}
-
-		private:
-			node_pointer	data;
-
-			node_pointer getNextGreaterParent()
-			{
-				if (!this->data)
-					return (NULL);
-				node_pointer current = this->data;
-				value_type	target = current->value;
-				while (current && !this->values_less_than(target, current->value))
-				{
-					if (!current->parent)
-						return (current);
-					current = current->parent;
-				}
-				return (current);
-			}
-			node_pointer getNextLesserParent()
-			{
-				if (!this->data)
-					return (NULL);
-				node_pointer current = this->data;
-				value_type	target = current->value;
-				while (current && !this->values_less_than(current->value, target))
-				{
-					if (!current->parent)
-						return (current);
-					current = current->parent;
-				}
-				return (current);
-			}
-
 	};
 }
 #endif
