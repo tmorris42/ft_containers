@@ -121,9 +121,21 @@ namespace ft
 			return (ret);
 		}
 
+
+		reference operator*()
+		{
+			// iterator_type	temp(this->current - 1);
+			return (*(this->current - 1));
+		}
+
+		pointer operator->()
+		{
+			return (&this->operator*());
+		}
 		reference operator*() const
 		{
-			return (*(this->current - 1));
+			iterator_type	temp(this->current - 1);
+			return (*temp );
 		}
 
 		pointer operator->() const

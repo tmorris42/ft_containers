@@ -9,14 +9,13 @@ namespace ft
 	{
 		public:
 		typedef ft::biderectional_iterator_tag	iterator_category;
-		typedef NodeType		node_type;
-		typedef typename node_type::value_type	value_type;
-		typedef typename node_type::const_value_type	const_value_type;
+		typedef ValueType	value_type;
+		typedef const value_type	const_value_type;
 		typedef std::ptrdiff_t	difference_type;
 		typedef std::size_t	size_type;
 		typedef NodeType *	node_pointer;
-		typedef typename NodeType::value_type *	pointer;
-		typedef typename NodeType::value_type &	reference;
+		typedef value_type *	pointer;
+		typedef value_type &	reference;
 
 		RBIterator(node_pointer const ptr = 0)
 		: data(ptr)
@@ -43,19 +42,19 @@ namespace ft
 			return (!((*this) == other));
 		}
 
-		virtual value_type	&operator*()
+		value_type	&operator*()
 		{
 			return (this->data->value);
 		}
-		virtual const_value_type	&operator*() const
+		const_value_type	&operator*() const
 		{
 			return (this->data->value);
 		}
-		virtual value_type	*	operator->()
+		value_type	*	operator->()
 		{
 			return (&(this->operator*()));
 		}
-		virtual const_value_type	*operator->() const
+		const_value_type	*operator->() const
 		{
 			return (&(this->operator*()));
 		}

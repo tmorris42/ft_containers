@@ -9,18 +9,21 @@ namespace ft
 	class ConstRBIterator : public RBIterator<ValueType, NodeType, Compare>
 	{
 		public:
-		typedef ft::biderectional_iterator_tag	iterator_category;
-		typedef NodeType		node_type;
-		typedef typename node_type::value_type	value_type;
-		typedef typename node_type::const_value_type	const_value_type;
-		typedef std::ptrdiff_t	difference_type;
-		typedef std::size_t	size_type;
+
+		typedef NodeType		node_type;		
 		typedef NodeType *	node_pointer;
-		typedef NodeType const *	const_node_pointer;
-		typedef typename NodeType::value_type *	pointer;
-		typedef typename NodeType::value_type &	reference;
+
 		typedef RBIterator<ValueType, NodeType, Compare> iterator;
 		typedef ConstRBIterator<ValueType, NodeType, Compare>	const_iterator;
+
+		typedef std::ptrdiff_t	difference_type;
+		typedef ft::biderectional_iterator_tag	iterator_category;
+		typedef ValueType	value_type;
+		typedef const value_type	const_value_type;
+		typedef const_value_type *	pointer;
+		typedef const_value_type &	reference;
+		typedef std::size_t	size_type;
+		
 
 		ConstRBIterator(node_pointer const ptr = 0)
 		: RBIterator<value_type, NodeType, Compare>(ptr)
@@ -48,9 +51,17 @@ namespace ft
 		}
 		~ConstRBIterator() {}
 
+		const_value_type	&operator*()
+		{
+			return (this->data->value);
+		}
 		const_value_type	&operator*() const
 		{
 			return (this->data->value);
+		}
+		const_value_type	*	operator->()
+		{
+			return (&(this->operator*()));
 		}
 		const_value_type	*operator->() const
 		{
