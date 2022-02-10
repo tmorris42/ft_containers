@@ -146,15 +146,6 @@ namespace ft
 			return (ret);
 		}
 
-		bool	values_equal(value_type const & value1, value_type const & value2) const
-		{
-			return (!Compare()(value1, value2) && !Compare()(value2, value1));
-		}
-		bool	values_less_than(value_type const & value1, value_type const & value2) const
-		{
-			return (Compare()(value1, value2));
-		}
-
 		private:
 			node_pointer	data;
 
