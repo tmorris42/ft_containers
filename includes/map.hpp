@@ -107,8 +107,20 @@ namespace ft
 			}
 			iterator insert(iterator position, const value_type & val)
 			{
-				++position; // Just to use parameter position
-				return (this->insert(val).first); // Not optimized for position
+				iterator	node = position;
+
+				while (node != this->end())
+				{
+					if (node->first == val.first)
+						return (node);
+					if (this->key_comp()(val.first, node->first))
+					{
+						--node;
+						return (this->c.insert(node, val));
+					}
+					++node;
+				}
+				return (node);
 			}
 			
 			template <class InputIterator>
@@ -166,18 +178,15 @@ namespace ft
 			const_iterator find(const key_type & k) const
 			{
 				value_type	p(k, mapped_type());
-				// const_iterator it(this->c.search(p));
 				return (this->c.search(p));
 			}
 
 			size_type count(const key_type & k) const
 			{
-				value_type	p(k, mapped_type());
-				const_iterator it(this->c.search(p));
-				// const_iterator it(this->c.search(p));
-				if (it->first == k)
-					return (1);
-				return (0);
+				const_iterator it = this->find(k);
+				if (!it || it->first != k)
+					return (0);
+				return (1);
 			}
 
 			void erase(iterator position)
@@ -186,8 +195,7 @@ namespace ft
 			}
 			size_type erase(const key_type & k)
 			{
-				value_type	p(k, mapped_type());
-				iterator it = this->c.search(p);
+				iterator it = this->find(k);
 				if (!it)
 					return (0);
 				this->erase(it);

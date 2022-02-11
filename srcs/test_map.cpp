@@ -902,6 +902,25 @@ int test_map_const_map()
 	return (0);
 }
 
+int	test_map_insert_hint()
+{	
+	FT::map<char, int> m;
+	FT::map<char, int>::iterator it;
+	
+	m['a'] = 1;
+	m['b'] = 2;
+	m['c'] = 3;
+	m['e'] = 5;
+	m['f'] = 6;
+	m['g'] = 7;
+	print_map(m);
+	it = m.find('c');
+	m.insert(it, FT::make_pair<const char, int>('d', 42));
+	print_map(m);
+
+	return (0);
+}
+
 
 void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
@@ -936,5 +955,6 @@ void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_mli_find_count2);
 	ADD_TEST(testlist, test_map_empty_end);
 	ADD_TEST(testlist, test_map_mli_find_count2_const);
-	ADD_TEST(testlist, test_map_const_map);	
+	ADD_TEST(testlist, test_map_const_map);
+	ADD_TEST(testlist, test_map_insert_hint);	
 }

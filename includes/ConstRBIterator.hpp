@@ -123,6 +123,11 @@ namespace ft
 			return (temp);
 		}
 
+		bool operator!() const
+		{
+			return (!this->data || !this->data->parent);
+		}
+
 			ConstRBIterator & operator+=(difference_type const & n )
 		{
 			difference_type i = 0;

@@ -242,9 +242,9 @@ namespace ft
 				return (Compare()(value1, value2));
 			}
 
-			iterator insert(value_type const & value)
+			iterator insert(node_type *hint, value_type const & value)
 			{
-				node_type	*current_node = this->stump.left;
+				node_type	*current_node = hint;
 				node_type	*new_node = node_new(NULL, value);
 				iterator	it;
 				if (!this->stump.left)
@@ -287,6 +287,15 @@ namespace ft
 				this->recolor(new_node);
 				it = iterator(new_node);
 				return (it);
+			}
+			iterator insert(value_type const & value)
+			{
+				return (this->insert(this->stump.left, value));
+			}
+			iterator insert(iterator hint, value_type const & value)
+			{
+				node_type *node = reinterpret_cast<node_type *>(&(*hint));
+				return (this->insert(node, value));
 			}
 			void		recolor(node_type *new_node)
 			{
