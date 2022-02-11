@@ -976,6 +976,7 @@ void add_test_vector_int_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 
 	ADD_TEST(testlist, test_vector_int_max_size);
 	ADD_TEST(testlist, test_vector_int_reserve);
+	ADD_TEST(testlist, test_vector_int_reserve_overmax);
 	ADD_TEST(testlist, test_vector_int_count_value_constructor);
 	ADD_TEST(testlist, test_vector_int_copy_constructor);
 	ADD_TEST(testlist, test_vector_int_iter_constructor);
