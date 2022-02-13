@@ -107,20 +107,19 @@ namespace ft
 			}
 			iterator insert(iterator position, const value_type & val)
 			{
-				iterator	node = position;
+				iterator	ite = this->end();
 
-				while (node != this->end())
-				{
-					if (node->first == val.first)
-						return (node);
-					if (this->key_comp()(val.first, node->first))
-					{
-						--node;
-						return (this->c.insert(node, val));
-					}
-					++node;
-				}
-				return (node);
+				while (position != ite && this->key_comp()(position->first, val.first))
+					++position;
+				while (position != ite && position != this->begin() && this->key_comp()(val.first, position->first))
+					--position;
+				if (position == ite)
+					return (this->c.insert(position - 1, val));
+				if (position->first == val.first)
+					return (position);
+				if (this->key_comp()(val.first, position->first))
+					return (this->insert(val).first);
+				return (this->c.insert(position, val));
 			}
 			
 			template <class InputIterator>
