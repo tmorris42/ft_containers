@@ -22,19 +22,38 @@ int	main(int argc, char **argv)
 		VERBOSE = true;
 	}
 	bool		runAll = true;
+	bool		addAll = true;
 
-	add_test_vector_int_suite(&tests);
-	add_test_iterator_suite(&tests);
-	add_test_vector_string_suite(&tests);
-	add_test_vector_struct_suite(&tests);
-	add_test_vector_class_suite(&tests);
+	if (checkArgument(argv, argv + argc, "vector") ||
+		checkArgument(argv, argv + argc, "stack") ||
+		checkArgument(argv, argv + argc, "map") ||
+		checkArgument(argv, argv + argc, "set") ||
+		checkArgument(argv, argv + argc, "rb")
+		) {
+		addAll = false;
+		}
 
-	add_test_stack_suite(&tests);
+	if (checkArgument(argv, argv + argc, "vector") || addAll)
+	{
+		add_test_vector_int_suite(&tests);
+		add_test_iterator_suite(&tests);
+		add_test_vector_string_suite(&tests);
+		add_test_vector_struct_suite(&tests);
+		add_test_vector_class_suite(&tests);
+	}
 
-	add_test_map_suite(&tests);
+	if (checkArgument(argv, argv + argc, "stack") || addAll)
+	{
+		add_test_stack_suite(&tests);
+	}
+
+	if (checkArgument(argv, argv + argc, "map") || addAll)
+	{
+		add_test_map_suite(&tests);
+	}
 
 	#ifndef FT_REAL_VERSION
-		if (checkArgument(argv, argv + argc, "-s"))
+		if ((checkArgument(argv, argv + argc, "rb") || addAll) && checkArgument(argv, argv + argc, "-s"))
 	{	
 		std::cout << "INCLUDING SPECIAL TESTS" << std::endl;
 		add_test_rb_tree_suite(&tests);
