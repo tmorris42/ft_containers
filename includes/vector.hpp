@@ -242,13 +242,7 @@ namespace ft
 			difference_type diff = pos - this->begin();
 			if (diff < 0)
 				diff = 0;
-			if (this->__capacity - this->size() < 1)
-			{
-				size_type new_capacity = 2 * this->__capacity;
-				if (this->__capacity == 0)
-					new_capacity = 1;
-				this->reserve(new_capacity);
-			}
+			this->__expand_to_hold(1);
 			this->__move_space(this->__start + diff + 1, this->__start + diff, this->size() - diff);
 			this->get_allocator().construct(this->__start + diff, value);
 			++this->__size;
@@ -258,17 +252,7 @@ namespace ft
 		void insert(iterator pos, size_type count, const value_type &value)
 		{
 			difference_type diff = pos - this->begin();
-			if (this->__capacity - this->size() < count)
-			{
-				size_type new_capacity = this->__capacity;
-				if (count > this->__capacity)
-					new_capacity += count - (this->__capacity - this->size());
-				else if ((this->__capacity * 2) - this->size() < count)
-					new_capacity += count - (this->__capacity - this->size());
-				else
-					new_capacity *= 2;
-				this->reserve(new_capacity);
-			}
+			this->__expand_to_hold(count);
 			this->__move_space(this->__start + diff + count, this->__start + diff, this->size() - diff);
 			while (count > 0)
 			{
@@ -288,7 +272,7 @@ namespace ft
 
 			for (InputIt it = first; it != last; ++it)
 				++len;
-			this->reserve(this->size() + len);
+			this->__expand_to_hold(len);
 			this->__move_space(this->__start + diff + len, this->__start + diff, this->size() - diff);
 			while (first != last)
 			{
@@ -431,6 +415,17 @@ namespace ft
 			this->__size = 0;
 			this->__capacity = 0;
 			this->__start = NULL;
+		}
+		void __expand_to_hold(size_type count)
+		{
+			if (this->capacity() - this->size() < count)
+			{
+				size_type new_capacity = this->size() * 2;
+				// if (this->size() < this->capacity() || (this->size() + count > new_capacity))
+				if (this->size() + count > new_capacity)
+					new_capacity = this->size() + count;
+				this->reserve(new_capacity);
+			}
 		}
 	};
 

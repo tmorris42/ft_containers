@@ -8,7 +8,7 @@ static void print_vector(FT::vector<T> const & v)
 		return;
 
 	std::cout << "size: " << v.size() << std::endl;
-	// std::cout << "capacity: " << v.capacity() << std::endl;  // Differences in memory allocated still exist
+	std::cout << "capacity: " << v.capacity() << std::endl;  // Differences in memory allocated still exist
 	std::cout << "max_size: " << v.max_size() << std::endl;
 
 	typename FT::vector<T>::const_iterator ite = v.end();
@@ -388,9 +388,16 @@ int test_vector_int_insert_count_allocation_amount()
 	Vec.push_back(7);
 	Vec.push_back(8);
 	Vec.push_back(9);
+	ASSERT_EQUAL(Vec.size(), static_cast<unsigned int>(5));
+	ASSERT_EQUAL(Vec.capacity(), static_cast<unsigned int>(8));
 	Vec.insert(Vec.begin(), (std::size_t)10, 42);
+	ASSERT_EQUAL(Vec.size(), static_cast<unsigned int>(15));
+	ASSERT_EQUAL(Vec.capacity(), static_cast<unsigned int>(15));
 	Vec.insert(Vec.begin(), (std::size_t)10, 42);
+	ASSERT_EQUAL(Vec.size(), static_cast<unsigned int>(25));
+	ASSERT_EQUAL(Vec.capacity(), static_cast<unsigned int>(30));
 	Vec.insert(Vec.begin(), (std::size_t)10, 42);
+	ASSERT_EQUAL(Vec.size(), static_cast<unsigned int>(35));
 	ASSERT_EQUAL(Vec.capacity(), static_cast<unsigned int>(50));
 	print_vector(Vec);
 	return (0);
@@ -983,7 +990,7 @@ void add_test_vector_int_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_vector_int_insert);
 
 	ADD_TEST(testlist, test_vector_int_insert_count); // Allocates different amount of memory than REAL
-	// ADD_TEST(testlist, test_vector_int_insert_count_allocation_amount); // Allocates different amount of memory than REAL
+	ADD_TEST(testlist, test_vector_int_insert_count_allocation_amount); // Allocates different amount of memory than REAL
 	ADD_TEST(testlist, test_vector_int_insert_iter);
 
 	ADD_TEST(testlist, test_vector_int_clear);
