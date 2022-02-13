@@ -1,5 +1,14 @@
 #include "tests.hpp"
 
+static std::string  to_string(size_t n)
+{
+		std::stringstream tmp;
+
+		tmp << n;
+
+		return tmp.str();
+}
+
 int	test_vector_string_void_constructor()
 {
 	FT::vector<std::string> Vec;
@@ -708,29 +717,13 @@ int		test_vector_string_insert_leaks()
 	FT::vector<std::string> v;
 
 	for (int i = 0; i < 15; ++i)
-		v.push_back("Hi");
-	for (unsigned int i = 0; i < v.size(); ++i)
-		std::cout << v.at(i) << ", ";
-	std::cout << std::endl;
+		v.push_back(to_string(i) + " really long string to test std::string allocation and destruction\n");
+
 
 	FT::vector<std::string>::iterator	it;
 	it = v.begin() + 4;
 	v.insert(it, 8, "INSERTED!");
-	for (unsigned int i = 0; i < v.size(); ++i)
-		std::cout << v.at(i) << ", ";
-	std::cout << std::endl;
-
-	FT::vector<std::string> v2;
-	for (int i = 0; i < 7; ++i)
-		v2.push_back("New");
-	for (unsigned int i = 0; i < v2.size(); ++i)
-		std::cout << v2.at(i) << ", ";
-	std::cout << std::endl;
-
-	v2.insert(v2.begin() + 5, v.begin(), v.end());
-	for (unsigned int i = 0; i < v2.size(); ++i)
-		std::cout << v2.at(i) << ", ";
-
+	ASSERT_EQUAL(v.size(), (unsigned long)23);
 	return (0);
 }
 

@@ -82,7 +82,7 @@ test: all | $(LOGS_DIR)
 
 leaks: $(NAME) | $(LOGS_DIR)
 	@echo 'Checking for leaks...'
-	@valgrind ./$(NAME) > $(VALGRIND_LOG) 2>&1
+	@valgrind --leak-check=full ./$(NAME) > $(VALGRIND_LOG) 2>&1
 	@(cat $(VALGRIND_LOG) | grep 'LEAK SUMMARY\|invalid' > /dev/null \
 		&& echo -n '\033[0;31m' && cat $(VALGRIND_LOG) | grep 'LEAK SUMMARY\|invalid' | wc -l | tr '\n' ' ' \
 		&& echo 'leak(s) found\033[0m' \
