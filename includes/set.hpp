@@ -153,7 +153,7 @@ namespace ft
 			size_type count(const key_type & k) const
 			{
 				const_iterator it(this->c.search(k));
-				if (it->first == k)
+				if (*it == k)
 					return (1);
 				return (0);
 			}
@@ -292,17 +292,17 @@ namespace ft
 
 		return (lexicographical_compare(it1, ite1, it2, ite2));	
 	}
-	template <class Key, class T, class Compare, class Alloc>
+	template <class T, class Compare, class Alloc>
 	bool operator<=( const set<T, Compare, Alloc> & lhs, const set<T, Compare, Alloc> & rhs)
 	{
 		return (!(rhs < lhs));
 	}
-	template <class Key, class T, class Compare, class Alloc>
+	template <class T, class Compare, class Alloc>
 	bool operator>( const set<T, Compare, Alloc> & lhs, const set<T, Compare, Alloc> & rhs)
 	{
 		return (rhs < lhs);
 	}
-	template <class Key, class T, class Compare, class Alloc>
+	template <class T, class Compare, class Alloc>
 	bool operator>=( const set<T, Compare, Alloc> & lhs, const set<T, Compare, Alloc> & rhs)
 	{
 		return (!(lhs < rhs));
