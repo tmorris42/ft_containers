@@ -59,13 +59,13 @@ namespace ft
 		vector(const vector &other) : __start(0), __capacity(0), __size(0), __alloc(other.get_allocator())
 		{
 			this->reserve(other.capacity());
-			this->__copy_space(this->__start, other.begin(), (other.size())); //use insert instead?
+			this->insert(this->begin(), other.begin(), other.end());
 			this->__size = other.size();
 		}
 
 		~vector()
 		{
-			__destruct_vector();
+			this->__destruct_vector();
 		};
 		vector &operator=(vector const &other)
 		{
@@ -214,10 +214,12 @@ namespace ft
 			if (this->capacity() < new_cap)
 			{
 				pointer new_space = this->get_allocator().allocate(new_cap);
+				size_type new_size = this->size();
 				this->__copy_space(new_space, this->__start, this->size());
 				this->__destruct_vector();
 				this->__start = new_space;
 				this->__capacity = new_cap;
+				this->__size = new_size;
 			}
 		}
 		size_type capacity() const
@@ -267,7 +269,7 @@ namespace ft
 					new_capacity *= 2;
 				this->reserve(new_capacity);
 			}
-			this->__copy_space(this->__start + diff + count, this->__start + diff, this->size() - diff);
+			this->__move_space(this->__start + diff + count, this->__start + diff, this->size() - diff);
 			while (count > 0)
 			{
 				this->get_allocator().construct(this->__start + diff, value);
@@ -380,7 +382,7 @@ namespace ft
 				i = N - 1;
 				while (i >= 0)
 				{
-					this->get_allocator().construct(dest + i, *(src + i));
+					this->get_allocator().construct(dest + i, const_reference(*(src + i)));
 					--i;
 				}
 			}
@@ -394,6 +396,31 @@ namespace ft
 				}
 			}
 		}
+		void __move_space(pointer dest, iterator src, difference_type const N)
+		{
+			difference_type i;
+
+			if (dest > src)
+			{
+				i = N - 1;
+				while (i >= 0)
+				{
+					this->get_allocator().construct(dest + i, const_reference(*(src + i)));
+					this->get_allocator().destroy(src + i);
+					--i;
+				}
+			}
+			else
+			{
+				i = 0;
+				while (i < N)
+				{
+					this->get_allocator().construct(dest + i, *(src + i));
+					this->get_allocator().destroy(src + i);
+					++i;
+				}
+			}
+		}
 		void __destruct_vector()
 		{
 			for (int i = this->size() - 1; i >= 0; --i)
@@ -401,6 +428,9 @@ namespace ft
 				this->get_allocator().destroy(this->__start + i);
 			}
 			this->get_allocator().deallocate(this->__start, this->capacity());
+			this->__size = 0;
+			this->__capacity = 0;
+			this->__start = NULL;
 		}
 	};
 
