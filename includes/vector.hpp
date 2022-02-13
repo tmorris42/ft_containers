@@ -249,7 +249,7 @@ namespace ft
 					new_capacity = 1;
 				this->reserve(new_capacity);
 			}
-			this->__copy_space(this->__start + diff + 1, this->__start + diff, this->size() - diff);
+			this->__move_space(this->__start + diff + 1, this->__start + diff, this->size() - diff);
 			this->get_allocator().construct(this->__start + diff, value);
 			++this->__size;
 			return (this->__start + diff);
@@ -289,7 +289,7 @@ namespace ft
 			for (InputIt it = first; it != last; ++it)
 				++len;
 			this->reserve(this->size() + len);
-			this->__copy_space(this->__start + diff + len, this->__start + diff, this->size() - diff);
+			this->__move_space(this->__start + diff + len, this->__start + diff, this->size() - diff);
 			while (first != last)
 			{
 				this->get_allocator().construct(this->__start + diff, *first);
