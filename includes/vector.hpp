@@ -386,6 +386,8 @@ namespace ft
 		{
 			difference_type i;
 
+			if (dest == src)
+				return ;
 			if (dest > src)
 			{
 				i = N - 1;
