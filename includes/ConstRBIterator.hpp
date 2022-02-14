@@ -85,7 +85,8 @@ namespace ft
 
 		ConstRBIterator & operator++()
 		{
-			this->data = this->data->next();
+			if (this->data)
+				this->data = this->data->next();
 			return (*this);		
 		}
 		ConstRBIterator operator++(int) {
@@ -95,7 +96,8 @@ namespace ft
 			return (temp);
 		}
 		ConstRBIterator &	operator--() {
-			this->data = this->data->prev();
+			if (this->data)
+				this->data = this->data->prev();
 			return (*this);
 		}
 		ConstRBIterator operator--(int) {

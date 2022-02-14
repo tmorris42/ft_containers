@@ -63,7 +63,8 @@ namespace ft
 
 		RBIterator & operator++()
 		{
-			this->data = this->data->next();
+			if (this->data)
+				this->data = this->data->next();
 			return (*this);
 		}
 		RBIterator operator++(int) {
@@ -73,7 +74,8 @@ namespace ft
 			return (temp);
 		}
 		RBIterator &	operator--() {
-			this->data = this->data->prev();
+			if (this->data)
+				this->data = this->data->prev();
 			return (*this);
 		}
 		RBIterator operator--(int) {
