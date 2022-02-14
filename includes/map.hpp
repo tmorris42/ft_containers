@@ -111,7 +111,7 @@ namespace ft
 
 				while (position != ite && this->key_comp()(position->first, val.first))
 					++position;
-				while (position != ite && position != this->begin() && this->key_comp()(val.first, position->first))
+				while (position == ite || (position != this->begin() && this->key_comp()(val.first, position->first)))
 					--position;
 				if (position == ite)
 					return (this->c.insert(position - 1, val));
@@ -134,10 +134,16 @@ namespace ft
 
 			mapped_type & operator[](const key_type & k)
 			{
+				iterator it = this->lower_bound(k);
+				if (it->first == k)
+					return (it->second);
 				mapped_type m;
 				value_type v(k, m);
 				pair<iterator, bool> ret;
-				ret = this->insert(v);
+				if (!it)
+					ret = this->insert(v);
+				else
+					ret.first = this->insert(it, v);
 				return (ret.first->second);
 			}
 
