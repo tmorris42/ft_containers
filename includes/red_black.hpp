@@ -352,9 +352,11 @@ namespace ft
 				
 				tmp = this->stump.left;
 				this->stump.left = other.stump.left;
-				this->stump.left->parent = &this->stump;
+				if (this->stump.left)
+					this->stump.left->parent = &this->stump;
 				other.stump.left = tmp;
-				other.stump.left->parent = &other.stump;
+				if (other.stump.left)
+					other.stump.left->parent = &other.stump;
 
 			}
 			node_type *rotateLeft(node_type *node)
