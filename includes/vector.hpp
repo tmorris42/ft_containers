@@ -437,15 +437,7 @@ namespace ft
 		typename vector<T, U>::const_iterator it1 = lhs.begin();
 		typename vector<T, U>::const_iterator it2 = rhs.begin();
 		typename vector<T, U>::const_iterator ite1 = lhs.end();
-		typename vector<T, U>::const_iterator ite2 = rhs.end();
-		while (it1 != ite1 && it2 != ite2)
-		{
-			if (*it1 != *it2)
-				return (false);
-			++it1;
-			++it2;
-		}
-		return (true);
+		return (ft::equal(it1, ite1, it2));
 	}
 	template <class T, class U>
 	bool operator!=(vector<T, U> const &lhs, vector<T, U> const &rhs)
