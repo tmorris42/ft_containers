@@ -921,6 +921,144 @@ int	test_map_insert_hint()
 	return (0);
 }
 
+template <class Key, class T>
+void	print(FT::map<Key, T>& lst)
+{
+	std::cout << "printing a map : \n";
+	for (typename FT::map<Key, T>::iterator it = lst.begin(); it != lst.end(); it++)
+		std::cout << it->first << " => " << it->second << '\n';
+}
+
+int test_map_swap_segfault()
+{
+	std::cout << _WHITE << "# test_map" << _END << std::endl;
+	std::cout << _YELLOW <<  "/* ********************************************************************** */" << std::endl;
+	std::cout << "/*                          "<< _WHITE << "BASIC TESTS" << _YELLOW << "                                   */" << std::endl;
+	std::cout << "/* ********************************************************************** */" << _END << std::endl;
+	std::cout << std::endl;
+
+
+	FT::map<std::string, int> mymap;
+	print(mymap);
+
+
+	std::cout << "mymap<" << _PURPLE << "string" << _END << ", " << _PURPLE << "int" << _END <<"> mymap;" << std::endl;
+
+	std::cout << std::endl;
+	std::cout << "mymap.max_size(): " << (mymap.max_size() > 10000) << std::endl;
+	print(mymap);
+	std::cout << std::endl;
+
+
+	print(mymap);
+	mymap.insert(pair<std::string, int>("ft", 42));
+
+	print(mymap);
+	mymap.insert(pair<std::string, int>("one", 1));
+
+
+	std::cout << _WHITE << "# testing upper/lower_bound" << _END << std::endl;
+	map<std::string, int>::iterator mit;
+	map<std::string, int>::iterator it;
+	print(mymap);
+	it = mymap.lower_bound("aaa");
+	print(mymap);
+	std::cout << std::setw(40) << "mymap.lower_bound(\"aaa\"): " << it->first << ":" << it->second << std::endl;
+	std::cout << std::endl;
+	print(mymap);
+	it = mymap.lower_bound("one");
+	print(mymap);
+	std::cout << std::setw(40) << "mymap.lower_bound(\"one\"): " << it->first << ":" << it->second << std::endl;
+	std::cout << std::endl;
+	print(mymap);
+	it = mymap.lower_bound("oae");
+	print(mymap);
+	std::cout << std::setw(40) << "mymap.lower_bound(\"oae\"): " << it->first << ":" << it->second << std::endl;
+	std::cout << std::endl;
+	print(mymap);
+	it = mymap.lower_bound("ft");
+	print(mymap);
+	std::cout << std::setw(40) << "mymap.lower_bound(\"ft\"): " << it->first << ":" << it->second << std::endl;
+	std::cout << std::endl;
+	print(mymap);
+	it = mymap.lower_bound("zzz");
+	print(mymap);
+	
+	if (it == mymap.end())
+		std::cout << std::setw(40) << "mymap.lower_bound(\"zzz\"): mymap.end()" << std::endl;
+	std::cout << std::endl;
+	print(mymap);
+	it = mymap.upper_bound("aaa");
+	
+	print(mymap);
+	std::cout << std::setw(40) << "mymap.upper_bound(\"aaa\"): " << it->first << ":" << it->second << std::endl;;
+	std::cout << std::endl;
+	print(mymap);
+	it = mymap.upper_bound("oae");
+	print(mymap);
+	std::cout << std::setw(40) << "mymap.upper_bound(\"oae\"): " << it->first << ":" << it->second << std::endl;;
+	std::cout << std::endl;
+	print(mymap);
+	it = mymap.upper_bound("one");
+	
+	if (it == mymap.end())
+		std::cout << std::setw(40) << "mymap.upper_bound(\"one\"): mymap.end()" << std::endl;
+	print(mymap);
+	std::cout << std::endl;
+	it = mymap.upper_bound("ft");
+	print(mymap);
+	std::cout << std::setw(40) << "mymap.upper_bound(\"ft\"): " << it->first << ":" << it->second << std::endl;;
+	std::cout << std::endl;
+	print(mymap);
+	it = mymap.upper_bound("zzz");
+	
+	if (it == mymap.end())
+		std::cout << std::setw(40) << "mymap.upper_bound(\"zzz\"): mymap.end()" << std::endl;
+	print(mymap);
+	std::cout << std::endl;
+
+	print(mymap);
+	mymap.erase("undefined");
+	print(mymap);
+	mymap.erase("ft");
+	print(mymap);
+	std::cout << _WHITE << "# double clear" << _END << std::endl;
+	mymap.clear();
+	print(mymap);
+	mymap.clear();
+	
+	print(mymap);
+	mymap["lol"];
+	print(mymap);
+	mymap.insert(FT::pair<std::string, int>("xD", 123));
+	print(mymap);
+	mymap.insert(mymap.end(), FT::pair<std::string, int>("uch", 442));
+	print(mymap);
+	mymap.insert(mymap.begin(), FT::pair<std::string, int>("uch", 22));
+	print(mymap);
+	mymap.insert(mymap.end(), FT::pair<std::string, int>("uch", 23));
+	print(mymap);
+	mymap.insert(FT::pair<std::string, int>("uch", 23));
+	print(mymap);
+	mymap["lol"] = 8;
+
+
+	print(mymap);
+	FT::map<std::string, int> map2;
+
+	print(mymap);
+	print(mymap);
+	print(mymap);
+	print(map2);
+	std::cout << "mymap<" << "string" <<  ", " << "int" <<"> mymap2;" << std::endl;
+	print(mymap);
+	std::cout << "empty line\n";
+	print(map2);
+	std::cout << "empty line2\n";
+
+	return (0);
+}
+
 
 void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
@@ -956,5 +1094,6 @@ void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_empty_end);
 	ADD_TEST(testlist, test_map_mli_find_count2_const);
 	ADD_TEST(testlist, test_map_const_map);
-	ADD_TEST(testlist, test_map_insert_hint);	
+	ADD_TEST(testlist, test_map_insert_hint);
+	ADD_TEST(testlist, test_map_swap_segfault);
 }
