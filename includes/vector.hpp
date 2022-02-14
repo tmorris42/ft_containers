@@ -326,8 +326,10 @@ namespace ft
 
 		void resize(size_type count, T value = T())
 		{
+			if (count > this->size())
+				this->__expand_to_hold(count - this->size());
 			while (count < this->size())
-				this->pop_back();
+				this->pop_back();			
 			while (count > this->size())
 				this->push_back(value);
 		}
