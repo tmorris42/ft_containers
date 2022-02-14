@@ -9,7 +9,7 @@ std::ostream & 	operator<<(std::ostream & os, FT::pair<T1, T2> p)
 }
 
 template <class T, class Compare>
-void printBT(const std::string& prefix, const ft::Node<T>* node, bool isLeft)
+void printBT(const std::string& prefix, const ft::Node<T, Compare>* node, bool isLeft)
 {
     if(node)
     {

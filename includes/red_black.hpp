@@ -11,13 +11,14 @@
 
 namespace ft
 {
-	template <class ValueType>
+	template <class ValueType, class Compare>
 	struct Node
 	{
 		typedef Node	node_type;
+		typedef Node *	node_pointer;
 		typedef ValueType	value_type;
 		typedef const ValueType	const_value_type;
-		// typedef const Node<ValueType>	const_node_type;
+		// typedef const Node<ValueType, Compare>	const_node_type;
 
 		ValueType	value;
 		Node		*left;
@@ -91,26 +92,81 @@ namespace ft
 			}
 			return (stump);
 		}
+
+		node_type	*prev()
+		{
+			if (!this->parent || this->left)
+				return (this->max(this->left));
+			return (this->getNextLesserParent());
+		}
+
+		node_type	*next()
+		{
+			if (!this->parent)
+				return (this->min());
+			if (this->right)
+				return (this->min(this->right));
+			return (this->getNextGreaterParent());
+		}
+
+		private:
+		bool	values_equal(value_type const & value1, value_type const & value2) const
+		{
+			return (!Compare()(value1, value2) && !Compare()(value2, value1));
+		}
+		bool	values_less_than(value_type const & value1, value_type const & value2) const
+		{
+			return (Compare()(value1, value2));
+		}
+
+		node_pointer getNextGreaterParent()
+		{
+			if (!this->parent)
+				return (NULL);
+			node_pointer current = this;
+			value_type	target = current->value;
+			while (current && !this->values_less_than(target, current->value))
+			{
+				if (!current->parent)
+					return (current);
+				current = current->parent;
+			}
+			return (current);
+		}
+		node_pointer getNextLesserParent()
+		{
+			if (!this->parent)
+				return (NULL);
+			node_pointer current = this;
+			value_type	target = current->value;
+			while (current && !this->values_less_than(current->value, target))
+			{
+				if (!current->parent)
+					return (current);
+				current = current->parent;
+			}
+			return (current);
+		}
 	};
 
-	template <class ValueType>
-	Node<ValueType> const operator++(Node<ValueType> & a)
+	template <class ValueType, class Compare>
+	Node<ValueType, Compare> const operator++(Node<ValueType, Compare> & a)
 	{
-		Node<ValueType> *next;
+		Node<ValueType, Compare> *next;
 
 		next = a.min(a.right);
 		if (!next)
 			next = a.parent;
 	}
 
-	template <class ValueType, class Compare = std::less < ValueType >, class Allocator = std::allocator < Node < ValueType > > >
+	template <class ValueType, class Compare = std::less < ValueType >, class Allocator = std::allocator < Node < ValueType, Compare > > >
 	class RB_Tree
 	{
 		public:
-			typedef Node<ValueType> node_type;
+			typedef Node<ValueType, Compare> node_type;
 			// typedef node_type const_node_type;
 			typedef const node_type const_node_type;
-			// typedef Node<ValueType> const_node_type;
+			// typedef Node<ValueType, Compare> const_node_type;
 			typedef ValueType		value_type;
 			typedef const ValueType		const_value_type;
 			typedef Allocator		allocator_type;

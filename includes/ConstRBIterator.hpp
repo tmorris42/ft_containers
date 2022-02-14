@@ -85,18 +85,7 @@ namespace ft
 
 		ConstRBIterator & operator++()
 		{
-			if (this->data && !this->data->parent)
-			{
-				this->data = this->data->min(this->data);
-			}
-			else if (this->data && this->data->right)
-			{
-				this->data = this->data->min(this->data->right);
-			}
-			else
-			{
-				this->data = this->getNextGreaterParent();
-			}
+			this->data = this->data->next();
 			return (*this);		
 		}
 		ConstRBIterator operator++(int) {
@@ -106,14 +95,7 @@ namespace ft
 			return (temp);
 		}
 		ConstRBIterator &	operator--() {
-			if (!this->data->parent)
-			{
-				this->data = this->data->max(this->data->left);
-			}
-			else if (this->data && this->data->left)
-				this->data = this->data->max(this->data->left);
-			else
-				this->data = this->getNextLesserParent();
+			this->data = this->data->prev();
 			return (*this);
 		}
 		ConstRBIterator operator--(int) {

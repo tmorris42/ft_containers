@@ -63,19 +63,8 @@ namespace ft
 
 		RBIterator & operator++()
 		{
-			if (this->data && !this->data->parent)
-			{
-				this->data = this->data->min(this->data);
-			}
-			else if (this->data && this->data->right)
-			{
-				this->data = this->data->min(this->data->right);
-			}
-			else
-			{
-				this->data = this->getNextGreaterParent();
-			}
-			return (*this);			
+			this->data = this->data->next();
+			return (*this);
 		}
 		RBIterator operator++(int) {
 			RBIterator temp;
@@ -84,14 +73,7 @@ namespace ft
 			return (temp);
 		}
 		RBIterator &	operator--() {
-			if (!this->data->parent)
-			{
-				this->data = this->data->max(this->data->left);
-			}
-			else if (this->data && this->data->left)
-				this->data = this->data->max(this->data->left);
-			else
-				this->data = this->getNextLesserParent();
+			this->data = this->data->prev();
 			return (*this);
 		}
 		RBIterator operator--(int) {
@@ -139,47 +121,8 @@ namespace ft
 			return (ret);
 		}
 
-		bool	values_equal(value_type const & value1, value_type const & value2) const
-		{
-			return (!Compare()(value1, value2) && !Compare()(value2, value1));
-		}
-		bool	values_less_than(value_type const & value1, value_type const & value2) const
-		{
-			return (Compare()(value1, value2));
-		}
-
 		protected:
 			node_pointer	data;
-
-			node_pointer getNextGreaterParent()
-			{
-				if (!this->data)
-					return (NULL);
-				node_pointer current = this->data;
-				value_type	target = current->value;
-				while (current && !this->values_less_than(target, current->value))
-				{
-					if (!current->parent)
-						return (current);
-					current = current->parent;
-				}
-				return (current);
-			}
-			node_pointer getNextLesserParent()
-			{
-				if (!this->data)
-					return (NULL);
-				node_pointer current = this->data;
-				value_type	target = current->value;
-				while (current && !this->values_less_than(current->value, target))
-				{
-					if (!current->parent)
-						return (current);
-					current = current->parent;
-				}
-				return (current);
-			}
-
 	};
 }
 #endif
