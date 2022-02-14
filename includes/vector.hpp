@@ -58,7 +58,7 @@ namespace ft
 
 		vector(const vector &other) : __start(0), __capacity(0), __size(0), __alloc(other.get_allocator())
 		{
-			this->reserve(other.capacity());
+			this->reserve(other.size());
 			this->insert(this->begin(), other.begin(), other.end());
 			this->__size = other.size();
 		}
