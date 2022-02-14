@@ -137,7 +137,7 @@ namespace ft
 				iterator it = this->lower_bound(k);
 				if (it != this->end() && it->first == k)
 					return (it->second);
-				mapped_type m;
+				mapped_type m = mapped_type();
 				value_type v(k, m);
 				pair<iterator, bool> ret;
 				if (!it)
