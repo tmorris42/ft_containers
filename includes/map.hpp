@@ -315,12 +315,13 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	bool operator<( const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
 	{
+		typedef typename map<Key, T, Compare, Alloc>::const_iterator const_iterator;
 		typename map<Key, T, Compare, Alloc>::const_iterator it1 = lhs.begin();
 		typename map<Key, T, Compare, Alloc>::const_iterator it2 = rhs.begin();
 		typename map<Key, T, Compare, Alloc>::const_iterator ite1 = lhs.end();
 		typename map<Key, T, Compare, Alloc>::const_iterator ite2 = rhs.end();
 
-		return (lexicographical_compare(it1, ite1, it2, ite2));	
+		return (lexicographical_compare<const_iterator, const_iterator>(it1, ite1, it2, ite2));	
 	}
 	template <class Key, class T, class Compare, class Alloc>
 	bool operator<=( const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
@@ -336,6 +337,11 @@ namespace ft
 	bool operator>=( const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
 	{
 		return (!(lhs < rhs));
+	}
+	template <class Key, class T, class Compare, class Alloc>
+	void swap (map<Key, T, Compare, Alloc> & x, map<Key, T, Compare, Alloc> & y)
+	{
+		x.swap(y);
 	}
 } 
 #endif
