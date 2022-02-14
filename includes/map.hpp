@@ -135,7 +135,7 @@ namespace ft
 			mapped_type & operator[](const key_type & k)
 			{
 				iterator it = this->lower_bound(k);
-				if (it->first == k)
+				if (it != this->end() && it->first == k)
 					return (it->second);
 				mapped_type m;
 				value_type v(k, m);
