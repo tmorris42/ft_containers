@@ -5,16 +5,16 @@
 #include "RBIterator.hpp"
 namespace ft
 {
-	template <class ValueType, class NodeType, class Compare>
-	class ConstRBIterator : private RBIterator<ValueType, NodeType, Compare>
+	template <class ValueType, class NodeType>
+	class ConstRBIterator : private RBIterator<ValueType, NodeType>
 	{
 		public:
 
 		typedef NodeType		node_type;		
 		typedef NodeType *	node_pointer;
 
-		typedef RBIterator<ValueType, NodeType, Compare> iterator;
-		typedef ConstRBIterator<ValueType, NodeType, Compare>	const_iterator;
+		typedef RBIterator<ValueType, NodeType > iterator;
+		typedef ConstRBIterator<ValueType, NodeType >	const_iterator;
 
 		typedef std::ptrdiff_t	difference_type;
 		typedef ft::biderectional_iterator_tag	iterator_category;
@@ -28,18 +28,18 @@ namespace ft
 		
 
 		ConstRBIterator(node_pointer const ptr = 0)
-		: RBIterator<value_type, NodeType, Compare>(ptr)
+		: RBIterator<value_type, NodeType>(ptr)
 		{
 		}
 		ConstRBIterator(const_node_pointer ptr)
-		: RBIterator<value_type, NodeType, Compare>(const_cast<node_pointer>(ptr))
+		: RBIterator<value_type, NodeType>(const_cast<node_pointer>(ptr))
 		{
 		}
 		ConstRBIterator(const_iterator const & src)
-		: RBIterator<value_type, NodeType, Compare>(src.data)
+		: RBIterator<value_type, NodeType>(src.data)
 		{}
 		ConstRBIterator(iterator const & src)
-		: RBIterator<value_type, NodeType, Compare>(src)
+		: RBIterator<value_type, NodeType>(src)
 		{}
 		ConstRBIterator const & operator=(ConstRBIterator const & src) {
 			if (this != &src)

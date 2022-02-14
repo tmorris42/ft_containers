@@ -4,7 +4,7 @@
 #include "iterator.hpp"
 namespace ft
 {
-	template <class ValueType, class NodeType, class Compare>
+	template <class ValueType, class NodeType >
 	class RBIterator
 	{
 		public:
