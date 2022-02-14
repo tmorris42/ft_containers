@@ -109,6 +109,8 @@ namespace ft
 			{
 				iterator	ite = this->end();
 
+				if (this->empty())
+					return (this->insert(val).first);
 				while (position != ite && this->key_comp()(position->first, val.first))
 					++position;
 				while (position == ite || (position != this->begin() && this->key_comp()(val.first, position->first)))
