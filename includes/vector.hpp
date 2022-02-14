@@ -251,6 +251,8 @@ namespace ft
 
 		void insert(iterator pos, size_type count, const value_type &value)
 		{
+			if (count < 1)
+				return ;
 			difference_type diff = pos - this->begin();
 			this->__expand_to_hold(count);
 			this->__move_space(this->__start + diff + count, this->__start + diff, this->size() - diff);
