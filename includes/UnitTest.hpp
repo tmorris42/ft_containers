@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
 #include <sys/types.h> //	waitpid, fork
 #include <sys/wait.h>  //	waitpid
@@ -28,8 +29,8 @@
 extern bool VERBOSE;
 
 #define ADD_TEST(testlist, func) load_test(testlist, func, #func)
-#define RUN_TEST(testlist, id) launch_test(&testlist, &(testlist.at(id)))
-#define RUN_ALL_TESTS(testlist) launch_all_tests(testlist)
+#define RUN_TEST(testlist, id) launch_test(&testlist, &(testlist.at(id)), VERBOSE)
+#define RUN_ALL_TESTS(testlist) launch_all_tests(testlist, VERBOSE)
 #define ASSERT_EQUAL(a, b) assertEqual(a, b, #a, #b)
 #define ASSERT_EQUALQ(a, b) assertEqualQ(a, b, #a, #b)
 #define ASSERT_ERROR(operation)                                     \
@@ -97,7 +98,7 @@ bool assertEqualQ(T a, U b, std::string aName, std::string bName)
 }
 
 void load_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, TestFunction2 function, std::string description);
-int launch_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, Test2 *test);
-int launch_all_tests(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
+int launch_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, Test2 *test, bool verbose);
+int launch_all_tests(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, bool verbose);
 
 #endif //UNIT_TEST_HPP

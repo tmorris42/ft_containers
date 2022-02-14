@@ -1,5 +1,37 @@
 #include "UnitTest.hpp"
 
+void	stdout_redirect(std::streambuf **stdout_buffer, std::stringstream *buffer )
+{
+    *stdout_buffer = std::cout.rdbuf(buffer->rdbuf());
+}
+
+std::string stdout_restore( std::streambuf * stdout_buffer, std::stringstream *buffer, bool verbose )
+{
+    std::cout.rdbuf( stdout_buffer );
+    std::string output = buffer->str();
+    buffer->str("");
+    buffer->clear();
+    if (verbose)
+        std::cout << output;
+    return (output);
+}
+
+void	stderr_redirect(std::streambuf **stderr_buffer, std::stringstream *buffer )
+{
+    *stderr_buffer = std::cerr.rdbuf(buffer->rdbuf());
+}
+
+std::string stderr_restore( std::streambuf * stderr_buffer, std::stringstream *buffer, bool verbose )
+{
+    std::cerr.rdbuf( stderr_buffer );
+    std::string output = buffer->str();
+    buffer->str("");
+    buffer->clear();
+    if (verbose)
+        std::cerr << output;
+    return (output);
+}
+
 void load_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist,
 			   TestFunction2 function, std::string description)
 {
@@ -42,7 +74,7 @@ void print_test_results(Test2 *test)
 	std::cout << std::endl;
 }
 
-int launch_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, Test2 *test)
+int launch_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, Test2 *test, bool verbose)
 {
 	TestFunction2 func = test->func;
 	pid_t pid;
@@ -55,10 +87,34 @@ int launch_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, Test2 *test)
 	else if (!pid)
 	{
 		//child
+		int	ret;
+		std::streambuf *stdout_buffer = NULL;
+		std::stringstream	buffer;
+		std::string			output;
+		std::streambuf *stderr_buffer = NULL;
+		std::stringstream	err_buffer;
+		std::string			errput;
+		#ifdef FT_REAL_VERSION
+		std::ofstream outfile(("logs/" + test->desc + ".std.out.log").c_str());
+		std::ofstream errfile(("logs/" + test->desc + ".std.err.log").c_str());
+		#else
+		std::ofstream outfile(("logs/" + test->desc + ".ft.out.log").c_str());
+		std::ofstream errfile(("logs/" + test->desc + ".ft.err.log").c_str());
+		#endif
 		testlist->~vector();
 		try
 		{
-			exit(func());
+			stdout_redirect(&stdout_buffer, &buffer);
+			stderr_redirect(&stderr_buffer, &err_buffer);
+			ret = func();
+			output = stdout_restore(stdout_buffer, &buffer, verbose);
+			errput = stderr_restore(stderr_buffer, &err_buffer, verbose);
+			outfile << output;
+			errfile << errput;
+			outfile.close();
+			errfile.close();
+			// delete stdout_buffer;
+			exit(ret);
 		}
 		catch (std::exception & e)
 		{
@@ -75,7 +131,7 @@ int launch_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, Test2 *test)
 	return (0);
 }
 
-int launch_all_tests(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
+int launch_all_tests(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, bool verbose)
 {
 	int success;
 	int total;
@@ -89,7 +145,7 @@ int launch_all_tests(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	while (it != ite)
 	{
 		++total;
-		success += (launch_test(testlist, &(*it)) == 0);
+		success += (launch_test(testlist, &(*it), verbose) == 0);
 		++it;
 	}
 	if (success == total)
