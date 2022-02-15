@@ -24,6 +24,7 @@ INCLUDES = -I$(INCLUDE_DIR)
 DEPS = $(OBJS:.o=.d)
 
 VALGRIND_LOG = $(addprefix $(LOGS_DIR), val.log)
+TIME_FORMAT = "elapsed time: %E"
 
 CC_OVERRIDE ?= clang++
 CC	:= $(CC_OVERRIDE)
@@ -71,13 +72,17 @@ re: fclean all | $(OBJS_DIR)
 
 test: all | $(LOGS_DIR)
 	@echo 'Generating user logs'
-	@./$(NAME) -v > $(LOGS_DIR)mine.log 2>$(LOGS_DIR)mine.err.log
-	@echo 'Generating real logs'
-	@./$(REAL) -v > $(LOGS_DIR)real.log 2>$(LOGS_DIR)real.err.log
+	@/usr/bin/time -f $(TIME_FORMAT) -o $(LOGS_DIR)mine.time.log ./$(NAME) -v > $(LOGS_DIR)mine.log 2>$(LOGS_DIR)mine.err.log
+	@echo 'Generating STL logs'
+	@/usr/bin/time -f $(TIME_FORMAT) -o $(LOGS_DIR)real.time.log  ./$(REAL) -v > $(LOGS_DIR)real.log 2>$(LOGS_DIR)real.err.log 
 	@echo 'Comparing output'
 	@echo '-----------------'
 	@diff -s $(LOGS_DIR)mine.log $(LOGS_DIR)real.log
 	@diff -s $(LOGS_DIR)mine.err.log $(LOGS_DIR)real.err.log
+	@echo -n "My "
+	@cat $(LOGS_DIR)mine.time.log
+	@echo -n "STL "
+	@cat $(LOGS_DIR)real.time.log
 
 leaks: $(NAME) | $(LOGS_DIR)
 	@echo 'Checking for leaks...'
