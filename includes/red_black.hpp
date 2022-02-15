@@ -170,6 +170,7 @@ namespace ft
 			typedef ValueType		value_type;
 			typedef const ValueType		const_value_type;
 			typedef Allocator		allocator_type;
+			typedef typename allocator_type::size_type	size_type;
 
 			typedef RBIterator<value_type, node_type >			iterator;		// should be custom LRAI
 			typedef ConstRBIterator<value_type, node_type >	const_iterator;
@@ -378,14 +379,14 @@ namespace ft
 						if (parent->left == new_node)
 						{
 							if (grandparent && grandparent->right == parent)
-								this->rotateLeft(new_node);
-							this->rotateRight(parent);
+								this->rotateLeft(parent);
+							this->rotateRight(grandparent);
 						}
 						else
 						{
 							if (grandparent && grandparent->left == parent)
-								this->rotateRight(new_node);
-							this->rotateLeft(parent);
+								this->rotateRight(parent);
+							this->rotateLeft(grandparent);
 						}
 						this->swap_color(parent, grandparent);
 						this->stump.left->color = RB_BLACK;
@@ -417,73 +418,75 @@ namespace ft
 			}
 			node_type *rotateLeft(node_type *node)
 			{
-				node_type *parent = this->getParent(node);
-				node_type *grandparent = this->getGrandparent(node);
+				node_type *parent = node;
+				node_type *grandparent = this->getParent(parent);
+				node_type *child = parent->right;
 
-				if (!node || !parent || parent->right != node)
+				if (!child || !parent || parent == &this->stump || parent->right != child)
 					return (NULL);
 
-				// Attach left child of node to parent
-				if (node->left)
-					node->left->parent = parent;
-				parent->right = node->left;
+				// Attach left child of child to parent
+				if (child->left)
+					child->left->parent = parent;
+				parent->right = child->left;
 
-				// Attach node to root or grandparent
+				// Attach child to root or grandparent
 				if (!grandparent)
 				{
-					this->stump.left = node;
-					node->parent = NULL;
+					this->stump.left = child;
+					child->parent = NULL;
 				}
 				else if (grandparent->left == parent)
 				{
-					grandparent->left = node;
-					node->parent = grandparent;
+					grandparent->left = child;
+					child->parent = grandparent;
 				}
 				else
 				{
-					grandparent->right = node;
-					node->parent = grandparent;
+					grandparent->right = child;
+					child->parent = grandparent;
 				}
 
-				// Reattach parent as child of node
-				parent->parent = node;
-				node->left = parent;
+				// Reattach parent as child of child
+				parent->parent = child;
+				child->left = parent;
 
-				return (node);
+				return (child);
 			}
 			node_type *rotateRight(node_type *node)
 			{
-				node_type *parent = this->getParent(node);
-				node_type *grandparent = this->getGrandparent(node);
+				node_type *parent = node;
+				node_type *child = parent->left;
+				node_type *grandparent = this->getParent(parent);
 
-				if (!node || !parent || parent->left != node)
+				if (!child || !parent || parent == &this->stump || parent->left != child)
 					return (NULL);
 
-				// Attach left child of node to parent
-				if (node->right)
-					node->right->parent = parent;
-				parent->left = node->right;
+				// Attach left child of child to parent
+				if (child->right)
+					child->right->parent = parent;
+				parent->left = child->right;
 
-				// Attach node to root or grandparent
+				// Attach child to root or grandparent
 				if (!grandparent)
 				{
-					this->stump.left = node;
-					node->parent = NULL;
+					this->stump.left = child;
+					child->parent = NULL;
 				}
 				else
 				{
 					if (grandparent->right == parent)
-						grandparent->right = node;
+						grandparent->right = child;
 					else
-						grandparent->left = node;
-					node->parent = grandparent;
+						grandparent->left = child;
+					child->parent = grandparent;
 				}
 
-				// Reattach parent as child of node
-				parent->parent = node;
-				node->right = parent;
+				// Reattach parent as child of child
+				parent->parent = child;
+				child->right = parent;
 
-				return (node);
+				return (child);
 			}
 			node_type	*getSibling(node_type *node)
 			{
@@ -587,6 +590,50 @@ namespace ft
 				return (it);
 			}
 
+			size_type	get_black_height(node_type * node) const
+			{
+				if (node == NULL)
+					return (1);
+				size_type left_height = this->get_black_height(node->left);
+				if (left_height == 0)
+					return (0);
+				size_type right_height = this->get_black_height(node->right);
+				if (right_height == 0)
+					return (0);
+				if (left_height != right_height)
+					return (0);
+				return (left_height);
+
+
+			}
+			size_type	get_black_height() const
+			{
+				if (this->stump.left && this->stump.left->color == RB_RED)
+					return (0);
+				return (this->get_black_height(this->stump.left));
+			}
+
+			bool	is_red_black() const
+			{
+				if (this->stump.left && this->stump.left->color == RB_RED)
+					return (false);
+				if (!this->get_black_height())
+					return (false);
+				node_type *node = this->stump.left;
+				while (node && const_iterator(node) != this->end())
+				{
+					if (node->color == RB_RED)
+					{
+						if (node->left && node->left->color == RB_RED)
+							return (false);
+						if (node->right && node->right->color == RB_RED)
+							return (false);
+					}
+					node = node->next();
+				}
+				return (true);
+			}
+
 			node_type **get_reference(node_type *node)
 			{
 				if (!node)
@@ -625,8 +672,11 @@ namespace ft
 					node_type **node_addr = this->get_reference_safe(node);
 					if (!node->left && !node->right)
 					{
+						node_type *sibling = this->getSibling(node);
 						if (node_addr)
 							*node_addr = NULL;
+						if (node->color == RB_BLACK)
+							this->fix_double_black(node->parent, sibling);
 						this->destroy_node(node);
 					}
 					else if (!node->left)
@@ -634,6 +684,10 @@ namespace ft
 						if (node_addr)
 							*node_addr = node->right;
 						node->right->parent = node->parent;
+						if (node->color == RB_RED || node->right->color == RB_RED)
+							node->right->color = RB_BLACK;
+						else
+							this->fix_double_black(node->right);
 						this->destroy_node(node);
 					}
 					else if (!node->right)
@@ -641,6 +695,10 @@ namespace ft
 						if (node_addr)
 							*node_addr = node->left;
 						node->left->parent = node->parent;
+						if (node->color == RB_RED || node->left->color == RB_RED)
+							node->left->color = RB_BLACK;
+						else
+							this->fix_double_black(node->left);
 						this->destroy_node(node);
 					}
 					else
@@ -652,6 +710,82 @@ namespace ft
 					}				
 				}
 				return ;
+			}
+
+			void	fix_double_black(node_type *parent, node_type *sibling)
+			{
+				if (!sibling)
+				{
+					this->fix_double_black(parent);
+					return ;
+				}
+				if (sibling->color == RB_RED)
+				{
+					parent->color = RB_RED;
+					sibling->color = RB_BLACK;
+					if (parent->left == sibling)
+					{
+						this->rotateRight(parent); //POSSIBLY SHOULD BE SIBLING OR NODE HERE *****
+						this->fix_double_black(parent, sibling->right);
+					}
+					else
+					{
+						this->rotateLeft(parent); // See above, and the rotations might be reversed
+						this->fix_double_black(parent, sibling->left);
+					}
+				}
+				else
+				{
+					if (sibling->left && sibling->left->color == RB_RED)
+					{
+						if (parent->left == sibling)
+						{
+							sibling->left->color = sibling->color;
+							sibling->color = parent->color;
+							this->rotateRight(parent); //POSSIBLY SHOULD BE SIBLING OR NODE HERE *****
+						}
+						else
+						{
+							sibling->left->color = parent->color;
+							this->rotateRight(sibling);
+							this->rotateLeft(parent); // See above, and the rotations might be reversed
+						}		
+						parent->color = RB_BLACK;			
+					}
+					else if (sibling->right && sibling->right->color == RB_RED)
+					{
+						if (parent->right == sibling)
+						{
+							sibling->right->color = sibling->color;
+							sibling->color = parent->color;
+							this->rotateLeft(parent); //POSSIBLY SHOULD BE SIBLING OR NODE HERE *****
+						}
+						else
+						{
+							sibling->right->color = parent->color;
+							this->rotateLeft(sibling);
+							this->rotateRight(parent); // See above, and the rotations might be reversed
+						}
+						parent->color = RB_BLACK;
+					}
+					else // 2 Black Children
+					{
+						sibling->color = RB_RED;
+						if (parent->color == RB_BLACK)
+							this->fix_double_black(parent);
+						else
+							parent->color = RB_BLACK;
+					}
+				}
+			}
+
+			void	fix_double_black(node_type *node)
+			{
+				if (!node || node == &this->stump)
+					return ;
+				node_type *sibling = this->getSibling(node);
+				node_type *parent = node->parent;
+				this->fix_double_black(parent, sibling);
 			}
 
 			void	delete_tree(node_type *node)

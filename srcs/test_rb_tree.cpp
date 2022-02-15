@@ -32,7 +32,10 @@ template <class T, class Compare>
 void printBT(const ft::RB_Tree<T, Compare>* tree)
 {
 	if (VERBOSE)
-    	printBT<T, Compare>("", &tree->stump, false);    
+	{
+		std::cout << "TREE:: h = " << tree->get_black_height() << "; is_rb = " << tree->is_red_black() << std::endl;
+    	printBT<T, Compare>("", &tree->stump, false);
+	}
 }
 
 int	test_rb_tree_void_constructor()
@@ -342,15 +345,14 @@ int test_rb_playground()
 {
 	ft::RB_Tree<int> rb;
 
-	rb.insert(6);
-	rb.insert(5);
-	rb.insert(7);
 	rb.insert(10);
-	rb.insert(9);
-	rb.insert(4);
+	rb.insert(20);
+	rb.insert(30);
+	rb.insert(25);
+	rb.insert(35);
 	printBT(&rb);
 
-	rb.delete_node(rb.stump.left, 7);
+	rb.delete_node(rb.stump.left, 10);
 
 	printBT(&rb);
 
@@ -379,6 +381,6 @@ void	add_test_rb_tree_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 
 	
 
-	// ADD_TEST(testlist, test_rb_playground);
+	ADD_TEST(testlist, test_rb_playground);
 }
 #endif
