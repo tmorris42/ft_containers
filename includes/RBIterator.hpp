@@ -27,7 +27,6 @@ namespace ft
 			return (const_iterator_type(this->data));
 		}
 
-
 		RBIterator(node_pointer const ptr = 0)
 		: data(ptr)
 		{
@@ -35,9 +34,7 @@ namespace ft
 		RBIterator(iterator_type const & src)
 		: data(src.data)
 		{}
-		// RBIterator(const_node_pointer ptr)
-		// : data(ptr)
-		// {} // BEWARE CONST_CAST ********
+
 		RBIterator(const_node_pointer ptr)
 		: data(const_cast<node_pointer>(ptr))
 		{} // BEWARE CONST_CAST ********
