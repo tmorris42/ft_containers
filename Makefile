@@ -73,15 +73,16 @@ re: fclean all | $(OBJS_DIR)
 test: all | $(LOGS_DIR)
 	@echo 'Generating user logs'
 	@/usr/bin/time -f $(TIME_FORMAT) -o $(LOGS_DIR)mine.time.log ./$(NAME) -v > $(LOGS_DIR)mine.log 2>$(LOGS_DIR)mine.err.log
-	@echo 'Generating STL logs'
+	@echo 'Generating real logs'
 	@/usr/bin/time -f $(TIME_FORMAT) -o $(LOGS_DIR)real.time.log  ./$(REAL) -v > $(LOGS_DIR)real.log 2>$(LOGS_DIR)real.err.log 
 	@echo 'Comparing output'
 	@echo '-----------------'
 	@diff -s $(LOGS_DIR)mine.log $(LOGS_DIR)real.log
 	@diff -s $(LOGS_DIR)mine.err.log $(LOGS_DIR)real.err.log
-	@echo -n "My "
+	@echo '-----------------'
+	@echo -n "$(NAME) "
 	@cat $(LOGS_DIR)mine.time.log
-	@echo -n "STL "
+	@echo -n "$(REAL) "
 	@cat $(LOGS_DIR)real.time.log
 
 leaks: $(NAME) | $(LOGS_DIR)
