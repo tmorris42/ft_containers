@@ -45,5 +45,17 @@ namespace ft
 	template <typename T>
 	struct is_integral : public integral_constant_sub<T> {} ;
 
+	template<bool flag, class IsTrue, class IsFalse> struct is_const;
+	template<class IsTrue, class IsFalse>
+	struct is_const<true, IsTrue, IsFalse>
+	{
+		typedef IsTrue type;
+	};
+	template<class IsTrue, class IsFalse>
+	struct is_const<false, IsTrue, IsFalse>
+	{
+		typedef IsFalse type;
+	};
+
 }
 #endif

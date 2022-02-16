@@ -19,14 +19,26 @@ namespace ft
 
 		typedef NodeType const *	const_node_pointer;
 
+		typedef RBIterator<ValueType, NodeType>	iterator_type;
+		typedef RBIterator<ValueType const, NodeType>	const_iterator_type;
+
+		operator RBIterator<ValueType const, NodeType>() const
+		{
+			return (const_iterator_type(this->data));
+		}
+
 		RBIterator(node_pointer const ptr = 0)
 		: data(ptr)
 		{
 		}
-		RBIterator(RBIterator const & src)
+		RBIterator(iterator_type const & src)
 		: data(src.data)
 		{}
-		RBIterator const & operator=(RBIterator const & src) {
+
+		RBIterator(const_node_pointer ptr)
+		: data(const_cast<node_pointer>(ptr))
+		{} // BEWARE CONST_CAST ********
+		RBIterator const & operator=(iterator_type const & src) {
 			if (this != &src)
 			{
 				this->data = src.data;
@@ -35,11 +47,11 @@ namespace ft
 		}
 		virtual ~RBIterator() {}
 
-		virtual bool operator==(RBIterator const &other)
+		virtual bool operator==(iterator_type const &other)
 		{
 			return (this->data == other.data);
 		}
-		virtual bool operator!=(RBIterator const &other)
+		virtual bool operator!=(iterator_type const &other)
 		{
 			return (!((*this) == other));
 		}
@@ -61,25 +73,25 @@ namespace ft
 			return (&(this->operator*()));
 		}
 
-		RBIterator & operator++()
+		iterator_type & operator++()
 		{
 			if (this->data)
 				this->data = this->data->next();
 			return (*this);
 		}
-		RBIterator operator++(int) {
-			RBIterator temp;
+		iterator_type operator++(int) {
+			iterator_type temp;
 			temp = *this;
 			this->operator++();
 			return (temp);
 		}
-		RBIterator &	operator--() {
+		iterator_type &	operator--() {
 			if (this->data)
 				this->data = this->data->prev();
 			return (*this);
 		}
-		RBIterator operator--(int) {
-			RBIterator temp;
+		iterator_type operator--(int) {
+			iterator_type temp;
 			temp = *this;
 			this->operator--();
 			return (temp);
@@ -90,7 +102,7 @@ namespace ft
 			return (!this->data || !this->data->parent);
 		}
 
-		RBIterator & operator+=(difference_type const & n )
+		iterator_type & operator+=(difference_type const & n )
 		{
 			difference_type i = 0;
 			while (i < n)
@@ -100,7 +112,7 @@ namespace ft
 			}
 			return (*this);
 		}
-		RBIterator & operator-=(difference_type const & n )
+		iterator_type & operator-=(difference_type const & n )
 		{
 			difference_type i = 0;
 			while (i < n)
@@ -110,15 +122,15 @@ namespace ft
 			}
 			return (*this);
 		}
-		RBIterator operator+(difference_type const & n ) const
+		iterator_type operator+(difference_type const & n ) const
 		{
-			RBIterator ret = *this;
+			iterator_type ret = *this;
 			ret += n;
 			return (ret);
 		}
-		RBIterator operator-(difference_type const & n ) const
+		iterator_type operator-(difference_type const & n ) const
 		{
-			RBIterator ret = *this;
+			iterator_type ret = *this;
 			ret -= n;
 			return (ret);
 		}

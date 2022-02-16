@@ -82,7 +82,7 @@ test: all | $(LOGS_DIR)
 	@echo '-----------------'
 	@echo -n "$(NAME) "
 	@cat $(LOGS_DIR)mine.time.log
-	@echo -n "$(REAL) "
+	@echo -n "         $(REAL) "
 	@cat $(LOGS_DIR)real.time.log
 
 leaks: $(NAME) | $(LOGS_DIR)

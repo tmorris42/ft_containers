@@ -7,7 +7,6 @@
 #include <functional> // std::less
 #include <memory> // std::allocator
 #include "RBIterator.hpp"
-#include "ConstRBIterator.hpp"
 
 namespace ft
 {
@@ -173,7 +172,7 @@ namespace ft
 			typedef typename allocator_type::size_type	size_type;
 
 			typedef RBIterator<value_type, node_type >			iterator;		// should be custom LRAI
-			typedef ConstRBIterator<value_type, node_type >	const_iterator;
+			typedef RBIterator<value_type const, node_type >	const_iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			node_type	stump;
