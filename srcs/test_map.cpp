@@ -1102,6 +1102,29 @@ int test_map_swap_segfault()
 	return (0);
 }
 
+int test_map_stress_basic()
+{
+	FT::vector<int>	v1;
+	FT::vector<int>		v2;
+	FT::map<int, int>	m;
+
+	for (int c = 0; c <= 10000; ++c)
+	{
+		v1.push_back(c);
+		v2.push_back(c);
+	}
+
+	ASSERT_EQUAL(v1.size(), v2.size());
+
+	for (size_t N = 0; N < v1.size(); ++N)
+	{
+		m[v1[N]] = v2[N];
+	}
+
+	print_map(m);
+
+	return (0);
+}
 
 void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 {
@@ -1139,4 +1162,5 @@ void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_const_map);
 	ADD_TEST(testlist, test_map_insert_hint);
 	ADD_TEST(testlist, test_map_swap_segfault);
+	ADD_TEST(testlist, test_map_stress_basic);	
 }
