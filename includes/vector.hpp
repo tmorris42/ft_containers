@@ -287,15 +287,7 @@ namespace ft
 
 		iterator erase(iterator pos)
 		{
-			iterator ret = pos;
-			while (pos + 1 != this->end())
-			{
-				*pos = *(pos + 1);
-				++pos;
-			}
-			this->get_allocator().destroy(pos);
-			this->__size -= 1;
-			return (ret);
+			return (erase(pos, pos + 1));
 		}
 
 		iterator erase(iterator first, iterator last)
