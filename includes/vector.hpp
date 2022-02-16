@@ -99,13 +99,7 @@ namespace ft
 		// Element access
 		reference at(size_type pos)
 		{
-			if (!(pos < this->size()))
-			{
-				std::stringstream ss;
-				ss << "vector::_M_range_check: __n (which is " << pos << ") >= this->size() (which is " << this->size() << ")";
-				throw std::out_of_range(ss.str());
-			}
-			return (*(this->__start + pos));
+			return (const_cast<reference>(static_cast<const vector &>(*this).at(pos)));
 		}
 		const_reference at(size_type pos) const
 		{
@@ -120,7 +114,7 @@ namespace ft
 
 		reference operator[](size_type pos)
 		{
-			return (*(this->__start + pos));
+			return (const_cast<reference>(static_cast<const vector &>(*this).operator[](pos)));
 		}
 		const_reference operator[](size_type pos) const
 		{
@@ -129,7 +123,7 @@ namespace ft
 
 		reference front()
 		{
-			return (*__start);
+			return (const_cast<reference>(static_cast<const vector &>(*this).front()));
 		};
 		const_reference front() const
 		{
@@ -137,7 +131,7 @@ namespace ft
 		};
 		reference back()
 		{
-			return (*(this->__start + this->size() - 1));
+			return (const_cast<reference>(static_cast<const vector &>(*this).back()));
 		};
 		const_reference back() const
 		{
@@ -146,7 +140,7 @@ namespace ft
 
 		pointer data()
 		{
-			return (this->__start);
+			return (const_cast<reference>(static_cast<const vector &>(*this).data()));
 		}
 
 		const_pointer data() const
