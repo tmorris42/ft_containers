@@ -213,37 +213,42 @@ namespace ft
 			this->delete_tree(this->stump.left);
 		}
 
-		node_type *recursive_search(node_type *current_node, value_type const &value)
+		// node_type *recursive_search(node_type *current_node, value_type const &value) const
+		// {
+		// 	if (!current_node)
+		// 		return (NULL);
+		// 	if (this->values_equal(current_node->value, value))
+		// 		return (current_node);
+		// 	if (this->values_less_than(value, current_node->value))
+		// 		return (recursive_search(current_node->left, value));
+		// 	return (recursive_search(current_node->right, value));
+		// }
+		node_type *iterative_search(value_type const & value) const
 		{
-			if (!current_node)
-				return (NULL);
-			if (this->values_equal(current_node->value, value))
-				return (current_node);
-			if (this->values_less_than(value, current_node->value))
-				return (recursive_search(current_node->left, value));
-			return (recursive_search(current_node->right, value));
-		}
-		node_type *recursive_search(node_type *current_node, value_type const &value) const
-		{
-			if (!current_node)
-				return (NULL);
-			if (this->values_equal(current_node->value, value))
-				return (current_node);
-			if (this->values_less_than(value, current_node->value))
-				return (recursive_search(current_node->left, value));
-			return (recursive_search(current_node->right, value));
+			node_type * node = this->stump.left;
+			while (node)
+			{
+				if (this->values_less_than(node->value, value))
+					node = node->right;
+				else if (this->values_less_than(value, node->value))
+					node = node->left;
+				else
+					break;
+			}
+			return (node);
 		}
 		iterator search(value_type const &value)
 		{
-			node_type *node;
-			node = recursive_search(this->stump.left, value);
+			// node_type *node = recursive_search(this->stump.left, value);
+			node_type *node = iterative_search(value);
 			if (!node)
 				return (this->end());
 			return (iterator(node));
 		}
 		const_iterator search(value_type const &value) const
 		{
-			node_type *node = recursive_search(this->stump.left, value);
+			// node_type *node = recursive_search(this->stump.left, value);
+			node_type *node = iterative_search(value);
 			if (!node)
 				return (this->end());
 			return (const_iterator(node));
@@ -366,7 +371,7 @@ namespace ft
 						current_node = current_node->right;
 				}
 			}
-			this->recolor(new_node);
+			this->recolor_insert_iter(new_node);
 			it = iterator(new_node);
 			return (it);
 		}
@@ -379,54 +384,126 @@ namespace ft
 			node_type *node = reinterpret_cast<node_type *>(&(*hint));
 			return (this->insert(node, value));
 		}
-		void recolor(node_type *new_node)
+		void recolor_insert_iter(node_type *node)
 		{
-			if (!new_node)
-				return;
-			if (new_node == this->stump.left)
-				new_node->color = RB_BLACK;
-			else if (new_node->parent && new_node->parent->color == RB_RED)
+			while (node && node->parent && node->parent->color == RB_RED)
 			{
-				node_type *parent = getParent(new_node);
-				node_type *grandparent = getGrandparent(new_node);
-				node_type *uncle = getUncle(new_node);
-				if (uncle && uncle->color == RB_RED)
+				if (node->parent == this->stump.left)
 				{
-					uncle->color = RB_BLACK;
-					parent->color = RB_BLACK;
-					grandparent->color = RB_RED;
-					this->recolor(grandparent);
+					node->color = RB_BLACK;
 					return;
 				}
-				else
+				node_type *parent = getParent(node);
+				node_type *grandparent = getGrandparent(node);
+				node_type *uncle = getUncle(node);
+				if (node->parent == grandparent->left)
 				{
-					if (parent->left == new_node)
+					// Fix double red in left subtree
+					if (uncle && uncle->color == RB_RED)
 					{
-						if (grandparent && grandparent->right == parent)
-							this->rotateLeft(parent);
-						this->rotateRight(grandparent);
+						// grandparent has two red children
+						node->parent->color = RB_BLACK;
+						uncle->color = RB_BLACK;
+						// if (grandparent)
+							grandparent->color = RB_RED;
+						node = grandparent;
 					}
 					else
 					{
-						if (grandparent && grandparent->left == parent)
-							this->rotateRight(parent);
-						this->rotateLeft(grandparent);
+						// grandparent has one black and one red child
+						if (node == parent->right)
+						{
+							node = parent;
+							this->rotateLeft(node);
+						}
+						node->parent->color = RB_BLACK;
+						node->parent->parent->color = RB_RED;
+						this->rotateRight(node->parent->parent);
 					}
-					this->swap_color(parent, grandparent);
-					this->stump.left->color = RB_BLACK;
+				}
+				else
+				{
+					// Fix double red in right subtree
+					if (uncle && uncle->color == RB_RED)
+					{
+						// grandparent has two red children
+						node->parent->color = RB_BLACK;
+						uncle->color = RB_BLACK;
+						// if (grandparent)
+							grandparent->color = RB_RED;
+						node = grandparent;
+					}
+					else
+					{
+						// grandparent has one black and one red child
+						if (node == parent->left)
+						{
+							node = parent;
+							this->rotateRight(node);
+						}
+						node->parent->color = RB_BLACK;
+						node->parent->parent->color = RB_RED;
+						this->rotateLeft(node->parent->parent);
+					}
 				}
 			}
+			this->stump.color = RB_BLACK;
 		}
-		void swap_color(node_type *node1, node_type *node2)
-		{
-			bool tmp;
+		// void recolor_insert(node_type *new_node)
+		// {
+		// 	if (!new_node)
+		// 		return;
+		// 	if (new_node == this->stump.left)
+		// 	{
+		// 		new_node->color = RB_BLACK;
+		// 		return;
+		// 	}
+		// 	if (new_node->parent && new_node->parent->color == RB_RED)
+		// 	{
+		// 		node_type *parent = getParent(new_node);
+		// 		node_type *grandparent = getGrandparent(new_node);
+		// 		node_type *uncle = getUncle(new_node);
+		// 		if (uncle && uncle->color == RB_RED)
+		// 		{
+		// 			uncle->color = RB_BLACK;
+		// 			parent->color = RB_BLACK;
+		// 			grandparent->color = RB_RED;
+		// 			this->recolor_insert(grandparent);
+		// 			return;
+		// 		}
+		// 		else
+		// 		{
+		// 			if (grandparent && grandparent->left == parent)
+		// 			{
+		// 				if (parent && parent->right == new_node)
+		// 					this->rotateLeft(parent);
+		// 				parent->color = RB_BLACK;
+		// 				grandparent->color = RB_RED;
+		// 				this->rotateRight(grandparent);
+		// 			}
+		// 			else
+		// 			{
+		// 				if (parent && parent->left == new_node)
+		// 					this->rotateRight(parent);
+		// 				parent->color = RB_BLACK;
+		// 				grandparent->color = RB_RED;
+		// 				this->rotateLeft(grandparent);
+		// 			}
+		// 			// this->swap_color(parent, grandparent);
+		// 			this->stump.left->color = RB_BLACK;
+		// 		}
+		// 	}
+		// }
+		// void swap_color(node_type *node1, node_type *node2)
+		// {
+		// 	bool tmp;
 
-			if (!node1 || !node2)
-				return;
-			tmp = node1->color;
-			node1->color = node2->color;
-			node2->color = tmp;
-		}
+		// 	if (!node1 || !node2)
+		// 		return;
+		// 	tmp = node1->color;
+		// 	node1->color = node2->color;
+		// 	node2->color = tmp;
+		// }
 		void swap(RB_Tree<ValueType, Compare, Allocator> &other)
 		{
 			node_type *tmp;
@@ -457,7 +534,7 @@ namespace ft
 			if (!grandparent)
 			{
 				this->stump.left = child;
-				child->parent = NULL;
+				child->parent = &this->stump;
 			}
 			else if (grandparent->left == parent)
 			{
@@ -494,7 +571,7 @@ namespace ft
 			if (!grandparent)
 			{
 				this->stump.left = child;
-				child->parent = NULL;
+				child->parent = &this->stump;
 			}
 			else
 			{
