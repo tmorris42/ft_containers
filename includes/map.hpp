@@ -239,19 +239,17 @@ namespace ft
 			}
 			iterator upper_bound(const key_type & k)
 			{
-				iterator	it = this->begin();
-				iterator	ite = this->end();
-				while (it != ite && !this->key_comp()(k, it->first))
-					++it;
-				return (it);
+				iterator	it = this->lower_bound(k);
+				if (!it || this->key_comp()(k, it->first))
+					return (it);
+				return (it + 1);
 			}
 			const_iterator upper_bound(const key_type & k) const
 			{
-				const_iterator	it = this->begin();
-				const_iterator	ite = this->end();
-				while (it != ite && !this->key_comp()(k, it->first))
-					++it;
-				return (it);
+				const_iterator	it = this->lower_bound(k);
+				if (!it || this->key_comp()(k, it->first))
+					return (it);
+				return (it + 1);
 			}
 			ft::pair<iterator, iterator>	equal_range(const key_type & k)
 			{
