@@ -23,11 +23,6 @@ namespace ft
 		typedef RBIterator<ValueType, NodeType>	iterator_type;
 		typedef ConstRBIterator<ValueType, NodeType>	const_iterator_type;
 
-		// operator RBIterator<ValueType const, NodeType>() const
-		// {
-		// 	return (const_iterator_type(this->data));
-		// }
-
 		RBIterator(node_pointer const ptr = 0)
 		: const_iterator_type(ptr)
 		{
@@ -146,10 +141,6 @@ namespace ft
 			ret -= n;
 			return (ret);
 		}
-
-		protected:
-			// node_pointer	data;
-			// node_pointer	mut_data;
 	};
 }
 #endif

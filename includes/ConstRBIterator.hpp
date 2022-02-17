@@ -31,16 +31,11 @@ namespace ft
 		: data(ptr)
 		{
 		}
-		// ConstRBIterator(const_node_pointer ptr)
-		// : data(ptr)
-		// {
-		// }
+
 		ConstRBIterator(const_iterator const & src)
 		: data(src.data)
 		{}
-		// ConstRBIterator(iterator const & src)
-		// : RBIterator<value_type, NodeType>(src)
-		// {}
+
 		ConstRBIterator const & operator=(ConstRBIterator const & src) {
 			if (this != &src)
 			{
@@ -48,14 +43,8 @@ namespace ft
 			}
 			return (*this);
 		}
-		// ConstRBIterator const & operator=(iterator const & src) {
-		// 	if (this != &src)
-		// 	{
-		// 		this->data = src.data;
-		// 	}
-		// 	return (*this);
-		// }
-		~ConstRBIterator() {}
+
+		virtual ~ConstRBIterator() {}
 
 		virtual bool operator==(ConstRBIterator const &other)
 		{
