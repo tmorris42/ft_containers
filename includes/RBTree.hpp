@@ -428,6 +428,8 @@ namespace ft
 				}
 			}
 			this->stump.color = RB_BLACK;
+			if (this->stump.left)
+				this->stump.left->color = RB_BLACK;
 		}
 		
 		void swap(RB_Tree<ValueType, Compare, Allocator> &other)
