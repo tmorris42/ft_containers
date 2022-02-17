@@ -1116,7 +1116,8 @@ int test_map_stress_basic()
 
 	ASSERT_EQUAL(v1.size(), v2.size());
 
-	for (size_t N = 0; N < v1.size(); ++N)
+	size_t size = v1.size();
+	for (size_t N = 0; N < size; ++N)
 	{
 		m[v1[N]] = v2[N];
 	}

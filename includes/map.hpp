@@ -231,19 +231,11 @@ namespace ft
 
 			iterator lower_bound(const key_type & k)
 			{
-				iterator	it = this->begin();
-				iterator	ite = this->end();
-				while (it != ite && this->key_comp()(it->first, k))
-					++it;
-				return (it);
+				return (iterator(this->c.lower_bound(ft::make_pair(k, mapped_type()))));
 			}
 			const_iterator lower_bound(const key_type & k) const
 			{
-				const_iterator	it = this->begin();
-				const_iterator	ite = this->end();
-				while (it != ite && this->key_comp()(it->first, k))
-					++it;
-				return (it);
+				return (const_iterator(this->c.lower_bound(ft::make_pair(k, mapped_type()))));
 			}
 			iterator upper_bound(const key_type & k)
 			{

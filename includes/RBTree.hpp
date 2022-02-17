@@ -874,9 +874,43 @@ namespace ft
 			while (current)
 			{
 				if (this->values_less_than(current->value, v))
+				{
+					if (!current->right)
+						return (&this->stump);
 					current = current->right;
+				}
 				else if (this->values_less_than(v, current->value))
+				{
+					if (!current->left)
+						return (current);
 					current = current->left;
+				}
+				else
+					break;
+			}
+			if (!current)
+				current = &this->stump;
+			return (current);
+		}
+
+		const node_type *lower_bound(const value_type & v) const
+		{
+			const node_type *current = this->stump.left;
+
+			while (current)
+			{
+				if (this->values_less_than(current->value, v))
+				{
+					if (!current->right)
+						return (&this->stump);
+					current = current->right;
+				}
+				else if (this->values_less_than(v, current->value))
+				{
+					if (!current->left)
+						return (current);
+					current = current->left;
+				}
 				else
 					break;
 			}
