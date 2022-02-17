@@ -24,7 +24,7 @@ INCLUDES = -I$(INCLUDE_DIR)
 DEPS = $(OBJS:.o=.d)
 
 VALGRIND_LOG = $(addprefix $(LOGS_DIR), val.log)
-TIME_FORMAT = "elapsed time: %E"
+TIME_FORMAT = "elapsed time: %e\tsystem time: %S\tuser time: %U"
 
 CC_OVERRIDE ?= clang++
 CC	:= $(CC_OVERRIDE)
