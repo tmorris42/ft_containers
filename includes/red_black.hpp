@@ -7,6 +7,7 @@
 #include <functional> // std::less
 #include <memory> // std::allocator
 #include "RBIterator.hpp"
+#include "ConstRBIterator.hpp"
 
 namespace ft
 {
@@ -15,9 +16,10 @@ namespace ft
 	{
 		typedef Node	node_type;
 		typedef Node *	node_pointer;
+		typedef Node const *	const_node_pointer;
 		typedef ValueType	value_type;
 		typedef const ValueType	const_value_type;
-		// typedef const Node<ValueType, Compare>	const_node_type;
+		// typedef const Node<const_value_type, Compare>	const_node_type;
 
 		ValueType	value;
 		Node		*left;
@@ -32,6 +34,27 @@ namespace ft
 		Node()
 		: value(), left(NULL), right(NULL), parent(NULL), color(RB_BLACK)
 		{}
+		// Node<const_value_type, Compare>()
+		// {
+		// 	return const_node_type()
+		// }
+
+		value_type	&operator*()
+		{
+			return (this->value);
+		}
+		const_value_type	&operator*() const
+		{
+			return (this->value);
+		}
+		value_type	*	operator->()
+		{
+			return (&(this->operator*()));
+		}
+		const_value_type	*operator->() const
+		{
+			return (&(this->operator*()));
+		}
 
 		node_type	*max(node_type *node)
 		{
@@ -92,20 +115,28 @@ namespace ft
 			return (stump);
 		}
 
-		node_type	*prev()
+		const node_type	*prev() const
 		{
 			if (!this->parent || this->left)
 				return (this->max(this->left));
 			return (this->getNextLesserParent());
 		}
+		node_type	*prev()
+		{
+			return (const_cast<node_type *>(static_cast<const Node &>(*this).prev()));
+		}
 
-		node_type	*next()
+		const node_type	*next() const
 		{
 			if (!this->parent)
 				return (this->min());
 			if (this->right)
 				return (this->min(this->right));
 			return (this->getNextGreaterParent());
+		}
+		node_type	*next()
+		{
+			return (const_cast<node_type *>(static_cast<const Node &>(*this).next()));
 		}
 
 		private:
@@ -118,11 +149,11 @@ namespace ft
 			return (Compare()(value1, value2));
 		}
 
-		node_pointer getNextGreaterParent()
+		const_node_pointer getNextGreaterParent() const
 		{
 			if (!this->parent)
 				return (NULL);
-			node_pointer current = this;
+			const_node_pointer current = this;
 			value_type	target = current->value;
 			while (current && !this->values_less_than(target, current->value))
 			{
@@ -132,11 +163,11 @@ namespace ft
 			}
 			return (current);
 		}
-		node_pointer getNextLesserParent()
+		const_node_pointer getNextLesserParent() const
 		{
 			if (!this->parent)
 				return (NULL);
-			node_pointer current = this;
+			const_node_pointer current = this;
 			value_type	target = current->value;
 			while (current && !this->values_less_than(current->value, target))
 			{
@@ -164,15 +195,15 @@ namespace ft
 		public:
 			typedef Node<ValueType, Compare> node_type;
 			// typedef node_type const_node_type;
-			typedef const node_type const_node_type;
-			// typedef Node<ValueType, Compare> const_node_type;
+			// typedef const node_type const_node_type;
+			typedef Node<const ValueType, Compare> const_node_type;
 			typedef ValueType		value_type;
 			typedef const ValueType		const_value_type;
 			typedef Allocator		allocator_type;
 			typedef typename allocator_type::size_type	size_type;
 
 			typedef RBIterator<value_type, node_type >			iterator;		// should be custom LRAI
-			typedef RBIterator<value_type const, node_type >	const_iterator;
+			typedef ConstRBIterator<value_type, node_type >	const_iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			node_type	stump;
@@ -524,13 +555,13 @@ namespace ft
 			{
 				return (this->max(this->stump.left));
 			}
-			const_node_type	*max(node_type *node) const
+			const node_type	*max(node_type *node) const
 			{
 				if (!node)
 					return (&(this->stump));
 				return (node->max());
 			}
-			const_node_type	*max() const
+			const node_type	*max() const
 			{
 				return (this->max(this->stump.left));
 			}
@@ -540,7 +571,7 @@ namespace ft
 					return (&(this->stump));
 				return (node->min());
 			}
-			const_node_type	*min(node_type *node) const
+			const node_type	*min(node_type *node) const
 			{
 				if (!node)
 					return ((&(this->stump)));
@@ -550,7 +581,7 @@ namespace ft
 			{
 				return (this->min(this->stump.left));
 			}
-			const_node_type	*min() const
+			const node_type	*min() const
 			{
 				return (this->min(this->stump.left));
 			}

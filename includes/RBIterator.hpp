@@ -2,10 +2,11 @@
 #define TREE_ITERATOR_HPP
 
 #include "iterator.hpp"
+#include "ConstRBIterator.hpp"
 namespace ft
 {
 	template <class ValueType, class NodeType >
-	class RBIterator
+	class RBIterator : public ConstRBIterator<ValueType, NodeType>
 	{
 		public:
 		typedef ft::biderectional_iterator_tag	iterator_category;
@@ -20,25 +21,21 @@ namespace ft
 		typedef NodeType const *	const_node_pointer;
 
 		typedef RBIterator<ValueType, NodeType>	iterator_type;
-		typedef RBIterator<ValueType const, NodeType>	const_iterator_type;
+		typedef ConstRBIterator<ValueType, NodeType>	const_iterator_type;
 
-		operator RBIterator<ValueType const, NodeType>() const
-		{
-			return (const_iterator_type(this->data));
-		}
+		// operator RBIterator<ValueType const, NodeType>() const
+		// {
+		// 	return (const_iterator_type(this->data));
+		// }
 
 		RBIterator(node_pointer const ptr = 0)
-		: data(ptr)
+		: const_iterator_type(ptr)
 		{
 		}
 		RBIterator(iterator_type const & src)
-		: data(src.data)
+		: const_iterator_type(src.data)
 		{}
-
-		RBIterator(const_node_pointer ptr)
-		: data(const_cast<node_pointer>(ptr))
-		{} // BEWARE CONST_CAST ********
-		RBIterator const & operator=(iterator_type const & src) {
+		RBIterator const & operator=(RBIterator const & src) {
 			if (this != &src)
 			{
 				this->data = src.data;
@@ -46,6 +43,11 @@ namespace ft
 			return (*this);
 		}
 		virtual ~RBIterator() {}
+
+		operator const_iterator_type()
+		{
+			return (this->ConstRBIterator<const ValueType, NodeType>);
+		}
 
 		virtual bool operator==(iterator_type const &other)
 		{
@@ -56,19 +58,29 @@ namespace ft
 			return (!((*this) == other));
 		}
 
+		node_pointer	getMutableData()
+		{
+			return (const_cast<node_pointer>(this->data));
+		}
+
+		const node_pointer	getMutableData() const
+		{
+			return (const_cast<node_pointer>(this->data));
+		}
+
 		value_type	&operator*()
 		{
-			return (this->data->value);
+			return (this->getMutableData()->operator*());
 		}
-		const_value_type	&operator*() const
+		value_type	&operator*() const
 		{
-			return (this->data->value);
+			return (this->getMutableData()->operator*());
 		}
 		value_type	*	operator->()
 		{
 			return (&(this->operator*()));
 		}
-		const_value_type	*operator->() const
+		value_type	*operator->() const
 		{
 			return (&(this->operator*()));
 		}
@@ -136,7 +148,8 @@ namespace ft
 		}
 
 		protected:
-			node_pointer	data;
+			// node_pointer	data;
+			// node_pointer	mut_data;
 	};
 }
 #endif
