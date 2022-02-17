@@ -99,13 +99,7 @@ namespace ft
 		// Element access
 		reference at(size_type pos)
 		{
-			if (!(pos < this->size()))
-			{
-				std::stringstream ss;
-				ss << "vector::_M_range_check: __n (which is " << pos << ") >= this->size() (which is " << this->size() << ")";
-				throw std::out_of_range(ss.str());
-			}
-			return (*(this->__start + pos));
+			return (const_cast<reference>(static_cast<const vector &>(*this).at(pos)));
 		}
 		const_reference at(size_type pos) const
 		{
@@ -120,7 +114,7 @@ namespace ft
 
 		reference operator[](size_type pos)
 		{
-			return (*(this->__start + pos));
+			return (const_cast<reference>(static_cast<const vector &>(*this).operator[](pos)));
 		}
 		const_reference operator[](size_type pos) const
 		{
@@ -129,7 +123,7 @@ namespace ft
 
 		reference front()
 		{
-			return (*__start);
+			return (const_cast<reference>(static_cast<const vector &>(*this).front()));
 		};
 		const_reference front() const
 		{
@@ -137,7 +131,7 @@ namespace ft
 		};
 		reference back()
 		{
-			return (*(this->__start + this->size() - 1));
+			return (const_cast<reference>(static_cast<const vector &>(*this).back()));
 		};
 		const_reference back() const
 		{
@@ -146,7 +140,7 @@ namespace ft
 
 		pointer data()
 		{
-			return (this->__start);
+			return (const_cast<reference>(static_cast<const vector &>(*this).data()));
 		}
 
 		const_pointer data() const
@@ -240,12 +234,7 @@ namespace ft
 		iterator insert(iterator pos, const T &value)
 		{
 			difference_type diff = pos - this->begin();
-			if (diff < 0)
-				diff = 0;
-			this->__expand_to_hold(1);
-			this->__move_space(this->__start + diff + 1, this->__start + diff, this->size() - diff);
-			this->get_allocator().construct(this->__start + diff, value);
-			++this->__size;
+			this->insert(pos, 1, value);
 			return (this->__start + diff);
 		}
 
@@ -254,7 +243,7 @@ namespace ft
 			if (count < 1)
 				return ;
 			difference_type diff = pos - this->begin();
-			this->__expand_to_hold(count);
+			this->__expand_to_add(count);
 			this->__move_space(this->__start + diff + count, this->__start + diff, this->size() - diff);
 			while (count > 0)
 			{
@@ -274,7 +263,7 @@ namespace ft
 
 			for (InputIt it = first; it != last; ++it)
 				++len;
-			this->__expand_to_hold(len);
+			this->__expand_to_add(len);
 			this->__move_space(this->__start + diff + len, this->__start + diff, this->size() - diff);
 			while (first != last)
 			{
@@ -287,15 +276,7 @@ namespace ft
 
 		iterator erase(iterator pos)
 		{
-			iterator ret = pos;
-			while (pos + 1 != this->end())
-			{
-				*pos = *(pos + 1);
-				++pos;
-			}
-			this->get_allocator().destroy(pos);
-			this->__size -= 1;
-			return (ret);
+			return (erase(pos, pos + 1));
 		}
 
 		iterator erase(iterator first, iterator last)
@@ -329,7 +310,7 @@ namespace ft
 		void resize(size_type count, T value = T())
 		{
 			if (count > this->size())
-				this->__expand_to_hold(count - this->size());
+				this->__expand_to_add(count - this->size());
 			while (count < this->size())
 				this->pop_back();			
 			while (count > this->size())
@@ -422,7 +403,7 @@ namespace ft
 			this->__capacity = 0;
 			this->__start = NULL;
 		}
-		void __expand_to_hold(size_type count)
+		void __expand_to_add(size_type count)
 		{
 			if (this->capacity() - this->size() < count)
 			{
