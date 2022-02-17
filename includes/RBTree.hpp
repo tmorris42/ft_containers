@@ -152,27 +152,19 @@ namespace ft
 			if (!this->parent)
 				return (NULL);
 			const_node_pointer current = this;
-			value_type target = current->value;
-			while (current && !this->values_less_than(target, current->value))
-			{
-				if (!current->parent)
-					return (current);
+			while (current && current->parent && current->parent->right == current)
 				current = current->parent;
-			}
-			return (current);
+			return (current->parent);
 		}
 		const_node_pointer getNextLesserParent() const
 		{
 			if (!this->parent)
 				return (NULL);
 			const_node_pointer current = this;
-			value_type target = current->value;
-			while (current && !this->values_less_than(current->value, target))
-			{
-				if (!current->parent)
-					return (current);
+			while (current && current->parent && current->parent->left == current)
 				current = current->parent;
-			}
+			if (current->parent)
+				return (current->parent);
 			return (current);
 		}
 	};
@@ -213,16 +205,6 @@ namespace ft
 			this->delete_tree(this->stump.left);
 		}
 
-		// node_type *recursive_search(node_type *current_node, value_type const &value) const
-		// {
-		// 	if (!current_node)
-		// 		return (NULL);
-		// 	if (this->values_equal(current_node->value, value))
-		// 		return (current_node);
-		// 	if (this->values_less_than(value, current_node->value))
-		// 		return (recursive_search(current_node->left, value));
-		// 	return (recursive_search(current_node->right, value));
-		// }
 		node_type *iterative_search(value_type const & value) const
 		{
 			node_type * node = this->stump.left;
@@ -239,7 +221,6 @@ namespace ft
 		}
 		iterator search(value_type const &value)
 		{
-			// node_type *node = recursive_search(this->stump.left, value);
 			node_type *node = iterative_search(value);
 			if (!node)
 				return (this->end());
@@ -247,7 +228,6 @@ namespace ft
 		}
 		const_iterator search(value_type const &value) const
 		{
-			// node_type *node = recursive_search(this->stump.left, value);
 			node_type *node = iterative_search(value);
 			if (!node)
 				return (this->end());
@@ -449,61 +429,7 @@ namespace ft
 			}
 			this->stump.color = RB_BLACK;
 		}
-		// void recolor_insert(node_type *new_node)
-		// {
-		// 	if (!new_node)
-		// 		return;
-		// 	if (new_node == this->stump.left)
-		// 	{
-		// 		new_node->color = RB_BLACK;
-		// 		return;
-		// 	}
-		// 	if (new_node->parent && new_node->parent->color == RB_RED)
-		// 	{
-		// 		node_type *parent = getParent(new_node);
-		// 		node_type *grandparent = getGrandparent(new_node);
-		// 		node_type *uncle = getUncle(new_node);
-		// 		if (uncle && uncle->color == RB_RED)
-		// 		{
-		// 			uncle->color = RB_BLACK;
-		// 			parent->color = RB_BLACK;
-		// 			grandparent->color = RB_RED;
-		// 			this->recolor_insert(grandparent);
-		// 			return;
-		// 		}
-		// 		else
-		// 		{
-		// 			if (grandparent && grandparent->left == parent)
-		// 			{
-		// 				if (parent && parent->right == new_node)
-		// 					this->rotateLeft(parent);
-		// 				parent->color = RB_BLACK;
-		// 				grandparent->color = RB_RED;
-		// 				this->rotateRight(grandparent);
-		// 			}
-		// 			else
-		// 			{
-		// 				if (parent && parent->left == new_node)
-		// 					this->rotateRight(parent);
-		// 				parent->color = RB_BLACK;
-		// 				grandparent->color = RB_RED;
-		// 				this->rotateLeft(grandparent);
-		// 			}
-		// 			// this->swap_color(parent, grandparent);
-		// 			this->stump.left->color = RB_BLACK;
-		// 		}
-		// 	}
-		// }
-		// void swap_color(node_type *node1, node_type *node2)
-		// {
-		// 	bool tmp;
-
-		// 	if (!node1 || !node2)
-		// 		return;
-		// 	tmp = node1->color;
-		// 	node1->color = node2->color;
-		// 	node2->color = tmp;
-		// }
+		
 		void swap(RB_Tree<ValueType, Compare, Allocator> &other)
 		{
 			node_type *tmp;
@@ -939,6 +865,24 @@ namespace ft
 		size_t max_size() const
 		{
 			return (this->__alloc.max_size());
+		}
+
+		node_type *lower_bound(const value_type & v)
+		{
+			node_type *current = this->stump.left;
+
+			while (current)
+			{
+				if (this->values_less_than(current->value, v))
+					current = current->right;
+				else if (this->values_less_than(v, current->value))
+					current = current->left;
+				else
+					break;
+			}
+			if (!current)
+				current = &this->stump;
+			return (current);
 		}
 
 	private:
