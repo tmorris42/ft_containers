@@ -41,11 +41,6 @@ namespace ft
 		}
 		virtual ~RBIterator() {}
 
-		operator const_iterator_type()
-		{
-			return (this->ConstRBIterator<const ValueType, NodeType>);
-		}
-
 		virtual bool operator==(iterator_type const &other)
 		{
 			return (this->data == other.data);
@@ -60,7 +55,7 @@ namespace ft
 			return (const_cast<node_pointer>(this->data));
 		}
 
-		const node_pointer getMutableData() const
+		node_pointer getMutableData() const
 		{
 			return (const_cast<node_pointer>(this->data));
 		}
