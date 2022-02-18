@@ -32,9 +32,9 @@ namespace ft
 			typedef	typename allocator_type::reference			reference;
 			typedef typename allocator_type::const_reference	const_reference;
 
-			typedef typename RB_Tree< value_type, value_compare >::iterator			iterator;
+			typedef typename RB_Tree< value_type, value_compare >::const_iterator			iterator;
 			typedef typename RB_Tree< value_type, value_compare >::const_iterator	const_iterator;
-			typedef typename RB_Tree< value_type, value_compare >::reverse_iterator			reverse_iterator;
+			typedef typename RB_Tree< value_type, value_compare >::const_reverse_iterator			reverse_iterator;
 			typedef typename RB_Tree< value_type, value_compare >::const_reverse_iterator	const_reverse_iterator;
 
 			typedef typename iterator_traits<iterator>::difference_type		difference_type;
