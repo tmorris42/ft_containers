@@ -16,6 +16,7 @@ SRCS = main.cpp UnitTest.cpp \
 			test_stack.cpp \
 			test_rb_tree.cpp \
 			test_map.cpp \
+			test_set.cpp \
 
 
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.cpp=.o))

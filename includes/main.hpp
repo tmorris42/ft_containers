@@ -12,6 +12,7 @@
 #  include <map>
 #  include <stack>
 #  include <vector>
+#  include <set>
 #  include <iterator>
 #  include <type_traits>
 #  include <algorithm>
@@ -26,6 +27,7 @@
 #  include "algorithm.hpp"
 #  include "utility.hpp"
 #  include "RBTree.hpp"
+#  include "set.hpp"
 #  define FT ft
 # endif
 
