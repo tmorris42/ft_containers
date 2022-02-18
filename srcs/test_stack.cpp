@@ -28,11 +28,11 @@ int	test_stack_basic()
 	ASSERT_EQUAL(s.empty(), false);
 	ASSERT_EQUAL(s.size(), (size_t)1);
 	ASSERT_EQUAL(s.top(), 5);
-	// s.pop();
-	// ASSERT_EQUAL(s.top(), 0);
-	// ASSERT_EQUAL(s.size(), (size_t)0);
-	// ASSERT_EQUAL(s.empty(), true);
-
+	s.pop();
+	ASSERT_EQUAL(s.top(), 0);
+	ASSERT_EQUAL(s.size(), (size_t)0);
+	ASSERT_EQUAL(s.empty(), true);
+	print_stack(s);
 	return (0);
 }
 
@@ -62,31 +62,35 @@ int	test_stack_basic_cmp()
 	ASSERT_EQUAL(s1 < s3, false);
 	ASSERT_EQUAL(s1 > s3, true);
 
+	print_stack(s1);
+	print_stack(s2);
+	print_stack(s3);
+
 	return (0);
 }
 
 int             test_stack_default_copy(void)
 {
-	typedef FT::vector<int> container_type_used;
-	typedef FT::stack<int, container_type_used> stack_type;
-	typedef stack_type::container_type container_type;
-	container_type  ctnr;
-	ctnr.push_back(21);
-	ctnr.push_back(42);
-	ctnr.push_back(1337);
-	ctnr.push_back(19);
-	ctnr.push_back(0);
-	ctnr.push_back(183792);
+	typedef FT::vector<int> container_type;
+	typedef FT::stack<int, container_type> stack_type;
 
-	stack_type             stck(ctnr);
-	print_stack(stck);
-	stck.push(1);
-	stck.push(2);
-	stck.push(3);
-	stck.push(4);
-	stck.push(5);
-	stck.push(6);
-	print_stack(stck);
+	container_type  c;
+	c.push_back(5);
+	c.push_back(10);
+	c.push_back(42);
+	c.push_back(21);
+	c.push_back(0);
+	c.push_back(654683);
+
+	stack_type             s(c);
+	print_stack(s);
+	s.push(1);
+	s.push(2);
+	s.push(3);
+	s.push(4);
+	s.push(5);
+	s.push(6);
+	print_stack(s);
 
 	return (0);
 }
