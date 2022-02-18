@@ -2,7 +2,6 @@
 # define MAP_HPP
 
 # include <memory> // for std::allocator
-//# include <iostream> // For input output
 # include <stdexcept> // For standard exceptions
 # include <sstream> // For exception what() string generation
 # include <limits> // For numeric_limits in max_size()
@@ -198,7 +197,7 @@ namespace ft
 
 			void erase(iterator position)
 			{
-				this->c.delete_node(this->c.stump.left, *position); // Not optimized, should start from iterator position, not root
+				this->c.delete_node(position, *position);
 			}
 			size_type erase(const key_type & k)
 			{

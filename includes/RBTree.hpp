@@ -19,7 +19,6 @@ namespace ft
 		typedef Node const *const_node_pointer;
 		typedef ValueType value_type;
 		typedef const ValueType const_value_type;
-		// typedef const Node<const_value_type, Compare>	const_node_type;
 
 		ValueType value;
 		Node *left;
@@ -684,6 +683,11 @@ namespace ft
 			if (node->parent->left == node)
 				return (&node->parent->left);
 			return (NULL);
+		}
+		void delete_node(iterator hint, value_type const & value)
+		{
+			node_type *node = reinterpret_cast<node_type *>(&(*hint));
+			this->delete_node(node, value);
 		}
 		void delete_node(node_type *node, value_type const &value)
 		{

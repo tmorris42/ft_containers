@@ -2,7 +2,6 @@
 # define SET_HPP
 
 # include <memory> // for std::allocator
-//# include <iostream> // For input output
 # include <stdexcept> // For standard exceptions
 # include <sstream> // For exception what() string generation
 # include <limits> // For numeric_limits in max_size()
@@ -99,8 +98,21 @@ namespace ft
 			}
 			iterator insert(iterator position, const value_type & val)
 			{
-				++position; // Just to use parameter position
-				return (this->insert(val).first); // Not optimized for position
+				iterator	ite = this->end();
+
+				if (this->empty())
+					return (this->insert(val).first);
+				while (position != ite && this->key_comp()(position->first, val.first))
+					++position;
+				while (position == ite || (position != this->begin() && this->key_comp()(val.first, position->first)))
+					--position;
+				if (position == ite)
+					return (this->c.insert(position - 1, val));
+				if (position->first == val.first)
+					return (position);
+				if (this->key_comp()(val.first, position->first))
+					return (this->insert(val).first);
+				return (this->c.insert(position, val));
 			}
 			
 			template <class InputIterator>
@@ -160,7 +172,7 @@ namespace ft
 
 			void erase(iterator position)
 			{
-				this->c.delete_node(this->c.stump.left, *position); // Not optimized, should start from iterator position, not root
+				this->c.delete_node(position, *position);
 			}
 			size_type erase(const key_type & k)
 			{
@@ -193,35 +205,25 @@ namespace ft
 
 			iterator lower_bound(const key_type & k)
 			{
-				iterator	it = this->begin();
-				iterator	ite = this->end();
-				while (it != ite && this->key_comp()(*it, k))
-					++it;
-				return (it);
+				return (iterator(this->c.lower_bound(k)));
 			}
 			const_iterator lower_bound(const key_type & k) const
 			{
-				const_iterator	it = this->begin();
-				const_iterator	ite = this->end();
-				while (it != ite && this->key_comp()(*it, k))
-					++it;
-				return (it);
+				return (const_iterator(this->c.lower_bound(k)));
 			}
 			iterator upper_bound(const key_type & k)
 			{
-				iterator	it = this->begin();
-				iterator	ite = this->end();
-				while (it != ite && !this->key_comp()(k, *it))
-					++it;
-				return (it);
+				iterator	it = this->lower_bound(k);
+				while (!it || this->key_comp()(k, *it))
+					return (it);
+				return (it + 1);
 			}
 			const_iterator upper_bound(const key_type & k) const
 			{
-				const_iterator	it = this->begin();
-				const_iterator	ite = this->end();
-				while (it != ite && !this->key_comp()(k, *it))
-					++it;
-				return (it);
+				const_iterator	it = this->lower_bound(k);
+				while (!it || this->key_comp()(k, *it))
+					return (it);
+				return (it + 1);
 			}
 			ft::pair<iterator, iterator>	equal_range(const key_type & k)
 			{
