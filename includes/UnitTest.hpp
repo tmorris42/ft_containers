@@ -9,21 +9,18 @@
 #include <unistd.h>	   //	fork
 #include <stdlib.h>	   // exit
 
-#define FRAMEWORK_NAMESPACE std
-// SHOULD USE MY VERSION!!! ******IMPORTANT******
-
 #ifdef FT_REAL_VERSION
 #include <map>
 #include <stack>
 #include <vector>
 #define FT std
 #else
-// #  "map.hpp"
-// #include "stack.hpp"
 #include "vector.hpp"
 #include <vector>
 #define FT ft
 #endif
+
+#define FRAMEWORK_NAMESPACE FT
 
 extern bool VERBOSE;
 
