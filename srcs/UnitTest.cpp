@@ -19,7 +19,6 @@ void print_test_results(Test2 *test)
 	if (WIFEXITED(test->status) && !WEXITSTATUS(test->status))
 	{
 		std::cout << "\x1B[32mOK\x1B[m";
-		// ++ut_tests_passed;
 	}
 	else
 	{
@@ -51,6 +50,7 @@ int launch_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, Test2 *test)
 	if (pid < 0)
 	{
 		//error
+		return (-1);
 	}
 	else if (!pid)
 	{

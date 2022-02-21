@@ -124,7 +124,6 @@ namespace ft
 
 		reference operator*()
 		{
-			// iterator_type	temp(this->current - 1);
 			return (*(this->current - 1));
 		}
 

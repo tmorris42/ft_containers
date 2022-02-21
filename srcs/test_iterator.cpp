@@ -51,13 +51,6 @@ int	test_reverse_iterator_vector()
 return (0);
 }
 
-// int	test_enable_if()
-// {
-// 	FT::vector<int> Vec;
-// 	Vec.insert(Vec.begin(), 10, 42);
-// 	return (0);
-// }
-
 int	test_lexicographical_compare()
 {
 	bool	ret;
@@ -138,7 +131,6 @@ void	add_test_iterator_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_random_access_iterator_tag_int);
 	ADD_TEST(testlist, test_random_access_iterator_tag_vector);
 	ADD_TEST(testlist, test_reverse_iterator_vector);
-	// ADD_TEST(testlist, test_enable_if); // Won't Compile
 	ADD_TEST(testlist, test_lexicographical_compare);
 	ADD_TEST(testlist, test_pair);
 }

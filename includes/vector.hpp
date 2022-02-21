@@ -2,7 +2,6 @@
 #define VECTOR_HPP
 
 #include <memory> // for std::allocator
-//# include <iostream> // For input output
 #include <stdexcept> // For standard exceptions
 #include <sstream>	 // For exception what() string generation
 #include <limits>	 // For numeric_limits in max_size()
@@ -408,7 +407,6 @@ namespace ft
 			if (this->capacity() - this->size() < count)
 			{
 				size_type new_capacity = this->size() * 2;
-				// if (this->size() < this->capacity() || (this->size() + count > new_capacity))
 				if (this->size() + count > new_capacity)
 					new_capacity = this->size() + count;
 				this->reserve(new_capacity);

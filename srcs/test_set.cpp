@@ -87,7 +87,7 @@ int	test_set_constructors()
 	print_set(fifth);
 
 	bool (*fncmp_ptr)(int, int) = fncmp;
-	FT::set<int,  bool(*)(int, int)> sixth(fncmp_ptr); // Using class as Compare
+	FT::set<int,  bool(*)(int, int)> sixth(fncmp_ptr); // Using function as Compare
 	print_set(sixth);
 	return (0);
 }
@@ -95,11 +95,11 @@ int	test_set_constructors()
 int	test_set_operator_assign()
 {
 	int myints[]={ 12,82,37,64,15 };
-	FT::set<int> first (myints, myints+5);   // set with 5 ints
-	FT::set<int> second;                    // empty set
+	FT::set<int> first (myints, myints+5);
+	FT::set<int> second;
 
-	second = first;                          // now second contains the 5 ints
-	first = FT::set<int>();                 // and first is empty
+	second = first;
+	first = FT::set<int>();
 
 	print_set(first);
 	print_set(second);

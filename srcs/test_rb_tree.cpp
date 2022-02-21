@@ -20,10 +20,7 @@ void printBT(const std::string& prefix, const ft::Node<T, Compare>* node, bool i
 			std::cout << "R:";
 		else
 			std::cout << "B:";
-        // print the value of the node
         std::cout << node->value << std::endl;
-
-        // enter the next tree level - left and right branch
         printBT<T, Compare>( prefix + (isLeft ? "│   " : "    "), node->left, true);
         printBT<T, Compare>( prefix + (isLeft ? "│   " : "    "), node->right, false);
     }
@@ -57,7 +54,7 @@ int test_rb_tree_insert()
 	ASSERT_EQUAL(*rb.search(6), 6);
 	ASSERT_EQUAL(*rb.search(7), 7);
 	ASSERT_EQUALQ(rb.search(8), rb.end());
-	// printBT(&rb);
+	printBT(&rb);
 	return (0);
 }
 
@@ -143,7 +140,7 @@ int test_rb_ascending_insert()
 	ASSERT_EQUAL(rb.stump.left->right->color, RB_RED);
 	ASSERT_EQUAL(rb.stump.left->right->value, 8);
 	rb.insert(10);
-	// printBT(&rb);
+	printBT(&rb);
 	ASSERT_EQUAL(rb.stump.left->color, RB_BLACK);
 	ASSERT_EQUAL(rb.stump.left->value, 8);
 	ASSERT_EQUAL(rb.stump.left->left->color, RB_RED);
@@ -185,40 +182,6 @@ int test_rb_recoloring_insert()
 	ASSERT_EQUAL(rb.stump.left->right->right->value, 11);
 	return (0);
 }
-
-// int test_rb_recoloring_delete()
-// {
-// 	ft::RB_Tree<int>	rb;
-// 	void				*nptr = NULL;
-
-// 	rb.insert(5);
-// 	ASSERT_EQUAL(rb.stump.left->color, RB_BLACK);
-// 	ASSERT_EQUAL(rb.stump.left->value, 5);
-// 	rb.insert(8);
-// 	ASSERT_EQUAL(rb.stump.left->color, RB_BLACK);
-// 	ASSERT_EQUAL(rb.stump.left->value, 5);
-// 	ASSERT_EQUAL(rb.stump.left->left, nptr);
-// 	ASSERT_EQUAL(rb.stump.left->right->color, RB_RED);
-// 	ASSERT_EQUAL(rb.stump.left->right->value, 8);
-// 	rb.insert(4);
-// 	ASSERT_EQUAL(rb.stump.left->color, RB_BLACK);
-// 	ASSERT_EQUAL(rb.stump.left->value, 5);
-// 	ASSERT_EQUAL(rb.stump.left->left->color, RB_RED);
-// 	ASSERT_EQUAL(rb.stump.left->left->value, 4);
-// 	ASSERT_EQUAL(rb.stump.left->right->color, RB_RED);
-// 	ASSERT_EQUAL(rb.stump.left->right->value, 8);
-// 	rb.insert(11);
-// 	ASSERT_EQUAL(rb.stump.left->color, RB_BLACK);
-// 	ASSERT_EQUAL(rb.stump.left->value, 5);
-// 	ASSERT_EQUAL(rb.stump.left->left->color, RB_BLACK);
-// 	ASSERT_EQUAL(rb.stump.left->left->value, 4);
-// 	ASSERT_EQUAL(rb.stump.left->right->color, RB_BLACK);
-// 	ASSERT_EQUAL(rb.stump.left->right->value, 8);
-// 	ASSERT_EQUAL(rb.stump.left->right->right->color, RB_RED);
-// 	ASSERT_EQUAL(rb.stump.left->right->right->value, 11);
-// 	rb.delete()
-// 	return (0);
-// }
 
 int test_rb_begin()
 {
@@ -378,8 +341,6 @@ void	add_test_rb_tree_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_rb_size);
 	ADD_TEST(testlist, test_rb_size_low_high_med);
 	ADD_TEST(testlist, test_rb_four_chars);
-
-	
 
 	ADD_TEST(testlist, test_rb_playground);
 }

@@ -1,43 +1,6 @@
 #include "tests.hpp"
 #include <list>
 
-// --- Class foo from mli
-template <typename T>
-class foo {
-	public:
-		typedef T	value_type;
-
-		foo(void) : value(), _verbose(false) { };
-		foo(value_type src, const bool verbose = false) : value(src), _verbose(verbose) { };
-		foo(foo const &src, const bool verbose = false) : value(src.value), _verbose(verbose) { };
-		~foo(void) { if (this->_verbose && VERBOSE) std::cout << "~foo::foo()" << std::endl; };
-		void m(void) { if (VERBOSE) std::cout << "foo::m called [" << this->value << "]" << std::endl; };
-		void m(void) const { if (VERBOSE) std::cout << "foo::m const called [" << this->value << "]" << std::endl; };
-		foo &operator=(value_type src) { this->value = src; return *this; };
-		foo &operator=(foo const &src) {
-			if (VERBOSE && (this->_verbose || src._verbose))
-				std::cout << "foo::operator=(foo) CALLED" << std::endl;
-			this->value = src.value;
-			return *this;
-		};
-		value_type	getValue(void) const { return this->value; };
-		void		switchVerbose(void) { this->_verbose = !(this->_verbose); };
-
-		operator value_type(void) const {
-			return value_type(this->value);
-		}
-	private:
-		value_type	value;
-		bool		_verbose;
-};
-
-template <typename T>
-std::ostream	&operator<<(std::ostream &o, foo<T> const &bar) {
-	o << bar.getValue();
-	return o;
-}
-// --- End of class foo
-
 template <class T1, class T2>
 static void print_map(FT::map<T1, T2> m)
 {
@@ -118,7 +81,7 @@ int test_map_empty()
 {
 	FT::map<char, int> m;
 
-	FT::pair<const char, int> p1; //('a', 10);
+	FT::pair<const char, int> p1;
 	FT::pair<const char, int> p2('b', 20);
 
 	ASSERT_EQUAL(m.empty(), true);
@@ -563,114 +526,6 @@ int test_map_overload()
 	return (0);
 }
 
-int		test_map_mli_copy_construct(void)
-{
-	typedef int T1;
-	typedef int T2;
-
-	typedef FT::pair<const T1, T2> T3;
-	std::list<T3> lst;
-	unsigned int lst_size = 7;
-	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back(T3(lst_size - i, i));
-
-	FT::map<T1, T2> mp(lst.begin(), lst.end());
-	FT::map<T1, T2>::iterator it = mp.begin(), ite = mp.end();
-
-	FT::map<T1, T2> mp_range(it, --(--ite));
-	for (int i = 0; it != ite; ++it)
-		it->second = ++i * 5;
-
-	it = mp.begin(); ite = --(--mp.end());
-	FT::map<T1, T2> mp_copy(mp);
-	for (int i = 0; it != ite; ++it)
-		it->second = ++i * 7;
-
-	if (VERBOSE)
-		std::cout << "\t-- PART ONE --" << std::endl;
-	print_map(mp);
-	print_map(mp_range);
-	print_map(mp_copy);
-
-	mp = mp_copy;
-	mp_copy = mp_range;
-	mp_range.clear();
-
-	if (VERBOSE)
-		std::cout << "\t-- PART TWO --" << std::endl;
-	print_map(mp);
-	print_map(mp_range);
-	print_map(mp_copy);
-	return (0);
-}
-
-void	ft_find(int const &k, FT::map<int, std::string> mp)
-{
-	FT::map<int, std::string>::iterator ret = mp.find(k);
-	FT::map<int, std::string>::iterator ite = mp.end();
-
-	if (!VERBOSE)
-		return;
-	if (ret != ite)
-	{
-		std::cout << "first: " << ret->first << std::endl;
-		std::cout << "second: " << ret->second << std::endl;
-	}
-	else
-		std::cout << "map::find(" << k << ") returned end()" << std::endl;
-}
-
-static void	ft_count(int const &k, FT::map<int, std::string> mp)
-{
-	if (VERBOSE)
-		std::cout << "map::count(" << k << ")\treturned [" << mp.count(k) << "]" << std::endl;
-}
-
-int		test_map_mli_find_count()
-{
-	typedef int T1;
-	typedef std::string T2;
-
-	FT::map<T1, T2> mp;
-	// FT::map<T1, T2>::iterator it = mp.end();
-	mp[42] = "fgzgxfn";
-	mp[25] = "funny";
-	mp[80] = "hey";
-	mp[12] = "no";
-	mp[27] = "bee";
-	mp[90] = "8";
-	print_map(mp);
-
-	if (VERBOSE)
-		std::cout << "\t-- FIND --" << std::endl;
-	ft_find(12, mp);
-	ft_find(3, mp);
-	ft_find(35, mp);
-	ft_find(90, mp);
-	ft_find(100, mp);
-
-	if (VERBOSE)
-		std::cout << "\t-- COUNT --" << std::endl;
-	ft_count(-3, mp);
-	ft_count(12, mp);
-	ft_count(3, mp);
-	ft_count(35, mp);
-	ft_count(90, mp);
-	ft_count(100, mp);
-
-	mp.find(27)->second = "newly inserted mapped_value";
-
-	print_map(mp);
-
-	FT::map<T1, T2> const c_map(mp.begin(), mp.end());
-	if (VERBOSE)
-	{
-		std::cout << "const map.find(" << 42 << ")->second: [" << c_map.find(42)->second << "]" << std::endl;
-		std::cout << "const map.count(" << 80 << "): [" << c_map.count(80) << "]" << std::endl;
-	}
-	return (0);
-}
-
 template <class T>
 static void printPair(T it)
 {
@@ -678,160 +533,6 @@ static void printPair(T it)
 		std::cout << it->first << " : " << it->second << std::endl;
 }
 
-int		test_map_mli_ite_arrow(void)
-{
-	typedef float T1;
-	typedef foo<int> T2;
-	typedef FT::pair<const T1, T2> T3;
-	std::list<T3> lst;
-	unsigned int lst_size = 5;
-	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back(T3(2.5 + i, i + 1));
-
-	FT::map<T1, T2> mp(lst.begin(), lst.end());
-	FT::map<T1, T2>::iterator it(mp.begin());
-	FT::map<T1, T2>::const_iterator ite(mp.begin());
-	print_map(mp);
-
-	printPair(++ite);
-	printPair(ite++);
-	printPair(ite++);
-	printPair(++ite);
-
-	it->second.m();
-	ite->second.m();
-
-	printPair(++it);
-	printPair(it++);
-	printPair(it++);
-	printPair(++it);
-
-	printPair(--ite);
-	printPair(ite--);
-	printPair(--ite);
-	printPair(ite--);
-
-	(*it).second.m();
-	(*ite).second.m();
-
-	printPair(--it);
-	printPair(it--);
-	printPair(it--);
-	printPair(--it);
-
-	return (0);
-}
-
-static void	ft_find(int const &k, FT::map<int, std::string> & mp, FT::map<int, std::string>::iterator & it)
-{
-	FT::map<int, std::string>::iterator ret = mp.find(k);
-
-	if (ret != it)
-		printPair(ret);
-	else
-	{
-		if (!VERBOSE)
-			return;
-		std::cout << "map::find(" << k << ") returned end()" << std::endl;
-	}
-}
-
-static void	ft_find(int const &k, FT::map<int, std::string> & mp, FT::map<int, std::string>::const_iterator & it)
-{
-	FT::map<int, std::string>::const_iterator ret = mp.find(k);
-
-	if (ret != it)
-		printPair(ret);
-	else
-	{
-		if (!VERBOSE)
-			return;
-		std::cout << "map::find(" << k << ") returned end()" << std::endl;
-	}
-}
-
-int		test_map_mli_find_count2(void)
-{
-	FT::map<int, std::string> mp;
-	FT::map<int, std::string>::iterator it = mp.end();
-
-	mp[42] = "fgzgxfn";
-	mp[25] = "funny";
-	mp[80] = "hey";
-	mp[12] = "no";
-	mp[27] = "bee";
-	mp[90] = "8";
-
-	print_map(mp);
-
-	if (VERBOSE)
-		std::cout << "\t-- FIND --" << std::endl;
-	ft_find(12, mp, it);
-	ft_find(3, mp, it);
-	ft_find(35, mp, it);
-	ft_find(90, mp, it);
-	ft_find(100, mp, it);
-
-	if (VERBOSE)
-		std::cout << "\t-- COUNT --" << std::endl;
-	ft_count(-3, mp);
-	ft_count(12, mp);
-	ft_count(3, mp);
-	ft_count(35, mp);
-	ft_count(90, mp);
-	ft_count(100, mp);
-
-	mp.find(27)->second = "newly inserted mapped_value";
-
-	print_map(mp);
-
-	FT::map<int, std::string> const c_map(mp.begin(), mp.end());
-	std::cout << "const map.find(" << 42 << ")->second: [" << c_map.find(42)->second << "]" << std::endl;
-	std::cout << "const map.count(" << 80 << "): [" << c_map.count(80) << "]" << std::endl;
-	return (0);
-}
-int		test_map_mli_find_count2_const(void)
-{
-	FT::map<int, std::string> mp;
-	FT::map<int, std::string>::const_iterator it = mp.end();
-
-	mp[42] = "fgzgxfn";
-	mp[25] = "funny";
-	mp[80] = "hey";
-	mp[12] = "no";
-	mp[27] = "bee";
-	mp[90] = "8";
-
-	print_map(mp);
-
-	if (VERBOSE)
-		std::cout << "\t-- FIND --" << std::endl;
-	ft_find(12, mp, it);
-	ft_find(3, mp, it);
-	ft_find(35, mp, it);
-	ft_find(90, mp, it);
-	ft_find(100, mp, it);
-
-	if (VERBOSE)
-		std::cout << "\t-- COUNT --" << std::endl;
-	ft_count(-3, mp);
-	ft_count(12, mp);
-	ft_count(3, mp);
-	ft_count(35, mp);
-	ft_count(90, mp);
-	ft_count(100, mp);
-
-	mp.find(27)->second = "newly inserted mapped_value";
-
-	print_map(mp);
-
-	FT::map<int, std::string> const c_map(mp.begin(), mp.end());
-	if (VERBOSE)
-		std::cout << "const map.find(" << 42 << ")->second: [" << c_map.find(42)->second << "]" << std::endl;
-	if (VERBOSE)
-		std::cout << "const map.count(" << 80 << "): [" << c_map.count(80) << "]" << std::endl;
-	return (0);
-}
 
 int	test_map_empty_end()
 {
@@ -849,49 +550,6 @@ int	test_map_empty_end()
 	return (0);
 }
 
-template <class T>
-static void	cmp(const T &lhs, const T &rhs)
-{
-	static int i = 0;
-
-	std::cout << "############### [" << i++ << "] ###############"  << std::endl;
-	std::cout << "eq: " << (lhs == rhs) << " | ne: " << (lhs != rhs) << std::endl;
-	std::cout << "lt: " << (lhs <  rhs) << " | le: " << (lhs <= rhs) << std::endl;
-	std::cout << "gt: " << (lhs >  rhs) << " | ge: " << (lhs >= rhs) << std::endl;
-}
-
-int		test_map_mli_relational_ope(void)
-{
-	#define T1 char
-	#define T2 int	
-	typedef FT::map<const int, char>	map_type;
-
-	map_type mp1;
-	map_type mp2;
-
-	mp1['a'] = 2; mp1['b'] = 3; mp1['c'] = 4; mp1['d'] = 5;
-	mp2['a'] = 2; mp2['b'] = 3; mp2['c'] = 4; mp2['d'] = 5;
-
-	cmp(mp1, mp1); // 0
-	cmp(mp1, mp2); // 1
-
-	mp2['e'] = 6; mp2['f'] = 7; mp2['h'] = 8; mp2['h'] = 9;
-
-	cmp(mp1, mp2); // 2
-	cmp(mp2, mp1); // 3
-
-	(++(++mp1.begin()))->second = 42;
-
-	cmp(mp1, mp2); // 4
-	cmp(mp2, mp1); // 5
-
-	swap(mp1, mp2);
-
-	cmp(mp1, mp2); // 6
-	cmp(mp2, mp1); // 7
-
-	return (0);
-}
 
 int test_map_const_map()
 {
@@ -925,14 +583,6 @@ int	test_map_insert_hint()
 	print_map(m);
 
 	return (0);
-}
-
-template <class Key, class T>
-void	print(FT::map<Key, T>& lst)
-{
-	std::cout << "printing a map : \n";
-	for (typename FT::map<Key, T>::iterator it = lst.begin(); it != lst.end(); it++)
-		std::cout << it->first << " => " << it->second << '\n';
 }
 
 int test_map_stress_basic()
@@ -987,12 +637,7 @@ void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_map_insert_random_order);
 	ADD_TEST(testlist, test_map_insert_and_erase_random_order);
 	ADD_TEST(testlist, test_map_int_insert_med_low_high);
-	ADD_TEST(testlist, test_map_mli_copy_construct);
-	ADD_TEST(testlist, test_map_mli_find_count);
-	ADD_TEST(testlist, test_map_mli_ite_arrow);
-	ADD_TEST(testlist, test_map_mli_find_count2);
 	ADD_TEST(testlist, test_map_empty_end);
-	ADD_TEST(testlist, test_map_mli_find_count2_const);
 	ADD_TEST(testlist, test_map_const_map);
 	ADD_TEST(testlist, test_map_insert_hint);
 	ADD_TEST(testlist, test_map_stress_basic);	
