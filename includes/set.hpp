@@ -102,15 +102,15 @@ namespace ft
 
 				if (this->empty())
 					return (this->insert(val).first);
-				while (position != ite && this->key_comp()(position->first, val.first))
+				while (position != ite && this->key_comp()(*position, val))
 					++position;
-				while (position == ite || (position != this->begin() && this->key_comp()(val.first, position->first)))
+				while (position == ite || (position != this->begin() && this->key_comp()(val, *position)))
 					--position;
 				if (position == ite)
 					return (this->c.insert(position - 1, val));
-				if (position->first == val.first)
+				if (*position == val)
 					return (position);
-				if (this->key_comp()(val.first, position->first))
+				if (this->key_comp()(val, *position))
 					return (this->insert(val).first);
 				return (this->c.insert(position, val));
 			}

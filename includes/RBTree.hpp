@@ -358,6 +358,11 @@ namespace ft
 		{
 			return (this->insert(this->stump.left, value));
 		}
+		iterator insert(const_iterator hint, value_type const &value)
+		{
+			iterator it = reinterpret_cast<iterator &>(hint);
+			return (this->insert(it, value));
+		}
 		iterator insert(iterator hint, value_type const &value)
 		{
 			node_type *node = reinterpret_cast<node_type *>(&(*hint));
@@ -683,6 +688,11 @@ namespace ft
 			if (node->parent->left == node)
 				return (&node->parent->left);
 			return (NULL);
+		}
+		void delete_node(const_iterator & hint, value_type const & value)
+		{
+			iterator & it = reinterpret_cast<iterator &>(hint);
+			this->delete_node(it, value);
 		}
 		void delete_node(iterator hint, value_type const & value)
 		{
