@@ -886,53 +886,55 @@ namespace ft
 		node_type *lower_bound(const value_type & v)
 		{
 			node_type *current = this->stump.left;
+			node_type *best_guess = &this->stump;
 
 			while (current)
 			{
 				if (this->values_less_than(current->value, v))
 				{
 					if (!current->right)
-						return (&this->stump);
+						return (best_guess);
 					current = current->right;
 				}
 				else if (this->values_less_than(v, current->value))
 				{
+					if (best_guess == &this->stump || this->values_less_than(current->value, best_guess->value))
+						best_guess = current;
 					if (!current->left)
-						return (current);
+						return (best_guess);
 					current = current->left;
 				}
 				else
-					break;
+					return (current);
 			}
-			if (!current)
-				current = &this->stump;
-			return (current);
+			return (best_guess);
 		}
 
 		const node_type *lower_bound(const value_type & v) const
 		{
 			const node_type *current = this->stump.left;
+			const node_type *best_guess = &this->stump;
 
 			while (current)
 			{
 				if (this->values_less_than(current->value, v))
 				{
 					if (!current->right)
-						return (&this->stump);
+						return (best_guess);
 					current = current->right;
 				}
 				else if (this->values_less_than(v, current->value))
 				{
+					if (best_guess == &this->stump || this->values_less_than(current->value, best_guess->value))
+						best_guess = current;
 					if (!current->left)
-						return (current);
+						return (best_guess);
 					current = current->left;
 				}
 				else
-					break;
+					return (current);
 			}
-			if (!current)
-				current = &this->stump;
-			return (current);
+			return (best_guess);
 		}
 
 	private:
