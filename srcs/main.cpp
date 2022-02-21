@@ -52,6 +52,11 @@ int	main(int argc, char **argv)
 		add_test_map_suite(&tests);
 	}
 
+	if (checkArgument(argv, argv + argc, "set") || addAll)
+	{
+		add_test_set_suite(&tests);
+	}
+
 	#ifndef FT_REAL_VERSION
 		if ((checkArgument(argv, argv + argc, "rb") || addAll) && checkArgument(argv, argv + argc, "-s"))
 	{	
