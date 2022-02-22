@@ -4,12 +4,12 @@
 
 bool VERBOSE;
 
-static bool checkArgument(char **begin, char **end, std::string const & option)
+static bool checkArgument(char **begin, char **end, std::string const &option)
 {
 	return (std::find(begin, end, option) != end);
 }
 
-int	main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	if (!argc || !argv)
 		return (0);
@@ -21,17 +21,17 @@ int	main(int argc, char **argv)
 		std::cout << "VERBOSE MODE" << std::endl;
 		VERBOSE = true;
 	}
-	bool		runAll = true;
-	bool		addAll = true;
+	bool runAll = true;
+	bool addAll = true;
 
 	if (checkArgument(argv, argv + argc, "vector") ||
 		checkArgument(argv, argv + argc, "stack") ||
 		checkArgument(argv, argv + argc, "map") ||
 		checkArgument(argv, argv + argc, "set") ||
-		checkArgument(argv, argv + argc, "rb")
-		) {
+		checkArgument(argv, argv + argc, "rb"))
+	{
 		addAll = false;
-		}
+	}
 
 	if (checkArgument(argv, argv + argc, "vector") || addAll)
 	{
@@ -57,13 +57,13 @@ int	main(int argc, char **argv)
 		add_test_set_suite(&tests);
 	}
 
-	#ifndef FT_REAL_VERSION
-		if ((checkArgument(argv, argv + argc, "rb") || addAll) && checkArgument(argv, argv + argc, "-s"))
-	{	
+#ifndef FT_REAL_VERSION
+	if ((checkArgument(argv, argv + argc, "rb") || addAll) && checkArgument(argv, argv + argc, "-s"))
+	{
 		std::cout << "INCLUDING SPECIAL TESTS" << std::endl;
 		add_test_rb_tree_suite(&tests);
 	}
-	#endif
+#endif
 
 	if (argc > 1)
 	{
@@ -82,7 +82,7 @@ int	main(int argc, char **argv)
 		}
 	}
 	if (!runAll)
-		return(0);
+		return (0);
 
 	RUN_ALL_TESTS(&tests);
 	return (0);
