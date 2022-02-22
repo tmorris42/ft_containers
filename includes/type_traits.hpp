@@ -52,5 +52,18 @@ namespace ft
 	{
 		typedef IsFalse type;
 	};
+
+	template<class T, class U>
+	struct is_same{
+		static const bool value = false;
+		operator T() { return value; }
+		operator U() { return value; }
+	};
+	
+	template<class T>
+	struct is_same<T, T> {
+		static const bool value = true;
+		operator T() { return value; }
+	};
 }
 #endif
