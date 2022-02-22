@@ -1,7 +1,7 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-#include <memory> // for std::allocator
+#include <memory>	 // for std::allocator
 #include <stdexcept> // For standard exceptions
 #include <sstream>	 // For exception what() string generation
 #include <limits>	 // For numeric_limits in max_size()
@@ -240,7 +240,7 @@ namespace ft
 		void insert(iterator pos, size_type count, const value_type &value)
 		{
 			if (count < 1)
-				return ;
+				return;
 			difference_type diff = pos - this->begin();
 			this->__expand_to_add(count);
 			this->__move_space(this->__start + diff + count, this->__start + diff, this->size() - diff);
@@ -311,7 +311,7 @@ namespace ft
 			if (count > this->size())
 				this->__expand_to_add(count - this->size());
 			while (count < this->size())
-				this->pop_back();			
+				this->pop_back();
 			while (count > this->size())
 				this->push_back(value);
 		}
@@ -336,7 +336,7 @@ namespace ft
 		}
 
 	private:
-		pointer __start;		//pointer to start
+		pointer __start;		// pointer to start
 		size_type __capacity;	// allocated size
 		size_type __size;		// number of elements
 		allocator_type __alloc; // Allocator
@@ -369,7 +369,7 @@ namespace ft
 			difference_type i;
 
 			if (dest == src)
-				return ;
+				return;
 			if (dest > src)
 			{
 				i = N - 1;

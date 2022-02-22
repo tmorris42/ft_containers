@@ -204,9 +204,9 @@ namespace ft
 			this->delete_tree(this->stump.left);
 		}
 
-		node_type *iterative_search(value_type const & value) const
+		node_type *iterative_search(value_type const &value) const
 		{
-			node_type * node = this->stump.left;
+			node_type *node = this->stump.left;
 			while (node)
 			{
 				if (this->values_less_than(node->value, value))
@@ -389,7 +389,7 @@ namespace ft
 						node->parent->color = RB_BLACK;
 						uncle->color = RB_BLACK;
 						// if (grandparent)
-							grandparent->color = RB_RED;
+						grandparent->color = RB_RED;
 						node = grandparent;
 					}
 					else
@@ -414,7 +414,7 @@ namespace ft
 						node->parent->color = RB_BLACK;
 						uncle->color = RB_BLACK;
 						// if (grandparent)
-							grandparent->color = RB_RED;
+						grandparent->color = RB_RED;
 						node = grandparent;
 					}
 					else
@@ -435,7 +435,7 @@ namespace ft
 			if (this->stump.left)
 				this->stump.left->color = RB_BLACK;
 		}
-		
+
 		void swap(RB_Tree<ValueType, Compare, Allocator> &other)
 		{
 			node_type *tmp;
@@ -689,12 +689,12 @@ namespace ft
 				return (&node->parent->left);
 			return (NULL);
 		}
-		void delete_node(const_iterator & hint, value_type const & value)
+		void delete_node(const_iterator &hint, value_type const &value)
 		{
-			iterator & it = reinterpret_cast<iterator &>(hint);
+			iterator &it = reinterpret_cast<iterator &>(hint);
 			this->delete_node(it, value);
 		}
-		void delete_node(iterator hint, value_type const & value)
+		void delete_node(iterator hint, value_type const &value)
 		{
 			node_type *node = reinterpret_cast<node_type *>(&(*hint));
 			this->delete_node(node, value);
@@ -883,7 +883,7 @@ namespace ft
 			return (this->__alloc.max_size());
 		}
 
-		node_type *lower_bound(const value_type & v)
+		node_type *lower_bound(const value_type &v)
 		{
 			node_type *current = this->stump.left;
 			node_type *best_guess = &this->stump;
@@ -910,7 +910,7 @@ namespace ft
 			return (best_guess);
 		}
 
-		const node_type *lower_bound(const value_type & v) const
+		const node_type *lower_bound(const value_type &v) const
 		{
 			const node_type *current = this->stump.left;
 			const node_type *best_guess = &this->stump;

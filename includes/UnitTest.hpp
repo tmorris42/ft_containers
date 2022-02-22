@@ -97,4 +97,4 @@ void load_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, TestFunction2 funct
 int launch_test(FRAMEWORK_NAMESPACE::vector<Test2> *testlist, Test2 *test);
 int launch_all_tests(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
 
-#endif //UNIT_TEST_HPP
+#endif // UNIT_TEST_HPP
