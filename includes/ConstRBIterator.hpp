@@ -15,7 +15,7 @@ namespace ft
 		typedef ConstRBIterator<ValueType, NodeType> const_iterator;
 
 		typedef std::ptrdiff_t difference_type;
-		typedef ft::biderectional_iterator_tag iterator_category;
+		typedef ft::bidirectional_iterator_tag iterator_category;
 		typedef ValueType value_type;
 		typedef const value_type const_value_type;
 		typedef const_value_type *pointer;
