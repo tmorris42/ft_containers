@@ -84,9 +84,9 @@ int test_reverse_iterator_map()
 	{
 		ASSERT_EQUAL(rit->first, expected);			// Test iterator incrementation and access through operator*
 		ASSERT_EQUAL(rit->second, expected * 10);
-		// ASSERT_EQUAL(m.rbegin()[i], 9 - i);		// Test random access through operator[]
+		// ASSERT_EQUALQ(m.rbegin()[i].first, 9 - i);		// Test random access through operator[]
 		// ASSERT_EQUAL((i + m.rbegin())->first, 9 - i); // Test operator+
-		// ASSERT_EQUAL(rit - m.rbegin(), i);		// Test operator-
+		// ASSERT_EQUAL((rit - m.rbegin())->first, i);		// Test operator-
 		++rit;
 		--expected;
 		++i;

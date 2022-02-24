@@ -77,8 +77,7 @@ namespace ft
 		{
 			if (*this == other)
 				return (*this);
-			this->current = &(*(other));
-			std::advance(this->current, -1);
+			this->current = other.base();
 			return (*this);
 		}
 
@@ -90,9 +89,7 @@ namespace ft
 
 		const reverse_iterator operator+(difference_type n) const
 		{
-			reverse_iterator ret(*this);
-			ret += n;
-			return (ret);
+			return reverse_iterator(this->current - n);
 		}
 
 		reverse_iterator &operator++()
@@ -157,9 +154,7 @@ namespace ft
 
 		reference operator[](difference_type n) const
 		{
-			reverse_iterator<Iter> tmp(*this);
-			tmp += n;
-			return (tmp.operator*());
+			return ((*this + (n + 1)).current[0]);
 		}
 
 		iterator_type base() const

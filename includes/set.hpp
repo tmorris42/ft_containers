@@ -107,7 +107,7 @@ namespace ft
 			while (position == ite || (position != this->begin() && this->key_comp()(val, *position)))
 				--position;
 			if (position == ite)
-				return (this->c.insert(position - 1, val));
+				return (this->c.insert(++position, val));
 			if (*position == val)
 				return (position);
 			if (this->key_comp()(val, *position))
@@ -189,7 +189,8 @@ namespace ft
 
 			while (first != ite && first != last)
 			{
-				next = first + 1;
+				next = first;
+				++next;
 				this->erase(first);
 				first = next;
 			}
@@ -216,14 +217,14 @@ namespace ft
 			iterator it = this->lower_bound(k);
 			while (!it || this->key_comp()(k, *it))
 				return (it);
-			return (it + 1);
+			return (++it);
 		}
 		const_iterator upper_bound(const key_type &k) const
 		{
 			const_iterator it = this->lower_bound(k);
 			while (!it || this->key_comp()(k, *it))
 				return (it);
-			return (it + 1);
+			return (++it);
 		}
 		ft::pair<iterator, iterator> equal_range(const key_type &k)
 		{
