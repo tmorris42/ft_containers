@@ -48,6 +48,38 @@ int test_reverse_iterator_vector()
 		--expected;
 		++i;
 	}
+	rit = v.rbegin();
+	ASSERT_EQUAL(rit[2], 7);
+	return (0);
+}
+
+int test_reverse_iterator_map()
+{
+	FT::map<int, int> m;
+	for (int x = 0; x < 10; ++x)
+	{
+		m[x] = x * 10;
+	}
+
+	FT::map<int, int>::reverse_iterator rit;
+	FT::map<int, int>::reverse_iterator rite;
+	rit = m.rbegin();
+	rite = m.rend();
+	int expected = m.size() - 1;
+	ASSERT_EQUAL(expected, 9);
+	ASSERT_EQUAL(rit->first, expected);
+	int i = 0;
+	while (rit != rite)
+	{
+		ASSERT_EQUAL(rit->first, expected);			// Test iterator incrementation and access through operator*
+		ASSERT_EQUAL(rit->second, expected * 10);
+		// ASSERT_EQUAL(m.rbegin()[i], 9 - i);		// Test random access through operator[]
+		// ASSERT_EQUAL((i + m.rbegin())->first, 9 - i); // Test operator+
+		// ASSERT_EQUAL(rit - m.rbegin(), i);		// Test operator-
+		++rit;
+		--expected;
+		++i;
+	}
 	return (0);
 }
 
@@ -131,6 +163,7 @@ void add_test_iterator_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist)
 	ADD_TEST(testlist, test_random_access_iterator_tag_int);
 	ADD_TEST(testlist, test_random_access_iterator_tag_vector);
 	ADD_TEST(testlist, test_reverse_iterator_vector);
+	ADD_TEST(testlist, test_reverse_iterator_map);
 	ADD_TEST(testlist, test_lexicographical_compare);
 	ADD_TEST(testlist, test_pair);
 }
