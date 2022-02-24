@@ -9,7 +9,7 @@ namespace ft
 	class RBIterator : public ConstRBIterator<ValueType, NodeType>
 	{
 	public:
-		typedef std::bidirectional_iterator_tag iterator_category;
+		typedef ft::bidirectional_iterator_tag iterator_category;
 		typedef ValueType value_type;
 		typedef const value_type const_value_type;
 		typedef std::ptrdiff_t difference_type;

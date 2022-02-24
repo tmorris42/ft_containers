@@ -4,7 +4,7 @@ int test_random_access_iterator_tag_int()
 {
 
 	typedef FT::iterator_traits<int *> traits;
-	if (typeid(traits::iterator_category) == typeid(std::random_access_iterator_tag))
+	if (typeid(traits::iterator_category) == typeid(FT::random_access_iterator_tag))
 		ASSERT_EQUAL(true, true);
 	else
 		ASSERT_EQUAL(true, false);
@@ -15,7 +15,7 @@ int test_random_access_iterator_tag_vector()
 {
 
 	typedef FT::iterator_traits<FT::vector<int>::iterator> traits;
-	if (typeid(traits::iterator_category) == typeid(std::random_access_iterator_tag))
+	if (typeid(traits::iterator_category) == typeid(FT::random_access_iterator_tag))
 		ASSERT_EQUAL(true, true);
 	else
 		ASSERT_EQUAL(true, false);
@@ -26,7 +26,7 @@ int test_bidirectional_iterator_tag_map()
 {
 
 	typedef FT::iterator_traits<FT::map<int, int>::iterator> traits;
-	if (typeid(traits::iterator_category) == typeid(std::bidirectional_iterator_tag))
+	if (typeid(traits::iterator_category) == typeid(FT::bidirectional_iterator_tag))
 		ASSERT_EQUAL(true, true);
 	else
 		ASSERT_EQUAL(true, false);
