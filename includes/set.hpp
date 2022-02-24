@@ -41,18 +41,18 @@ namespace ft
 
 		explicit set(const key_compare &comp = key_compare(),
 					 const allocator_type &alloc = allocator_type())
-			: __alloc(alloc), __comp(comp), c()
+			: __alloc(alloc), __comp(comp), c(Compare())
 		{
 		}
 		template <class InputIterator>
 		set(InputIterator first, InputIterator last,
 			const key_compare &comp = key_compare(),
 			const allocator_type &alloc = allocator_type())
-			: __alloc(alloc), __comp(comp), c()
+			: __alloc(alloc), __comp(comp), c(Compare())
 		{
 			this->insert(first, last);
 		}
-		set(const set &src) : __alloc(src.__alloc), __comp(src.__comp), c()
+		set(const set &src) : __alloc(src.__alloc), __comp(src.__comp), c(Compare())
 		{
 			this->insert(src.begin(), src.end());
 		}

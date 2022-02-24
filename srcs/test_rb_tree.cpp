@@ -37,7 +37,7 @@ void printBT(const ft::RB_Tree<T, Compare>* tree)
 
 int	test_rb_tree_void_constructor()
 {
-	ft::RB_Tree<int> rb;
+	ft::RB_Tree<int> rb((std::less<int>()));
 
 	ASSERT_EQUALQ(rb.search(5), rb.end());
 	return (0);
@@ -45,7 +45,7 @@ int	test_rb_tree_void_constructor()
 
 int test_rb_tree_insert()
 {
-	ft::RB_Tree<int> rb;
+	ft::RB_Tree<int> rb((std::less<int>()));
 
 	rb.insert(6);
 	rb.insert(5);
@@ -60,7 +60,7 @@ int test_rb_tree_insert()
 
 int test_rb_tree_delete()
 {
-	ft::RB_Tree<int> rb;
+	ft::RB_Tree<int> rb(((std::less<int>())));
 
 	rb.insert(6);
 	rb.insert(5);
@@ -77,7 +77,7 @@ int test_rb_tree_delete()
 
 int test_rb_pair()
 {
-	ft::RB_Tree< FT::pair<char, int> >	rb;
+	ft::RB_Tree< FT::pair<char, int> >	rb((std::less<FT::pair<char, int> >()));
 
 	FT::pair<char, int>	p1('a', 10);
 	FT::pair<char, int>	p2('b', 20);
@@ -88,7 +88,7 @@ int test_rb_pair()
 
 int test_rb_pair_const()
 {
-	ft::RB_Tree< FT::pair<const char, int> >	rb;
+	ft::RB_Tree< FT::pair<const char, int> >	rb((std::less<FT::pair<const char, int> >()));
 
 	FT::pair<const char, int>	p1('a', 10);
 	FT::pair<const char, int>	p2('b', 20);
@@ -99,7 +99,7 @@ int test_rb_pair_const()
 
 int test_rb_single_element()
 {
-	ft::RB_Tree<int> rb;
+	ft::RB_Tree<int> rb((std::less<int>()));
 
 	rb.insert(5);
 	ASSERT_EQUAL(rb.stump.left->color, RB_BLACK);
@@ -109,7 +109,7 @@ int test_rb_single_element()
 
 int test_rb_two_elements()
 {
-	ft::RB_Tree<int>	rb;
+	ft::RB_Tree<int>	rb((std::less<int>()));
 	void				*nptr = NULL;
 
 	rb.insert(5);
@@ -127,7 +127,7 @@ int test_rb_two_elements()
 
 int test_rb_ascending_insert()
 {
-	ft::RB_Tree<int>	rb;
+	ft::RB_Tree<int>	rb((std::less<int>()));
 	void				*nptr = NULL;
 
 	rb.insert(5);
@@ -152,7 +152,7 @@ int test_rb_ascending_insert()
 
 int test_rb_recoloring_insert()
 {
-	ft::RB_Tree<int>	rb;
+	ft::RB_Tree<int>	rb((std::less<int>()));
 	void				*nptr = NULL;
 
 	rb.insert(5);
@@ -185,7 +185,7 @@ int test_rb_recoloring_insert()
 
 int test_rb_begin()
 {
-	ft::RB_Tree<int> rb;
+	ft::RB_Tree<int> rb((std::less<int>()));
 	ft::RB_Tree<int>::iterator	it;
 
 	rb.insert(5);
@@ -200,7 +200,7 @@ int test_rb_begin()
 
 int test_rb_end()
 {
-	ft::RB_Tree<int> rb;
+	ft::RB_Tree<int> rb((std::less<int>()));
 	ft::RB_Tree<int>::iterator	it;
 	ft::RB_Tree<int>::iterator	ite;
 	int count;
@@ -222,7 +222,7 @@ int test_rb_end()
 
 int test_rb_dec()
 {
-	ft::RB_Tree<int> rb;
+	ft::RB_Tree<int> rb((std::less<int>()));
 	ft::RB_Tree<int>::iterator	it;
 	ft::RB_Tree<int>::iterator	ite;
 
@@ -242,7 +242,7 @@ int test_rb_dec()
 
 int test_rb_inc()
 {
-	ft::RB_Tree<int> rb;
+	ft::RB_Tree<int> rb((std::less<int>()));
 	ft::RB_Tree<int>::iterator	it;
 	ft::RB_Tree<int>::iterator	ite;
 
@@ -265,7 +265,7 @@ int test_rb_inc()
 
 int	test_rb_size()
 {
-	ft::RB_Tree<int> rb;
+	ft::RB_Tree<int> rb((std::less<int>()));
 
 	ASSERT_EQUAL(rb.size(), static_cast<unsigned long>(0));
 	rb.insert(5);
@@ -279,7 +279,7 @@ int	test_rb_size()
 
 int	test_rb_size_low_high_med()
 {
-	ft::RB_Tree<int> rb;
+	ft::RB_Tree<int> rb((std::less<int>()));
 
 	ASSERT_EQUAL(rb.size(), static_cast<unsigned long>(0));
 	rb.insert(1);
@@ -293,7 +293,7 @@ int	test_rb_size_low_high_med()
 
 int test_rb_four_chars()
 {
-	ft::RB_Tree<char> rb;
+	ft::RB_Tree<char> rb((std::less<char>()));
 
 	rb.insert('d');
 	rb.insert('e');
@@ -306,7 +306,7 @@ int test_rb_four_chars()
 
 int test_rb_playground()
 {
-	ft::RB_Tree<int> rb;
+	ft::RB_Tree<int> rb(((std::less<int>())));
 
 	rb.insert(10);
 	rb.insert(20);

@@ -195,7 +195,7 @@ namespace ft
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 		node_type stump;
 
-		RB_Tree() : stump(), __alloc(allocator_type())
+		RB_Tree(Compare const & c) : stump(), __alloc(allocator_type()), __comp(c)
 		{
 			return;
 		}
@@ -301,11 +301,11 @@ namespace ft
 		}
 		bool values_equal(value_type const &value1, value_type const &value2) const
 		{
-			return (!Compare()(value1, value2) && !Compare()(value2, value1));
+			return (!this->__comp(value1, value2) && !this->__comp(value2, value1));
 		}
 		bool values_less_than(value_type const &value1, value_type const &value2) const
 		{
-			return (Compare()(value1, value2));
+			return (this->__comp(value1, value2));
 		}
 
 		iterator insert(node_type *hint, value_type const &value)
@@ -955,6 +955,7 @@ namespace ft
 			return (node);
 		}
 		allocator_type __alloc;
+		Compare __comp;
 	};
 }
 

@@ -5,6 +5,7 @@
 #include <stdexcept> // For standard exceptions
 #include <sstream>	 // For exception what() string generation
 #include <limits>	 // For numeric_limits in max_size()
+#include <functional> // For binary_function
 
 #include "iterator.hpp"
 #include "type_traits.hpp"
@@ -25,11 +26,16 @@ namespace ft
 		typedef pair<const key_type, mapped_type> value_type;
 		typedef Compare key_compare;
 		// typedef map::value_compare					value_compare;
-		struct value_compare
+		class value_compare : public std::binary_function<value_type, value_type, bool>
 		{
+			friend class map;
+			protected:
+			Compare comp;
+			value_compare(Compare c) : comp(c) {}
+			public:
 			bool operator()(const value_type &x, const value_type &y) const
 			{
-				return (key_compare()(x.first, y.first));
+				return (comp(x.first, y.first));
 			}
 		};
 
@@ -49,18 +55,18 @@ namespace ft
 
 		explicit map(const key_compare &comp = key_compare(),
 					 const allocator_type &alloc = allocator_type())
-			: __alloc(alloc), __comp(comp), c()
+			: __alloc(alloc), __comp(comp), c(value_compare(Compare()))
 		{
 		}
 		template <class InputIterator>
 		map(InputIterator first, InputIterator last,
 			const key_compare &comp = key_compare(),
 			const allocator_type &alloc = allocator_type())
-			: __alloc(alloc), __comp(comp), c()
+			: __alloc(alloc), __comp(comp), c(value_compare(Compare()))
 		{
 			this->insert(first, last);
 		}
-		map(const map &src) : __alloc(src.__alloc), __comp(src.__comp), c()
+		map(const map &src) : __alloc(src.__alloc), __comp(src.__comp), c(value_compare(Compare()))
 		{
 			this->insert(src.begin(), src.end());
 		}
@@ -272,7 +278,7 @@ namespace ft
 		}
 		value_compare value_comp() const
 		{
-			return (value_compare());
+			return (value_compare(Compare()));
 		}
 
 	private:
