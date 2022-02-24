@@ -24,7 +24,8 @@ INCLUDES = -I$(INCLUDE_DIR)
 DEPS = $(OBJS:.o=.d)
 
 VALGRIND_LOG = $(addprefix $(LOGS_DIR), val.log)
-TIME_FORMAT = "elapsed time: %e\tsystem time: %S\tuser time: %U"
+TIME_FORMAT = "elapsed time: %es\tsystem time: %Ss\tuser time: %Us"
+SEED ?= 7
 
 CC_OVERRIDE ?= clang++
 CC	:= $(CC_OVERRIDE)
@@ -94,6 +95,15 @@ leaks: $(NAME) | $(LOGS_DIR)
 		&& echo 'Check $(VALGRIND_LOG) for details') \
 		|| echo '\033[0;32mNo leaks found!\033[0m';
 
+given:
+	@$(CC) -Wall -Wextra -Werror $(SRCS_DIR)given_main.cpp $(INCLUDES) -o given.ft.out
+	@$(CC) $(REAL_TOGGLE) -Wall -Wextra -Werror $(SRCS_DIR)given_main.cpp $(INCLUDES) -o given.std.out
+	@/usr/bin/time -f $(TIME_FORMAT) ./given.std.out $(SEED)
+	@echo ""
+	@/usr/bin/time -f $(TIME_FORMAT) ./given.ft.out $(SEED)
+	@rm -f given.ft.out given.std.out
+
+
 -include $(DEPS)
 
-.PHONY: all clean fclean re test leaks
+.PHONY: all clean fclean re test leaks given

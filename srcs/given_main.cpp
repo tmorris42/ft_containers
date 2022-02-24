@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <deque>
-#if 1 //CREATE A REAL STL EXAMPLE
+#ifdef FT_REAL_VERSION //CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>
 	#include <vector>
@@ -52,6 +52,11 @@ int main(int argc, char** argv) {
 		std::cerr << "Count value:" << COUNT << std::endl;
 		return 1;
 	}
+	#ifdef FT_REAL_VERSION //CREATE A REAL STL EXAMPLE
+		std::cout << "Using STL version..." << std::endl;
+	#else
+		std::cout << "Using FT version..." << std::endl;
+	#endif
 	const int seed = atoi(argv[1]);
 	srand(seed);
 
