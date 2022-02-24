@@ -195,7 +195,7 @@ namespace ft
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 		node_type root;
 
-		RB_Tree(Compare const & c) : root(), __alloc(allocator_type()), __comp(c)
+		RB_Tree(Compare const & c) : root(), __alloc(allocator_type()), __comp(c), __size(0)
 		{
 			return;
 		}
@@ -313,6 +313,7 @@ namespace ft
 			node_type *current_node = hint;
 			node_type *new_node = node_new(NULL, value);
 			iterator it;
+			++this->__size;
 			if (!this->root.left)
 			{
 				this->root.left = new_node;
@@ -447,6 +448,9 @@ namespace ft
 			other.root.left = tmp;
 			if (other.root.left)
 				other.root.left->parent = &other.root;
+			size_type tmp_size = this->size();
+			this->__size = other.size();
+			other.__size = tmp_size;
 		}
 		node_type *rotateLeft(node_type *node)
 		{
@@ -842,6 +846,7 @@ namespace ft
 					node->parent->left = NULL;
 			}
 			destroy_node(node);
+			this->__size = 0;
 		}
 
 		void destroy_node(node_type *node)
@@ -855,6 +860,7 @@ namespace ft
 			else if (node->parent && node->parent->left == node)
 				node->parent->left = NULL;
 			this->deallocate_node(node);
+			--this->__size;
 		}
 
 		void deallocate_node(node_type *node)
@@ -875,7 +881,7 @@ namespace ft
 
 		size_t size() const
 		{
-			return (size_subtree(this->root.left));
+			return (this->__size);
 		}
 
 		size_t max_size() const
@@ -956,6 +962,7 @@ namespace ft
 		}
 		allocator_type __alloc;
 		Compare __comp;
+		size_type	__size;
 	};
 }
 
