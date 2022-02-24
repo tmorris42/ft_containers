@@ -15,8 +15,6 @@ void add_test_vector_struct_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
 
 void add_test_stack_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
 
-void add_test_rb_tree_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
-
 void add_test_map_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);
 
 void add_test_set_suite(FRAMEWORK_NAMESPACE::vector<Test2> *testlist);

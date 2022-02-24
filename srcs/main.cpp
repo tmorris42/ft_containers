@@ -57,14 +57,6 @@ int main(int argc, char **argv)
 		add_test_set_suite(&tests);
 	}
 
-#ifndef FT_REAL_VERSION
-	if ((checkArgument(argv, argv + argc, "rb") || addAll) && checkArgument(argv, argv + argc, "-s"))
-	{
-		std::cout << "INCLUDING SPECIAL TESTS" << std::endl;
-		add_test_rb_tree_suite(&tests);
-	}
-#endif
-
 	if (argc > 1)
 	{
 		int argNumber = 1;

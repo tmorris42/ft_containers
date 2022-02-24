@@ -14,7 +14,6 @@ SRCS = main.cpp UnitTest.cpp \
 			test_vector_struct.cpp \
 			test_vector_class.cpp \
 			test_stack.cpp \
-			test_rb_tree.cpp \
 			test_map.cpp \
 			test_set.cpp \
 

@@ -1,37 +1,12 @@
 #ifndef FT_REAL_VERSION
 #include "tests.hpp"
 
-template <class T1, class T2>
-std::ostream & 	operator<<(std::ostream & os, FT::pair<T1, T2> p)
-{
-	os << "Pair<" << p.first << ", " << p.second << ">" << std::endl;
-	return (os);
-}
-
-template <class T, class Compare>
-void printBT(const std::string& prefix, const ft::Node<T, Compare>* node, bool isLeft)
-{
-    if(node)
-    {
-        std::cout << prefix;
-        std::cout << (isLeft ? "├──" : "└──" );
-
-		if (node->color == RB_RED)
-			std::cout << "R:";
-		else
-			std::cout << "B:";
-        std::cout << node->value << std::endl;
-        printBT<T, Compare>( prefix + (isLeft ? "│   " : "    "), node->left, true);
-        printBT<T, Compare>( prefix + (isLeft ? "│   " : "    "), node->right, false);
-    }
-}
 template <class T, class Compare>
 void printBT(const ft::RB_Tree<T, Compare>* tree)
 {
 	if (VERBOSE)
 	{
 		std::cout << "TREE:: h = " << tree->get_black_height() << "; is_rb = " << tree->is_red_black() << std::endl;
-    	printBT<T, Compare>("", &tree->stump, false);
 	}
 }
 
