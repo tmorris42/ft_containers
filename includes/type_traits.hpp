@@ -76,33 +76,5 @@ namespace ft
 	{
 	};
 	// template <>	struct is_integral<unsigned long long int> : public integral_constant<unsigned long long int, true> {};
-
-	template <bool flag, class IsTrue, class IsFalse>
-	struct is_const;
-	template <class IsTrue, class IsFalse>
-	struct is_const<true, IsTrue, IsFalse>
-	{
-		typedef IsTrue type;
-	};
-	template <class IsTrue, class IsFalse>
-	struct is_const<false, IsTrue, IsFalse>
-	{
-		typedef IsFalse type;
-	};
-
-	template <class T, class U>
-	struct is_same
-	{
-		static const bool value = false;
-		operator T() { return value; }
-		operator U() { return value; }
-	};
-
-	template <class T>
-	struct is_same<T, T>
-	{
-		static const bool value = true;
-		operator T() { return value; }
-	};
 }
 #endif
