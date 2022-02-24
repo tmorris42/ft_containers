@@ -3,21 +3,22 @@
 
 namespace ft
 {
-	struct input_iterator_tag
-	{
-	};
-	struct output_iterator_tag
-	{
-	};
-	struct forward_iterator_tag : public input_iterator_tag
-	{
-	};
-	struct bidirectional_iterator_tag : public forward_iterator_tag
-	{
-	};
-	struct random_access_iterator_tag : public bidirectional_iterator_tag
-	{
-	};
+	// Can use std:: iterator tags instead
+	// struct input_iterator_tag
+	// {
+	// };
+	// struct output_iterator_tag
+	// {
+	// };
+	// struct forward_iterator_tag : public input_iterator_tag
+	// {
+	// };
+	// struct bidirectional_iterator_tag : public forward_iterator_tag
+	// {
+	// };
+	// struct random_access_iterator_tag : public bidirectional_iterator_tag
+	// {
+	// };
 
 	// iterator_traits
 	template <class Iterator>
@@ -39,7 +40,7 @@ namespace ft
 		typedef T value_type;
 		typedef T *pointer;
 		typedef T &reference;
-		typedef ft::random_access_iterator_tag iterator_category;
+		typedef std::random_access_iterator_tag iterator_category;
 	};
 
 	template <class T>
@@ -50,7 +51,7 @@ namespace ft
 		typedef T value_type;
 		typedef const T *pointer;
 		typedef const T &reference;
-		typedef ft::random_access_iterator_tag iterator_category;
+		typedef std::random_access_iterator_tag iterator_category;
 	};
 
 	// reverse_iterator
@@ -76,13 +77,14 @@ namespace ft
 		{
 			if (*this == other)
 				return (*this);
-			this->current = &(*(other - 1));
+			this->current = &(*(other));
+			std::advance(this->current, -1);
 			return (*this);
 		}
 
 		reverse_iterator &operator+=(difference_type n)
 		{
-			this->current -= n;
+			std::advance(this->current, -n);
 			return (*this);
 		}
 
@@ -107,7 +109,7 @@ namespace ft
 
 		reverse_iterator &operator-=(difference_type n)
 		{
-			this->current += n;
+			std::advance(this->current, n);
 			return (*this);
 		}
 
@@ -132,7 +134,9 @@ namespace ft
 
 		reference operator*()
 		{
-			return (*(this->current - 1));
+			iterator_type temp(this->current);
+			--temp;
+			return (*temp);
 		}
 
 		pointer operator->()
@@ -141,7 +145,8 @@ namespace ft
 		}
 		reference operator*() const
 		{
-			iterator_type temp(this->current - 1);
+			iterator_type temp(this->current);
+			--temp;
 			return (*temp);
 		}
 

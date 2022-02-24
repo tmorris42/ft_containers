@@ -15,7 +15,7 @@ namespace ft
 		typedef ConstRBIterator<ValueType, NodeType> const_iterator;
 
 		typedef std::ptrdiff_t difference_type;
-		typedef ft::bidirectional_iterator_tag iterator_category;
+		typedef std::bidirectional_iterator_tag iterator_category;
 		typedef ValueType value_type;
 		typedef const value_type const_value_type;
 		typedef const_value_type *pointer;
@@ -101,39 +101,6 @@ namespace ft
 		bool operator!() const
 		{
 			return (!this->data || !this->data->parent);
-		}
-
-		ConstRBIterator &operator+=(difference_type const &n)
-		{
-			difference_type i = 0;
-			while (i < n)
-			{
-				this->operator++();
-				++i;
-			}
-			return (*this);
-		}
-		ConstRBIterator &operator-=(difference_type const &n)
-		{
-			difference_type i = 0;
-			while (i < n)
-			{
-				this->operator--();
-				++i;
-			}
-			return (*this);
-		}
-		ConstRBIterator operator+(difference_type const &n) const
-		{
-			ConstRBIterator ret = *this;
-			ret += n;
-			return (ret);
-		}
-		ConstRBIterator operator-(difference_type const &n) const
-		{
-			ConstRBIterator ret = *this;
-			ret -= n;
-			return (ret);
 		}
 
 	protected:
