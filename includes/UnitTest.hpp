@@ -10,13 +10,10 @@
 #include <stdlib.h>	   // exit
 
 #ifdef FT_REAL_VERSION
-#include <map>
-#include <stack>
 #include <vector>
 #define FT std
 #else
 #include "vector.hpp"
-#include <vector>
 #define FT ft
 #endif
 
