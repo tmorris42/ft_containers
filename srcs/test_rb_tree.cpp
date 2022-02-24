@@ -44,9 +44,9 @@ int test_rb_tree_delete()
 	rb.insert(9);
 	rb.insert(4);
 	ASSERT_EQUAL(*rb.search(7), 7);
-	rb.delete_node(rb.stump.left, 7);
+	rb.delete_node(rb.root.left, 7);
 	ASSERT_EQUALQ(rb.search(7), rb.end());
-	rb.delete_tree(rb.stump.left);
+	rb.delete_tree(rb.root.left);
 	return (0);
 }
 
@@ -77,8 +77,8 @@ int test_rb_single_element()
 	ft::RB_Tree<int> rb((std::less<int>()));
 
 	rb.insert(5);
-	ASSERT_EQUAL(rb.stump.left->color, RB_BLACK);
-	ASSERT_EQUAL(rb.stump.left->value, 5);
+	ASSERT_EQUAL(rb.root.left->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root.left->value, 5);
 	return (0);
 }
 
@@ -88,14 +88,14 @@ int test_rb_two_elements()
 	void				*nptr = NULL;
 
 	rb.insert(5);
-	ASSERT_EQUAL(rb.stump.left->color, RB_BLACK);
-	ASSERT_EQUAL(rb.stump.left->value, 5);
+	ASSERT_EQUAL(rb.root.left->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root.left->value, 5);
 	rb.insert(8);
-	ASSERT_EQUAL(rb.stump.left->color, RB_BLACK);
-	ASSERT_EQUAL(rb.stump.left->value, 5);
-	ASSERT_EQUAL(rb.stump.left->left, nptr);
-	ASSERT_EQUAL(rb.stump.left->right->color, RB_RED);
-	ASSERT_EQUAL(rb.stump.left->right->value, 8);
+	ASSERT_EQUAL(rb.root.left->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root.left->value, 5);
+	ASSERT_EQUAL(rb.root.left->left, nptr);
+	ASSERT_EQUAL(rb.root.left->right->color, RB_RED);
+	ASSERT_EQUAL(rb.root.left->right->value, 8);
 
 	return (0);
 }
@@ -106,22 +106,22 @@ int test_rb_ascending_insert()
 	void				*nptr = NULL;
 
 	rb.insert(5);
-	ASSERT_EQUAL(rb.stump.left->color, RB_BLACK);
-	ASSERT_EQUAL(rb.stump.left->value, 5);
+	ASSERT_EQUAL(rb.root.left->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root.left->value, 5);
 	rb.insert(8);
-	ASSERT_EQUAL(rb.stump.left->color, RB_BLACK);
-	ASSERT_EQUAL(rb.stump.left->value, 5);
-	ASSERT_EQUAL(rb.stump.left->left, nptr);
-	ASSERT_EQUAL(rb.stump.left->right->color, RB_RED);
-	ASSERT_EQUAL(rb.stump.left->right->value, 8);
+	ASSERT_EQUAL(rb.root.left->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root.left->value, 5);
+	ASSERT_EQUAL(rb.root.left->left, nptr);
+	ASSERT_EQUAL(rb.root.left->right->color, RB_RED);
+	ASSERT_EQUAL(rb.root.left->right->value, 8);
 	rb.insert(10);
 	printBT(&rb);
-	ASSERT_EQUAL(rb.stump.left->color, RB_BLACK);
-	ASSERT_EQUAL(rb.stump.left->value, 8);
-	ASSERT_EQUAL(rb.stump.left->left->color, RB_RED);
-	ASSERT_EQUAL(rb.stump.left->left->value, 5);
-	ASSERT_EQUAL(rb.stump.left->right->color, RB_RED);
-	ASSERT_EQUAL(rb.stump.left->right->value, 10);
+	ASSERT_EQUAL(rb.root.left->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root.left->value, 8);
+	ASSERT_EQUAL(rb.root.left->left->color, RB_RED);
+	ASSERT_EQUAL(rb.root.left->left->value, 5);
+	ASSERT_EQUAL(rb.root.left->right->color, RB_RED);
+	ASSERT_EQUAL(rb.root.left->right->value, 10);
 	return (0);
 }
 
@@ -131,30 +131,30 @@ int test_rb_recoloring_insert()
 	void				*nptr = NULL;
 
 	rb.insert(5);
-	ASSERT_EQUAL(rb.stump.left->color, RB_BLACK);
-	ASSERT_EQUAL(rb.stump.left->value, 5);
+	ASSERT_EQUAL(rb.root.left->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root.left->value, 5);
 	rb.insert(8);
-	ASSERT_EQUAL(rb.stump.left->color, RB_BLACK);
-	ASSERT_EQUAL(rb.stump.left->value, 5);
-	ASSERT_EQUAL(rb.stump.left->left, nptr);
-	ASSERT_EQUAL(rb.stump.left->right->color, RB_RED);
-	ASSERT_EQUAL(rb.stump.left->right->value, 8);
+	ASSERT_EQUAL(rb.root.left->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root.left->value, 5);
+	ASSERT_EQUAL(rb.root.left->left, nptr);
+	ASSERT_EQUAL(rb.root.left->right->color, RB_RED);
+	ASSERT_EQUAL(rb.root.left->right->value, 8);
 	rb.insert(4);
-	ASSERT_EQUAL(rb.stump.left->color, RB_BLACK);
-	ASSERT_EQUAL(rb.stump.left->value, 5);
-	ASSERT_EQUAL(rb.stump.left->left->color, RB_RED);
-	ASSERT_EQUAL(rb.stump.left->left->value, 4);
-	ASSERT_EQUAL(rb.stump.left->right->color, RB_RED);
-	ASSERT_EQUAL(rb.stump.left->right->value, 8);
+	ASSERT_EQUAL(rb.root.left->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root.left->value, 5);
+	ASSERT_EQUAL(rb.root.left->left->color, RB_RED);
+	ASSERT_EQUAL(rb.root.left->left->value, 4);
+	ASSERT_EQUAL(rb.root.left->right->color, RB_RED);
+	ASSERT_EQUAL(rb.root.left->right->value, 8);
 	rb.insert(11);
-	ASSERT_EQUAL(rb.stump.left->color, RB_BLACK);
-	ASSERT_EQUAL(rb.stump.left->value, 5);
-	ASSERT_EQUAL(rb.stump.left->left->color, RB_BLACK);
-	ASSERT_EQUAL(rb.stump.left->left->value, 4);
-	ASSERT_EQUAL(rb.stump.left->right->color, RB_BLACK);
-	ASSERT_EQUAL(rb.stump.left->right->value, 8);
-	ASSERT_EQUAL(rb.stump.left->right->right->color, RB_RED);
-	ASSERT_EQUAL(rb.stump.left->right->right->value, 11);
+	ASSERT_EQUAL(rb.root.left->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root.left->value, 5);
+	ASSERT_EQUAL(rb.root.left->left->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root.left->left->value, 4);
+	ASSERT_EQUAL(rb.root.left->right->color, RB_BLACK);
+	ASSERT_EQUAL(rb.root.left->right->value, 8);
+	ASSERT_EQUAL(rb.root.left->right->right->color, RB_RED);
+	ASSERT_EQUAL(rb.root.left->right->right->value, 11);
 	return (0);
 }
 
@@ -275,7 +275,7 @@ int test_rb_four_chars()
 	rb.insert('f');
 	rb.insert('g');
 	printBT(&rb);
-	rb.delete_tree(rb.stump.left);
+	rb.delete_tree(rb.root.left);
 	return (0);
 }
 
@@ -290,11 +290,11 @@ int test_rb_playground()
 	rb.insert(35);
 	printBT(&rb);
 
-	rb.delete_node(rb.stump.left, 10);
+	rb.delete_node(rb.root.left, 10);
 
 	printBT(&rb);
 
-	rb.delete_tree(rb.stump.left);
+	rb.delete_tree(rb.root.left);
 	return (0);
 }
 

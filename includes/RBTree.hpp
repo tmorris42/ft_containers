@@ -102,14 +102,14 @@ namespace ft
 			return (this->min(this));
 		}
 
-		node_type *get_stump()
+		node_type *get_root()
 		{
-			node_type *stump = this;
-			while (stump->parent)
+			node_type *root = this;
+			while (root->parent)
 			{
-				stump = stump->parent;
+				root = root->parent;
 			}
-			return (stump);
+			return (root);
 		}
 
 		const node_type *prev() const
@@ -193,20 +193,20 @@ namespace ft
 		typedef ConstRBIterator<value_type, node_type> const_iterator;
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
-		node_type stump;
+		node_type root;
 
-		RB_Tree(Compare const & c) : stump(), __alloc(allocator_type()), __comp(c)
+		RB_Tree(Compare const & c) : root(), __alloc(allocator_type()), __comp(c)
 		{
 			return;
 		}
 		~RB_Tree()
 		{
-			this->delete_tree(this->stump.left);
+			this->delete_tree(this->root.left);
 		}
 
 		node_type *iterative_search(value_type const &value) const
 		{
-			node_type *node = this->stump.left;
+			node_type *node = this->root.left;
 			while (node)
 			{
 				if (this->values_less_than(node->value, value))
@@ -274,10 +274,10 @@ namespace ft
 			if (node2->right)
 				node2->right->parent = node2;
 
-			if (this->stump.left == node1)
-				this->stump.left = node2;
-			else if (this->stump.left == node2)
-				this->stump.left = node1;
+			if (this->root.left == node1)
+				this->root.left = node2;
+			else if (this->root.left == node2)
+				this->root.left = node1;
 
 			if (node1->parent)
 			{
@@ -313,10 +313,10 @@ namespace ft
 			node_type *current_node = hint;
 			node_type *new_node = node_new(NULL, value);
 			iterator it;
-			if (!this->stump.left)
+			if (!this->root.left)
 			{
-				this->stump.left = new_node;
-				new_node->parent = &this->stump;
+				this->root.left = new_node;
+				new_node->parent = &this->root;
 			}
 			while (current_node)
 			{
@@ -356,7 +356,7 @@ namespace ft
 		}
 		iterator insert(value_type const &value)
 		{
-			return (this->insert(this->stump.left, value));
+			return (this->insert(this->root.left, value));
 		}
 		iterator insert(const_iterator hint, value_type const &value)
 		{
@@ -372,7 +372,7 @@ namespace ft
 		{
 			while (node && node->parent && node->parent->color == RB_RED)
 			{
-				if (node->parent == this->stump.left)
+				if (node->parent == this->root.left)
 				{
 					node->color = RB_BLACK;
 					return;
@@ -431,22 +431,22 @@ namespace ft
 					}
 				}
 			}
-			this->stump.color = RB_BLACK;
-			if (this->stump.left)
-				this->stump.left->color = RB_BLACK;
+			this->root.color = RB_BLACK;
+			if (this->root.left)
+				this->root.left->color = RB_BLACK;
 		}
 
 		void swap(RB_Tree<ValueType, Compare, Allocator> &other)
 		{
 			node_type *tmp;
 
-			tmp = this->stump.left;
-			this->stump.left = other.stump.left;
-			if (this->stump.left)
-				this->stump.left->parent = &this->stump;
-			other.stump.left = tmp;
-			if (other.stump.left)
-				other.stump.left->parent = &other.stump;
+			tmp = this->root.left;
+			this->root.left = other.root.left;
+			if (this->root.left)
+				this->root.left->parent = &this->root;
+			other.root.left = tmp;
+			if (other.root.left)
+				other.root.left->parent = &other.root;
 		}
 		node_type *rotateLeft(node_type *node)
 		{
@@ -454,7 +454,7 @@ namespace ft
 			node_type *grandparent = this->getParent(parent);
 			node_type *child = parent->right;
 
-			if (!child || !parent || parent == &this->stump || parent->right != child)
+			if (!child || !parent || parent == &this->root || parent->right != child)
 				return (NULL);
 
 			// Attach left child of child to parent
@@ -465,8 +465,8 @@ namespace ft
 			// Attach child to root or grandparent
 			if (!grandparent)
 			{
-				this->stump.left = child;
-				child->parent = &this->stump;
+				this->root.left = child;
+				child->parent = &this->root;
 			}
 			else if (grandparent->left == parent)
 			{
@@ -491,7 +491,7 @@ namespace ft
 			node_type *child = parent->left;
 			node_type *grandparent = this->getParent(parent);
 
-			if (!child || !parent || parent == &this->stump || parent->left != child)
+			if (!child || !parent || parent == &this->root || parent->left != child)
 				return (NULL);
 
 			// Attach left child of child to parent
@@ -502,8 +502,8 @@ namespace ft
 			// Attach child to root or grandparent
 			if (!grandparent)
 			{
-				this->stump.left = child;
-				child->parent = &this->stump;
+				this->root.left = child;
+				child->parent = &this->root;
 			}
 			else
 			{
@@ -550,42 +550,42 @@ namespace ft
 		node_type *max(node_type *node)
 		{
 			if (!node)
-				return (&(this->stump));
+				return (&(this->root));
 			return (node->max());
 		}
 		node_type *max()
 		{
-			return (this->max(this->stump.left));
+			return (this->max(this->root.left));
 		}
 		const node_type *max(node_type *node) const
 		{
 			if (!node)
-				return (&(this->stump));
+				return (&(this->root));
 			return (node->max());
 		}
 		const node_type *max() const
 		{
-			return (this->max(this->stump.left));
+			return (this->max(this->root.left));
 		}
 		node_type *min(node_type *node)
 		{
 			if (!node)
-				return (&(this->stump));
+				return (&(this->root));
 			return (node->min());
 		}
 		const node_type *min(node_type *node) const
 		{
 			if (!node)
-				return ((&(this->stump)));
+				return ((&(this->root)));
 			return (node->min());
 		}
 		node_type *min()
 		{
-			return (this->min(this->stump.left));
+			return (this->min(this->root.left));
 		}
 		const node_type *min() const
 		{
-			return (this->min(this->stump.left));
+			return (this->min(this->root.left));
 		}
 
 		iterator begin()
@@ -638,18 +638,18 @@ namespace ft
 		}
 		size_type get_black_height() const
 		{
-			if (this->stump.left && this->stump.left->color == RB_RED)
+			if (this->root.left && this->root.left->color == RB_RED)
 				return (0);
-			return (this->get_black_height(this->stump.left));
+			return (this->get_black_height(this->root.left));
 		}
 
 		bool is_red_black() const
 		{
-			if (this->stump.left && this->stump.left->color == RB_RED)
+			if (this->root.left && this->root.left->color == RB_RED)
 				return (false);
 			if (!this->get_black_height())
 				return (false);
-			node_type *node = this->stump.left;
+			node_type *node = this->root.left;
 			while (node && const_iterator(node) != this->end())
 			{
 				if (node->color == RB_RED)
@@ -668,8 +668,8 @@ namespace ft
 		{
 			if (!node)
 				return (NULL);
-			if (!node->parent && this->stump.left == node)
-				return (&this->stump.left);
+			if (!node->parent && this->root.left == node)
+				return (&this->root.left);
 			if (node->parent->right == node)
 				return (&(node->parent->right));
 			else if (node->parent->left == node)
@@ -679,8 +679,8 @@ namespace ft
 
 		node_type **get_reference_safe(node_type *node)
 		{
-			if (!node->parent && this->stump.left == node)
-				return (&this->stump.left);
+			if (!node->parent && this->root.left == node)
+				return (&this->root.left);
 			if (!node->parent)
 				return (NULL);
 			if (node->parent->right == node)
@@ -819,7 +819,7 @@ namespace ft
 
 		void fix_double_black(node_type *node)
 		{
-			if (!node || node == &this->stump)
+			if (!node || node == &this->root)
 				return;
 			node_type *sibling = this->getSibling(node);
 			node_type *parent = node->parent;
@@ -832,8 +832,8 @@ namespace ft
 				return;
 			delete_tree(node->left);
 			delete_tree(node->right);
-			if (this->stump.left == node)
-				this->stump.left = NULL;
+			if (this->root.left == node)
+				this->root.left = NULL;
 			if (node->parent)
 			{
 				if (node->parent->right == node)
@@ -848,8 +848,8 @@ namespace ft
 		{
 			if (!node)
 				return;
-			if (this->stump.left == node)
-				this->stump.left = NULL;
+			if (this->root.left == node)
+				this->root.left = NULL;
 			else if (node->parent && node->parent->right == node)
 				node->parent->right = NULL;
 			else if (node->parent && node->parent->left == node)
@@ -875,7 +875,7 @@ namespace ft
 
 		size_t size() const
 		{
-			return (size_subtree(this->stump.left));
+			return (size_subtree(this->root.left));
 		}
 
 		size_t max_size() const
@@ -885,8 +885,8 @@ namespace ft
 
 		node_type *lower_bound(const value_type &v)
 		{
-			node_type *current = this->stump.left;
-			node_type *best_guess = &this->stump;
+			node_type *current = this->root.left;
+			node_type *best_guess = &this->root;
 
 			while (current)
 			{
@@ -898,7 +898,7 @@ namespace ft
 				}
 				else if (this->values_less_than(v, current->value))
 				{
-					if (best_guess == &this->stump || this->values_less_than(current->value, best_guess->value))
+					if (best_guess == &this->root || this->values_less_than(current->value, best_guess->value))
 						best_guess = current;
 					if (!current->left)
 						return (best_guess);
@@ -912,8 +912,8 @@ namespace ft
 
 		const node_type *lower_bound(const value_type &v) const
 		{
-			const node_type *current = this->stump.left;
-			const node_type *best_guess = &this->stump;
+			const node_type *current = this->root.left;
+			const node_type *best_guess = &this->root;
 
 			while (current)
 			{
@@ -925,7 +925,7 @@ namespace ft
 				}
 				else if (this->values_less_than(v, current->value))
 				{
-					if (best_guess == &this->stump || this->values_less_than(current->value, best_guess->value))
+					if (best_guess == &this->root || this->values_less_than(current->value, best_guess->value))
 						best_guess = current;
 					if (!current->left)
 						return (best_guess);

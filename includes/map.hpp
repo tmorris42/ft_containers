@@ -232,7 +232,7 @@ namespace ft
 		}
 		void clear()
 		{
-			this->c.delete_tree(this->c.stump.left);
+			this->c.delete_tree(this->c.root.left);
 		}
 
 		iterator lower_bound(const key_type &k)
