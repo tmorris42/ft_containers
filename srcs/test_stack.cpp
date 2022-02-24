@@ -31,7 +31,7 @@ int	test_stack_basic()
 	ASSERT_EQUAL(s.size(), (size_t)1);
 	ASSERT_EQUAL(s.top(), 5);
 	s.pop();
-	ASSERT_EQUAL(s.top(), 0);
+	// ASSERT_EQUAL(s.top(), 0); This is undefined behavior (matches STL, but causes an invalid read)
 	ASSERT_EQUAL(s.size(), (size_t)0);
 	ASSERT_EQUAL(s.empty(), true);
 	print_stack(s);
