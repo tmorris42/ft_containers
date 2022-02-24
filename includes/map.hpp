@@ -25,7 +25,6 @@ namespace ft
 		typedef T mapped_type;
 		typedef pair<const key_type, mapped_type> value_type;
 		typedef Compare key_compare;
-		// typedef map::value_compare					value_compare;
 		class value_compare : public std::binary_function<value_type, value_type, bool>
 		{
 			friend class map;
