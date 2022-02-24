@@ -41,15 +41,6 @@ namespace ft
 		}
 		virtual ~RBIterator() {}
 
-		virtual bool operator==(iterator_type const &other)
-		{
-			return (this->data == other.data);
-		}
-		virtual bool operator!=(iterator_type const &other)
-		{
-			return (!((*this) == other));
-		}
-
 		node_pointer getMutableData()
 		{
 			return (const_cast<node_pointer>(this->data));
@@ -103,12 +94,6 @@ namespace ft
 			this->operator--();
 			return (temp);
 		}
-
-		bool operator!() const
-		{
-			return (!this->data || !this->data->parent);
-		}
-
 	};
 }
 #endif
