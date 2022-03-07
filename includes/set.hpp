@@ -150,7 +150,15 @@ namespace ft
 		{
 			return (reverse_iterator(this->begin()));
 		}
-
+		const_reverse_iterator rbegin() const
+		{
+			return (const_reverse_iterator(this->end()));
+		}
+		const_reverse_iterator rend() const
+		{
+			return (const_reverse_iterator(this->begin()));
+		}
+		
 		iterator find(const key_type &k)
 		{
 			iterator it = this->c.search(k);
