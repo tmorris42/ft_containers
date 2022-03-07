@@ -283,7 +283,7 @@ namespace ft
 	private:
 		allocator_type __alloc;
 		key_compare __comp;
-		typedef ft::RB_Tree<value_type, value_compare> _RB_tree_type;
+		typedef ft::RB_Tree<value_type, value_compare, allocator_type> _RB_tree_type;
 		_RB_tree_type c;
 	};
 

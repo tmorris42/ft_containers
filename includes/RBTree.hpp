@@ -186,7 +186,7 @@ namespace ft
 		typedef Node<const ValueType, Compare> const_node_type;
 		typedef ValueType value_type;
 		typedef const ValueType const_value_type;
-		typedef Allocator allocator_type;
+		typedef typename Allocator::template rebind< Node<ValueType, Compare> >::other	allocator_type;
 		typedef typename allocator_type::size_type size_type;
 
 		typedef RBIterator<value_type, node_type> iterator;
