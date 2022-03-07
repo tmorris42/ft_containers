@@ -158,7 +158,7 @@ namespace ft
 		{
 			return (const_reverse_iterator(this->begin()));
 		}
-		
+
 		iterator find(const key_type &k)
 		{
 			iterator it = this->c.search(k);
@@ -223,14 +223,14 @@ namespace ft
 		iterator upper_bound(const key_type &k)
 		{
 			iterator it = this->lower_bound(k);
-			while (!it || this->key_comp()(k, *it))
+			if (!it || this->key_comp()(k, *it))
 				return (it);
 			return (++it);
 		}
 		const_iterator upper_bound(const key_type &k) const
 		{
 			const_iterator it = this->lower_bound(k);
-			while (!it || this->key_comp()(k, *it))
+			if (!it || this->key_comp()(k, *it))
 				return (it);
 			return (++it);
 		}
