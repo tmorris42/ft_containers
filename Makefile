@@ -27,7 +27,7 @@ VALGRIND_LOG = $(addprefix $(LOGS_DIR), val.log)
 TIME_FORMAT = "elapsed time: %es\tsystem time: %Ss\tuser time: %Us"
 SEED ?= 7
 
-CC_OVERRIDE ?= clang++
+CC_OVERRIDE ?= c++
 CC	:= $(CC_OVERRIDE)
 FLAGS = -MMD -Wall -Wextra -Werror
 MY_FLAGS = $(FLAGS) -std=c++98 -pedantic
